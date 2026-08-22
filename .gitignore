@@ -1,0 +1,39 @@
+# Dependencies and build output
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+
+# Python local environments and caches
+.venv/
+.api-venv/
+backend/.venv/
+backend/.api-venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local environment and database files
+.env
+.env.*
+!.env.example
+!.env.production.example
+backend/pca_local.db
+*.sqlite
+*.sqlite3
+
+# Local backups
+frontend.backup-before-*/
+*.backup/
+
+# Training datasets and notebooks are local-only for deployment.
+# Keep only the trained model outputs required by the backend Docker image.
+Thesis AI Model/*
+!Thesis AI Model/model_outputs/
+!Thesis AI Model/model_outputs/**
+
+# Editor and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

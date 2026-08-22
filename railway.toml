@@ -1,0 +1,11 @@
+# Deploy from repo root so the Dockerfile can include CNN weights.
+# In Railway: set root directory to this repo, or connect GitHub and use this file.
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+healthcheckPath = "/health"
+healthcheckTimeout = 120
+restartPolicyType = "ON_FAILURE"

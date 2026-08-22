@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+@theme {
+  --color-pca-green: #166534;
+  --color-pca-green-hover: #14532d;
+  --color-pca-green-light: #f0fdf4;
+  --color-pca-green-soft: #dcfce7;
+  --color-pca-text: #1a1a1a;
+  --color-pca-muted: #6b7280;
+  --color-pca-border: #e5e7eb;
+  --color-pca-bg: #f8fafc;
+  --color-pca-red: #dc2626;
+  --color-pca-red-light: #fef2f2;
+  --color-pca-red-soft: #fecaca;
+  --color-pca-orange: #ea580c;
+  --color-pca-blue: #2563eb;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+@layer components {
+  .f-card {
+    @apply mb-4 rounded-2xl border border-pca-border bg-white p-6 transition-colors hover:border-[#d1d5db];
+  }
+
+  .farmer-flow {
+    @apply max-w-[560px];
+  }
+
+  .stepper-step.done::after {
+    background-color: var(--color-pca-green);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.btn-sec {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: 10px;
+  background: white;
+  color: var(--color-pca-muted);
+  border: 1.5px solid var(--color-pca-border);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-danger {
+  background: var(--color-pca-red);
+  color: white;
+  border: none;
+}
+
+.admin-approval-split {
+  align-items: start;
+}
+
+@media print {
+  .portal-sidebar,
+  .portal-overlay,
+  .mobile-toggle,
+  header.topbar button {
+    display: none !important;
+  }
+  .portal-app main {
+    padding: 0;
+  }
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-pca-bg);
+    color: var(--color-pca-text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loginDonePop {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes loginDotPulse {
+  0%,
+  70%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0) scale(0.92);
+  }
+  35% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+.animate-done-pop {
+  animation: loginDonePop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.login-dot {
+  animation: loginDotPulse 1.05s ease-in-out infinite;
+}
+
+.login-dot:nth-child(2) {
+  animation-delay: 0.18s;
+}
+
+.login-dot:nth-child(3) {
+  animation-delay: 0.36s;
+}

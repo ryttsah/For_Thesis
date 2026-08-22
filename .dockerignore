@@ -1,0 +1,19 @@
+**/.venv
+**/node_modules
+**/__pycache__
+**/*.pyc
+.git
+.cursor
+frontend/dist
+backend/pca_local.db
+backend/.env
+Thesis AI Model/Healthy_Leaves
+Thesis AI Model/**/train
+Thesis AI Model/**/valid
+Thesis AI Model/**/test
+Thesis AI Model/model_outputs/image_review
+Thesis AI Model/model_outputs/best_*.keras
+Thesis AI Model/model_outputs/head_*.keras
+Thesis AI Model/model_outputs/*_log.csv
+Thesis AI Model/model.ipynb
+pca_neg_bk-copy.html
