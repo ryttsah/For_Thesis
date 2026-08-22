@@ -13,17 +13,15 @@ RUN pip install --no-cache-dir -r /app/backend/requirements.txt
 COPY backend/app /app/backend/app
 COPY backend/scripts /app/backend/scripts
 COPY backend/db /app/backend/db
-COPY "Thesis AI Model/model_outputs/coconut_leaf_multilabel_cnn.keras" \
-    "/app/Thesis AI Model/model_outputs/coconut_leaf_multilabel_cnn.keras"
-COPY "Thesis AI Model/model_outputs/label_config.json" \
-    "/app/Thesis AI Model/model_outputs/label_config.json"
+COPY ["Thesis AI Model/model_outputs/coconut_leaf_multilabel_cnn.keras", "/app/model_outputs/coconut_leaf_multilabel_cnn.keras"]
+COPY ["Thesis AI Model/model_outputs/label_config.json", "/app/model_outputs/label_config.json"]
 
 WORKDIR /app/backend
 
 ENV PYTHONUNBUFFERED=1 \
     TF_CPP_MIN_LOG_LEVEL=2 \
-    ML_MODEL_PATH="Thesis AI Model/model_outputs/coconut_leaf_multilabel_cnn.keras" \
-    ML_LABEL_CONFIG_PATH="Thesis AI Model/model_outputs/label_config.json"
+    ML_MODEL_PATH="/app/model_outputs/coconut_leaf_multilabel_cnn.keras" \
+    ML_LABEL_CONFIG_PATH="/app/model_outputs/label_config.json"
 
 EXPOSE 8000
 
