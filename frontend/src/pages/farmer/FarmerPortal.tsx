@@ -59,6 +59,7 @@ export default function FarmerPortal() {
   const [sector, setSector] = useState("C");
   const [previews, setPreviews] = useState<string[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [preparingUploads, setPreparingUploads] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [analyzeError, setAnalyzeError] = useState<string | null>(null);
   const [confidencePct, setConfidencePct] = useState<number | null>(null);
@@ -74,6 +75,7 @@ export default function FarmerPortal() {
   const [provincialStats, setProvincialStats] = useState<ProvincialStats | null>(null);
   const [sectorRows, setSectorRows] = useState<FarmerSectorRow[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
+  const previewUrlsRef = useRef<string[]>([]);
 
   useEffect(() => {
     if (!isApiEnabled() || isAuthLoading || !hasAuthToken()) return;
@@ -83,9 +85,19 @@ export default function FarmerPortal() {
     });
   }, [isAuthLoading, farmerSubmissions.length]);
 
+  useEffect(() => {
+    return () => {
+      previewUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
+      previewUrlsRef.current = [];
+    };
+  }, []);
+
   function resetUploadSession() {
+    previewUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
+    previewUrlsRef.current = [];
     setPreviews([]);
     setUploadedFiles([]);
+    setPreparingUploads(false);
     setAnalyzeError(null);
     setConfidencePct(null);
     setPhotoCounts(null);
@@ -219,32 +231,29 @@ export default function FarmerPortal() {
     if (!incoming.length) return;
     const remaining = 10 - previews.length;
     const allowed = incoming.slice(0, remaining);
+    if (!allowed.length) {
+      e.target.value = "";
+      return;
+    }
 
-    void Promise.all(
-      allowed.map(
-        (file) =>
-          new Promise<{ preview: string; file: File }>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve({ preview: reader.result as string, file });
-            reader.onerror = () => reject(reader.error);
-            reader.readAsDataURL(file);
-          }),
-      ),
-    )
-      .then((pairs) => {
-        setPreviews((prev) => [...prev, ...pairs.map((p) => p.preview)].slice(0, 10));
-        setUploadedFiles((prev) => [...prev, ...pairs.map((p) => p.file)].slice(0, 10));
-      })
-      .catch(() => {
-        setAnalyzeError(
-          lang === "hil" ? "May problema sa pagbasa sang litrato." : "Could not read one of the photos.",
-        );
-      });
+    setPreparingUploads(true);
+    setAnalyzeError(null);
+
+    const nextPreviews = allowed.map((file) => URL.createObjectURL(file));
+    previewUrlsRef.current.push(...nextPreviews);
+    setPreviews((prev) => [...prev, ...nextPreviews].slice(0, 10));
+    setUploadedFiles((prev) => [...prev, ...allowed].slice(0, 10));
+    setPreparingUploads(false);
 
     e.target.value = "";
   }
 
   function removePreview(idx: number) {
+    const url = previews[idx];
+    if (url) {
+      URL.revokeObjectURL(url);
+      previewUrlsRef.current = previewUrlsRef.current.filter((item) => item !== url);
+    }
     setPreviews((p) => p.filter((_, i) => i !== idx));
     setUploadedFiles((p) => p.filter((_, i) => i !== idx));
   }
@@ -456,10 +465,22 @@ export default function FarmerPortal() {
 
             <div className="f-card !mb-0">
               <h2 className="text-xl font-bold mb-4">{lang === "hil" ? "I-upload ang Litrato" : "Upload Photos"}</h2>
-              <button type="button" onClick={() => fileRef.current?.click()} className={`mb-4 w-full rounded-2xl border-2 border-dashed px-6 py-12 transition-all ${previews.length ? "border-pca-green bg-pca-green-light" : "border-pca-border hover:bg-pca-bg"}`}>
-                {previews.length ? <IconCheck size={40} className="mx-auto text-pca-green" /> : <IconCamera size={48} className="mx-auto text-pca-green" />}
+              <button type="button" disabled={preparingUploads} onClick={() => fileRef.current?.click()} className={`mb-4 w-full rounded-2xl border-2 border-dashed px-6 py-12 transition-all disabled:cursor-wait disabled:opacity-70 ${previews.length ? "border-pca-green bg-pca-green-light" : "border-pca-border hover:bg-pca-bg"}`}>
+                {preparingUploads ? (
+                  <IconLoader2 size={40} className="mx-auto animate-spin text-pca-green" />
+                ) : previews.length ? (
+                  <IconCheck size={40} className="mx-auto text-pca-green" />
+                ) : (
+                  <IconCamera size={48} className="mx-auto text-pca-green" />
+                )}
                 <h4 className="mt-3 font-bold text-lg">
-                  {previews.length ? FARMER_I18N.uploaded[lang] : FARMER_I18N.tapUpload[lang]}
+                  {preparingUploads
+                    ? lang === "hil"
+                      ? "Ginapreparar ang mga litrato..."
+                      : "Preparing photos..."
+                    : previews.length
+                      ? FARMER_I18N.uploaded[lang]
+                      : FARMER_I18N.tapUpload[lang]}
                 </h4>
                 <p className="text-xs font-medium text-pca-muted">
                   {previews.length} / 10 {FARMER_I18N.photos[lang]} · Sector {sector}
@@ -478,7 +499,7 @@ export default function FarmerPortal() {
                 </div>
               )}
 
-              <button type="button" disabled={!previews.length || analyzing} onClick={startAnalyze} className="flex w-full items-center justify-center gap-2 rounded-xl bg-pca-green py-4 font-bold text-white shadow-lg shadow-pca-green/20 transition-all hover:-translate-y-0.5 disabled:opacity-50 active:translate-y-0">
+              <button type="button" disabled={!previews.length || preparingUploads || analyzing} onClick={startAnalyze} className="flex w-full items-center justify-center gap-2 rounded-xl bg-pca-green py-4 font-bold text-white shadow-lg shadow-pca-green/20 transition-all hover:-translate-y-0.5 disabled:opacity-50 active:translate-y-0">
                 {FARMER_I18N.nextAnalyze[lang]} <IconArrowRight size={18} />
               </button>
               {analyzeError && (

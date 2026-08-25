@@ -34,6 +34,8 @@ export interface AggregatedPredictResult {
 }
 
 const UNCERTAIN_MAX_PCT = 40;
+const MAX_UPLOAD_IMAGE_SIDE = 1280;
+const UPLOAD_JPEG_QUALITY = 0.82;
 
 export const CLASS_ORDER = [
   "Healthy",
@@ -82,6 +84,44 @@ const PEST_KEYS: PestType[] = ["healthy", "yellowing", "scale insect", "rhino be
 function normalizePest(value: string): PestType {
   if (PEST_KEYS.includes(value as PestType)) return value as PestType;
   return "healthy";
+}
+
+async function prepareImageForUpload(file: File): Promise<File> {
+  if (!file.type.startsWith("image/") || file.type === "image/gif") return file;
+
+  const objectUrl = URL.createObjectURL(file);
+  try {
+    const image = new Image();
+    const loaded = new Promise<void>((resolve, reject) => {
+      image.onload = () => resolve();
+      image.onerror = () => reject(new Error("Could not load image"));
+    });
+    image.src = objectUrl;
+    await loaded;
+
+    const scale = Math.min(1, MAX_UPLOAD_IMAGE_SIDE / Math.max(image.naturalWidth, image.naturalHeight));
+    if (scale === 1 && file.size <= 1_500_000) return file;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+    canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return file;
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+    const blob = await new Promise<Blob | null>((resolve) => {
+      canvas.toBlob(resolve, "image/jpeg", UPLOAD_JPEG_QUALITY);
+    });
+    if (!blob || blob.size >= file.size) return file;
+
+    const baseName = file.name.replace(/\.[^.]+$/, "") || "leaf-photo";
+    return new File([blob], `${baseName}.jpg`, { type: "image/jpeg", lastModified: file.lastModified });
+  } catch {
+    return file;
+  } finally {
+    URL.revokeObjectURL(objectUrl);
+  }
 }
 
 /** Winning class for one photo = highest score in that image's breakdown. */
@@ -165,7 +205,8 @@ export async function predictLeafImage(
   }
 
   const form = new FormData();
-  form.append("file", file, file.name);
+  const uploadFile = await prepareImageForUpload(file);
+  form.append("file", uploadFile, uploadFile.name);
 
   try {
     const response = await fetch(`${getApiBase()}/predict`, {
