@@ -325,7 +325,7 @@ export default function FarmerPortal() {
   return (
     <div className="min-h-screen bg-pca-bg">
       <div className="mx-auto max-w-[560px] px-4 py-6 md:max-w-[1000px] lg:px-8">
-        <header className="mb-8 flex items-center justify-between">
+        <header className="mb-8 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm border border-pca-border">
               <IconLeaf size={24} className="text-pca-green" />
@@ -335,14 +335,15 @@ export default function FarmerPortal() {
               <div className="text-xs font-medium text-pca-muted">{t.portal}</div>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="hidden overflow-hidden rounded-xl border border-pca-border bg-white p-1 sm:flex">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            <div className="flex overflow-hidden rounded-xl border border-pca-border bg-white p-1 shadow-sm">
               {(["hil", "en"] as const).map((l) => (
                 <button
                   key={l}
                   type="button"
                   onClick={() => setLang(l)}
-                  className={`rounded-lg px-3 py-1 text-xs font-bold transition-all ${
+                  aria-label={l === "hil" ? "Use Hiligaynon" : "Use English"}
+                  className={`min-w-10 rounded-lg px-2.5 py-1.5 text-xs font-bold transition-all sm:px-3 ${
                     lang === l ? "bg-pca-green text-white shadow-sm" : "text-pca-muted hover:text-pca-text"
                   }`}
                 >
