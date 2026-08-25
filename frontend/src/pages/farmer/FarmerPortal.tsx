@@ -512,7 +512,7 @@ export default function FarmerPortal() {
                   </h3>
                   <p className="mb-5 text-sm font-medium leading-relaxed text-pca-text/80">{rec.desc}</p>
                   <div className="rounded-2xl bg-white/80 p-5 text-[14px] shadow-sm backdrop-blur-sm">
-                    <div className="mb-2 text-[11px] font-black uppercase tracking-widest text-pca-muted">Recommendation</div>
+                    <div className="mb-2 text-[11px] font-black uppercase tracking-widest text-pca-muted">{rec.heading}</div>
                     <p className="font-bold text-pca-text">{rec.rec}</p>
                   </div>
                 </div>

@@ -71,53 +71,64 @@ export const TREND_STACKED_DEFAULT = {
 
 export const RECOMMENDATIONS: Record<
   PestType,
-  { hil: { title: string; desc: string; rec: string }; en: { title: string; desc: string; rec: string } }
+  {
+    hil: { title: string; desc: string; heading: string; rec: string };
+    en: { title: string; desc: string; heading: string; rec: string };
+  }
 > = {
   healthy: {
     hil: {
-      title: "Maayo (Healthy)",
+      title: "PAGMANTINAR SANG MAAYO NGA MGA DAHON SANG LUBI",
       desc: "Ang imo puno maayo pa. Padayon ang pag-atiman.",
+      heading: "Mga Pamaagi para Malikawan ang mga Pisti",
       rec: "Mag-apply sang fertilizer kada 6 ka bulan. I-monitor ang mga bag-o nga dahon.",
     },
     en: {
-      title: "Healthy",
+      title: "MAINTENANCE OF HEALTHY COCONUT PALMS",
       desc: "Your tree is healthy. Keep up the good care.",
+      heading: "Preventive Management",
       rec: "Apply fertilizer every 6 months. Monitor new leaves regularly.",
     },
   },
   yellowing: {
     hil: {
-      title: "Nagdilaw (Yellowing)",
+      title: "PAGDUMALA SANG PAGKADILAW SANG MGA DAHON SANG LUBI",
       desc: "Ang imo puno nagadilaw. Posible kulang abono o may sakit.",
+      heading: "Mga Paagi sa Pagdumala",
       rec: "Mag-test sang duta. Mag-apply sang fertilizer. Tan-awa ang pag-agi sang tubig.",
     },
     en: {
-      title: "Yellowing",
+      title: "MANAGEMENT OF COCONUT LEAF YELLOWING",
       desc: "Your tree is yellowing. Possible nutrient deficiency or disease.",
+      heading: "Management Options",
       rec: "Conduct soil test. Apply fertilizer. Check drainage around the tree.",
     },
   },
   "scale insect": {
     hil: {
-      title: "Lisap (Scale Insect)",
+      title: "PAGDUMALA SANG COCONUT SCALE INSECT UKON COCOLISAP",
       desc: "May lisap ang imo puno. Dali ini magdamo kung indi matapulan.",
+      heading: "Mga Paagi sa Pagdumala",
       rec: "Mag-spray sang insecticide. Tangtangon ang grabe nga dahon.",
     },
     en: {
-      title: "Scale Insect",
+      title: "MANAGEMENT OF COCONUT SCALE INSECT",
       desc: "Your tree has scale insect. This spreads fast if not treated.",
+      heading: "Management Options",
       rec: "Spray approved scale insecticide. Remove severely affected fronds.",
     },
   },
   "rhino beetle": {
     hil: {
-      title: "Bagangan (Rhinoceros Beetle)",
+      title: "PAGDUMALA SANG RHINOCEROS BEETLE UKON BAGANGAN",
       desc: "May bagangan ang imo puno. Ginasunog ang mga dahon sang bag-o.",
+      heading: "Mga Paagi sa Pagdumala",
       rec: "Mag-install sang light traps. I-report sa PCA opisyal kung puro na ang pag-atake.",
     },
     en: {
-      title: "Rhinoceros Beetle",
+      title: "INTEGRATED MANAGEMENT OF RHINOCEROS BEETLE",
       desc: "Your tree has rhinoceros beetle. New fronds are being damaged.",
+      heading: "Management Strategies",
       rec: "Install light traps at night. Report to PCA officer if widespread.",
     },
   },
