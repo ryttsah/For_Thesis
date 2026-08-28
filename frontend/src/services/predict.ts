@@ -36,7 +36,7 @@ export interface AggregatedPredictResult {
 const UNCERTAIN_MAX_PCT = 40;
 const MAX_UPLOAD_IMAGE_SIDE = 1280;
 const UPLOAD_JPEG_QUALITY = 0.82;
-const PREDICT_TIMEOUT_MS = 90_000;
+const PREDICT_TIMEOUT_MS = 45_000;
 
 export const CLASS_ORDER = [
   "Healthy",

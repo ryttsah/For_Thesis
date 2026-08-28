@@ -20,10 +20,15 @@ export function usesDevProxy(): boolean {
 function resolveAutoApiBase(): string {
   if (typeof window === "undefined") return "";
 
-  const override = localStorage.getItem(API_OVERRIDE_KEY)?.trim();
-  if (override) return override.replace(/\/$/, "");
-
   const { protocol, hostname, port } = window.location;
+  const isLocalHost =
+    hostname === "localhost" ||
+    hostname === "127.0.0.1" ||
+    hostname.endsWith(".localhost") ||
+    hostname.endsWith(".devtunnels.ms");
+
+  const override = localStorage.getItem(API_OVERRIDE_KEY)?.trim();
+  if (override && isLocalHost) return override.replace(/\/$/, "");
 
   if (hostname.includes("5173")) {
     return `${protocol}//${hostname.replace(/5173/g, "8000")}`;
