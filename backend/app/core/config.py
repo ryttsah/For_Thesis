@@ -33,6 +33,7 @@ class Settings(BaseSettings):
     ml_model_path: str | None = None
     ml_label_config_path: str | None = None
     ml_max_upload_bytes: int = 10 * 1024 * 1024
+    ml_predict_timeout_seconds: int = 90
 
     def resolved_ml_model_path(self) -> Path:
         if self.ml_model_path:

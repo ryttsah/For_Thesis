@@ -1,3 +1,4 @@
+import asyncio
 from pathlib import Path
 from typing import Annotated
 
@@ -56,12 +57,21 @@ async def predict_leaf_image(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Empty file upload.")
 
     try:
-        result = predict_upload_file(
-            raw,
-            model_path=model_path,
-            config_path=config_path,
-            max_bytes=settings.ml_max_upload_bytes,
+        result = await asyncio.wait_for(
+            asyncio.to_thread(
+                predict_upload_file,
+                raw,
+                model_path=model_path,
+                config_path=config_path,
+                max_bytes=settings.ml_max_upload_bytes,
+            ),
+            timeout=settings.ml_predict_timeout_seconds,
         )
+    except TimeoutError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+            detail="Analysis took too long. Try again with one clear coconut leaf photo.",
+        ) from exc
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
     except RuntimeError as exc:

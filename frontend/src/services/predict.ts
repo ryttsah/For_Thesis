@@ -36,6 +36,7 @@ export interface AggregatedPredictResult {
 const UNCERTAIN_MAX_PCT = 40;
 const MAX_UPLOAD_IMAGE_SIDE = 1280;
 const UPLOAD_JPEG_QUALITY = 0.82;
+const PREDICT_TIMEOUT_MS = 90_000;
 
 export const CLASS_ORDER = [
   "Healthy",
@@ -208,12 +209,16 @@ export async function predictLeafImage(
   const uploadFile = await prepareImageForUpload(file);
   form.append("file", uploadFile, uploadFile.name);
 
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), PREDICT_TIMEOUT_MS);
+
   try {
     const response = await fetch(`${getApiBase()}/predict`, {
       method: "POST",
       headers: getAuthHeaders(),
       body: form,
       cache: "no-store",
+      signal: controller.signal,
     });
 
     if (!response.ok) {
@@ -247,8 +252,16 @@ export async function predictLeafImage(
         message: data.message,
       },
     };
-  } catch {
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") {
+      return {
+        success: false,
+        message: "Analysis is taking too long. Please try again with one clear coconut leaf photo.",
+      };
+    }
     return { success: false, message: "Cannot reach the analysis server. Try again later." };
+  } finally {
+    window.clearTimeout(timeoutId);
   }
 }
 
