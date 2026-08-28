@@ -11,7 +11,6 @@ import {
   IconCircleCheck,
   IconHistory,
   IconLeaf,
-  IconLoader2,
   IconLogout,
   IconSend,
   IconThumbDown,
@@ -42,6 +41,15 @@ type Lang = "hil" | "en";
 const PESTS: PestType[] = ["healthy", "yellowing", "scale insect", "rhino beetle"];
 
 const SECTOR_ICONS = { A: IconArrowUp, B: IconArrowDown, C: IconArrowRight, D: IconArrowLeft };
+
+function LoadingRing({ size = "h-16 w-16" }: { size?: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`${size} mx-auto block rounded-full border-4 border-pca-green/20 border-t-pca-green animate-spin`}
+    />
+  );
+}
 
 export default function FarmerPortal() {
   const { logout, isAuthLoading } = useAuth();
@@ -467,7 +475,7 @@ export default function FarmerPortal() {
               <h2 className="text-xl font-bold mb-4">{lang === "hil" ? "I-upload ang Litrato" : "Upload Photos"}</h2>
               <button type="button" disabled={preparingUploads} onClick={() => fileRef.current?.click()} className={`mb-4 w-full rounded-2xl border-2 border-dashed px-6 py-12 transition-all disabled:cursor-wait disabled:opacity-70 ${previews.length ? "border-pca-green bg-pca-green-light" : "border-pca-border hover:bg-pca-bg"}`}>
                 {preparingUploads ? (
-                  <IconLoader2 size={40} className="mx-auto animate-spin text-pca-green" />
+                  <LoadingRing size="h-10 w-10" />
                 ) : previews.length ? (
                   <IconCheck size={40} className="mx-auto text-pca-green" />
                 ) : (
@@ -513,7 +521,9 @@ export default function FarmerPortal() {
 
         {step === 2 && (
           <div className="f-card animate-fade-in py-20 text-center max-w-2xl mx-auto">
-            <IconLoader2 size={64} className={`mx-auto mb-6 text-pca-green ${analyzing ? "animate-spin" : ""}`} />
+            <div className="mb-6">
+              <LoadingRing />
+            </div>
             <h2 className="text-2xl font-black tracking-tight">{FARMER_I18N.analyzing[lang]}</h2>
             <p className="mt-2 text-pca-muted font-medium italic">
               AI is scanning {uploadedFiles.length} {uploadedFiles.length === 1 ? 'photo' : 'photos'}...
