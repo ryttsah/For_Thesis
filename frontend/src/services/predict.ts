@@ -94,8 +94,15 @@ async function prepareImageForUpload(file: File): Promise<File> {
   try {
     const image = new Image();
     const loaded = new Promise<void>((resolve, reject) => {
-      image.onload = () => resolve();
-      image.onerror = () => reject(new Error("Could not load image"));
+      const timeoutId = window.setTimeout(() => reject(new Error("Image load timed out")), 5_000);
+      image.onload = () => {
+        window.clearTimeout(timeoutId);
+        resolve();
+      };
+      image.onerror = () => {
+        window.clearTimeout(timeoutId);
+        reject(new Error("Could not load image"));
+      };
     });
     image.src = objectUrl;
     await loaded;

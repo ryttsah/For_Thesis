@@ -96,8 +96,11 @@ function buildAuthUser(
 }
 
 function loadInitialUser(): AuthUser | null {
-  // Allow the session to persist even if API is detected,
-  // so that Demo mode (which has no token) still works after a refresh.
+  if (isApiEnabled() && !hasAuthToken()) {
+    sessionStorage.removeItem(STORAGE_KEY);
+    return null;
+  }
+
   return loadStoredUser();
 }
 

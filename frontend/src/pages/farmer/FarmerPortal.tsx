@@ -521,13 +521,35 @@ export default function FarmerPortal() {
 
         {step === 2 && (
           <div className="f-card animate-fade-in py-20 text-center max-w-2xl mx-auto">
-            <div className="mb-6">
-              <LoadingRing />
-            </div>
-            <h2 className="text-2xl font-black tracking-tight">{FARMER_I18N.analyzing[lang]}</h2>
-            <p className="mt-2 text-pca-muted font-medium italic">
-              AI is scanning {uploadedFiles.length} {uploadedFiles.length === 1 ? 'photo' : 'photos'}...
-            </p>
+            {analyzing ? (
+              <>
+                <div className="mb-6">
+                  <LoadingRing />
+                </div>
+                <h2 className="text-2xl font-black tracking-tight">{FARMER_I18N.analyzing[lang]}</h2>
+                <p className="mt-2 text-pca-muted font-medium italic">
+                  AI is scanning {uploadedFiles.length} {uploadedFiles.length === 1 ? 'photo' : 'photos'}...
+                </p>
+              </>
+            ) : (
+              <>
+                <IconAlertCircle size={56} className="mx-auto mb-5 text-pca-red" />
+                <h2 className="text-2xl font-black tracking-tight">
+                  {lang === "hil" ? "Wala natapos ang analysis" : "Analysis did not finish"}
+                </h2>
+                <p className="mx-auto mt-3 max-w-md text-sm font-semibold leading-relaxed text-pca-muted">
+                  {analyzeError ?? (lang === "hil" ? "Sulayi liwat ang isa ka klaro nga litrato." : "Try again with one clear photo.")}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
+                  className="mx-auto mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-pca-green px-5 py-3 text-sm font-bold text-white shadow-lg shadow-pca-green/20"
+                >
+                  <IconArrowLeft size={18} />
+                  {lang === "hil" ? "Balik sa upload" : "Back to upload"}
+                </button>
+              </>
+            )}
           </div>
         )}
 
