@@ -1,6 +1,6 @@
 import { IconChartBar } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import StackedTrendChart from "../../components/charts/StackedTrendChart";
+import ConditionLineChart from "../../components/charts/ConditionLineChart";
 import EmptyChartNote from "../../components/ui/EmptyChartNote";
 import { isApiEnabled } from "../../services/api";
 import { fetchOfficerConditionTrend, type ConditionTrendData } from "../../services/analytics";
@@ -25,7 +25,7 @@ export default function OfficerAnalytics() {
             <p className="mb-2 text-xs text-pca-muted">
               {trend.brgy ? `Barangay: ${trend.brgy}` : "Assign a barangay to scope this chart."}
             </p>
-            <StackedTrendChart
+            <ConditionLineChart
               labels={trend.labels}
               healthy={trend.healthy}
               yellowing={trend.yellowing}

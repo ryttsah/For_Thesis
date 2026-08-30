@@ -7,6 +7,7 @@ from app.api.analytics import router as analytics_router
 from app.api.auth import router as auth_router
 from app.api.domain import router as domain_router
 from app.api.predict import router as predict_router
+from app.api.reports import router as reports_router
 from app.api.registrations import router as registrations_router
 from app.core.config import get_settings
 from app.db.seed import init_local_database
@@ -40,6 +41,7 @@ app.include_router(registrations_router)
 app.include_router(domain_router)
 app.include_router(analytics_router)
 app.include_router(predict_router)
+app.include_router(reports_router)
 
 # Explicit origins (localhost + production) plus regex for VS Code dev tunnels / Vercel previews.
 app.add_middleware(

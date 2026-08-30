@@ -3,11 +3,21 @@ import { useMemo, useState } from "react";
 import { useDemoStore } from "../../context/DemoStoreContext";
 import { filterByBrgy, useOfficerScope } from "../../hooks/useOfficerScope";
 import { Card, CardHead } from "../../components/ui/Card";
+import { downloadMonthlyReport, type ReportType } from "../../services/reports";
+
+const OFFICER_REPORT_TYPES: Record<string, ReportType> = {
+  monthly: "monthly",
+  pest: "high-risk",
+  survey: "monthly",
+};
 
 export default function OfficerReports() {
   const { surveys, queue } = useDemoStore();
   const { assignedBrgy } = useOfficerScope();
   const [reportType, setReportType] = useState("monthly");
+  const [reportMonth, setReportMonth] = useState("2026-08");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [reportError, setReportError] = useState("");
 
   const monthly = useMemo(() => {
     const scoped = filterByBrgy(surveys, assignedBrgy);
@@ -102,12 +112,27 @@ export default function OfficerReports() {
           </div>
           <div>
             <label className="mb-1 block text-xs font-semibold">Date range</label>
-            <input type="month" defaultValue="2026-05" className="w-full rounded-lg border border-pca-border px-3 py-2 text-sm" />
+            <input type="month" value={reportMonth} onChange={(e) => setReportMonth(e.target.value)} className="w-full rounded-lg border border-pca-border px-3 py-2 text-sm" />
           </div>
         </div>
-        <button type="button" onClick={() => alert(`Generating ${reportType} report — demo`)} className="mt-4 rounded-[10px] bg-pca-green px-4 py-2.5 text-sm font-semibold text-white hover:bg-pca-green-hover">
-          Generate report
+        <button
+          type="button"
+          disabled={isGenerating}
+          onClick={async () => {
+            setIsGenerating(true);
+            setReportError("");
+            const result = await downloadMonthlyReport(reportMonth, OFFICER_REPORT_TYPES[reportType] ?? "monthly");
+            if (!result.success) setReportError(result.message);
+            setIsGenerating(false);
+          }}
+          className="mt-4 rounded-[10px] bg-pca-green px-4 py-2.5 text-sm font-semibold text-white hover:bg-pca-green-hover disabled:opacity-50"
+        >
+          {isGenerating ? "Generating..." : "Generate report"}
         </button>
+        <p className="mt-2 text-xs text-pca-muted">
+          Pest outbreak uses the high-risk report format. Survey log uses the monthly report format scoped to your assigned barangay.
+        </p>
+        {reportError && <p className="mt-2 text-sm font-semibold text-pca-red">{reportError}</p>}
       </Card>
     </div>
   );
