@@ -25,6 +25,7 @@ backend/pca_local.db
 # Local backups
 frontend.backup-before-*/
 *.backup/
+tmp/
 
 # Training datasets and notebooks are local-only for deployment.
 # Keep only the trained model outputs required by the backend Docker image.

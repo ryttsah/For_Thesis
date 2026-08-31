@@ -22,6 +22,7 @@ def monthly_report(
         str,
         Query(pattern=r"^(monthly|officer-performance|farmer-audit|high-risk)$"),
     ] = "monthly",
+    generated_at: Annotated[str | None, Query(max_length=120)] = None,
 ) -> Response:
     brgy = None
     generated_by = user_id
@@ -39,6 +40,7 @@ def monthly_report(
         report_type=type,
         month=month,
         brgy=brgy,
+        generated_at=generated_at,
     )
     scope = "province" if role == "admin" else "officer"
     filename = f"pca-{scope}-{type}-report-{month or 'current'}.pdf"

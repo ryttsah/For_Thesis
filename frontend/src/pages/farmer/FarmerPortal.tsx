@@ -559,18 +559,18 @@ export default function FarmerPortal() {
             <div className="md:col-span-7 space-y-6">
               <div className="f-card !mb-0 overflow-hidden !p-0">
                 <div className={`p-6 border-l-8 ${cardClass === "healthy" ? "border-pca-green bg-pca-green-light" : cardClass === "warning" ? "border-orange-500 bg-orange-50" : "border-pca-red bg-pca-red-light"}`}>
-                  <h3 className={`mb-3 flex items-center gap-2.5 text-2xl font-black ${cardClass === "healthy" ? "text-pca-green" : cardClass === "warning" ? "text-orange-700" : "text-pca-red"}`}>
-                    {detectedPest === "healthy" ? <IconCircleCheck size={28} /> : <IconAlertCircle size={28} />}
-                    {rec.title}
+                  <h3 className={`mb-3 flex min-w-0 items-start gap-2.5 text-2xl font-black leading-tight ${cardClass === "healthy" ? "text-pca-green" : cardClass === "warning" ? "text-orange-700" : "text-pca-red"}`}>
+                    {detectedPest === "healthy" ? <IconCircleCheck size={28} className="mt-0.5 shrink-0" /> : <IconAlertCircle size={28} className="mt-0.5 shrink-0" />}
+                    <span className="min-w-0 break-words">{rec.title}</span>
                   </h3>
                   <p className="mb-5 text-sm font-medium leading-relaxed text-pca-text/80">{rec.desc}</p>
                   <div className="rounded-2xl bg-white/80 p-5 text-[14px] shadow-sm backdrop-blur-sm">
                     <div className="mb-2 text-[11px] font-black uppercase tracking-widest text-pca-muted">{rec.heading}</div>
-                    <p className="font-bold text-pca-text">{rec.rec}</p>
+                    <p className="font-bold leading-relaxed text-pca-text">{rec.rec}</p>
                   </div>
                 </div>
 
-                <div className="p-6 grid grid-cols-2 gap-4 bg-pca-bg/30">
+                <div className="grid grid-cols-1 gap-4 bg-pca-bg/30 p-6 sm:grid-cols-2">
                   <div className="rounded-xl border border-pca-border bg-white p-4">
                     <div className="text-[10px] font-black uppercase tracking-widest text-pca-muted mb-1">Confidence</div>
                     <div className={`text-xl font-black ${isUncertain ? 'text-orange-600' : 'text-pca-green'}`}>
@@ -579,7 +579,7 @@ export default function FarmerPortal() {
                   </div>
                   <div className="rounded-xl border border-pca-border bg-white p-4">
                     <div className="text-[10px] font-black uppercase tracking-widest text-pca-muted mb-1">Majority</div>
-                    <div className="text-xl font-black truncate">{majorityClass ? CLASS_DISPLAY[majorityClass].en : '—'}</div>
+                    <div className="break-words text-xl font-black">{majorityClass ? CLASS_DISPLAY[majorityClass].en : '—'}</div>
                   </div>
                 </div>
               </div>
@@ -595,9 +595,9 @@ export default function FarmerPortal() {
                       if (count === 0 && photosAnalyzed > 1) return null;
                       return (
                         <div key={name}>
-                          <div className="mb-2 flex justify-between items-end">
-                            <span className="text-[13px] font-bold">{lang === "hil" ? meta.hil : meta.en}</span>
-                            <span className="text-xs font-black tabular-nums">{count} {lang === "hil" ? 'ka litrato' : 'photos'}</span>
+                          <div className="mb-2 flex items-start justify-between gap-3">
+                            <span className="min-w-0 break-words text-[13px] font-bold leading-snug">{lang === "hil" ? meta.hil : meta.en}</span>
+                            <span className="shrink-0 text-right text-xs font-black tabular-nums">{count} {lang === "hil" ? 'ka litrato' : 'photos'}</span>
                           </div>
                           <div className="h-3 overflow-hidden rounded-full bg-pca-bg border border-pca-border">
                             <div className="h-full rounded-full transition-all duration-700" style={{ width: `${Math.max(4, share)}%`, background: meta.barColor }} />
@@ -620,7 +620,7 @@ export default function FarmerPortal() {
                         <div key={`${row.index}-${row.fileName}`} className="flex items-center gap-3 rounded-xl border border-pca-border bg-white p-2.5 transition-all hover:border-pca-green-soft">
                           <img src={row.previewUrl} alt="" className="h-12 w-12 shrink-0 rounded-lg object-cover" />
                           <div className="min-w-0 flex-1">
-                            <div className="truncate text-xs font-bold text-pca-text">
+                            <div className="break-words text-xs font-bold leading-snug text-pca-text">
                               {lang === "hil" ? meta.hil : meta.en}
                             </div>
                             <div className="truncate text-[10px] text-pca-muted font-medium">{row.result.confidence.toFixed(1)}% confidence</div>
@@ -674,13 +674,17 @@ export default function FarmerPortal() {
                 </h3>
                 <div className="space-y-3">
                   {farmerSubmissions.slice(0, 3).map((p, i) => (
-                    <div key={i} className="flex items-center gap-3 rounded-xl border border-pca-border p-3 shadow-sm">
-                      <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: p.color }} />
-                      <div className="min-w-0 flex-1">
-                        <div className="truncate text-xs font-bold text-pca-text">{p.date}</div>
-                        <div className="text-[10px] font-bold text-pca-muted uppercase tracking-tight">Sector {p.sector}</div>
+                    <div key={i} className="flex flex-col gap-3 rounded-xl border border-pca-border bg-white p-4 shadow-sm sm:flex-row sm:items-start">
+                      <div className="flex min-w-0 items-center gap-3 sm:w-28 sm:shrink-0">
+                        <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: p.color }} />
+                        <div className="min-w-0">
+                          <div className="truncate text-xs font-bold text-pca-text">{p.date}</div>
+                          <div className="text-[10px] font-bold uppercase tracking-tight text-pca-muted">Sector {p.sector}</div>
+                        </div>
                       </div>
-                      <span className="rounded-lg bg-pca-green-light px-2 py-1 text-[10px] font-black text-pca-green uppercase">{p.tag}</span>
+                      <span className="min-w-0 rounded-lg bg-pca-green-light px-3 py-2 text-[10px] font-black uppercase leading-snug text-pca-green sm:flex-1">
+                        {p.tag}
+                      </span>
                     </div>
                   ))}
                 </div>

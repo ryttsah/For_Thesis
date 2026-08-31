@@ -2,6 +2,17 @@ import { getApiBase, getAuthHeaders, isApiEnabled } from "./api";
 
 export type ReportType = "monthly" | "officer-performance" | "farmer-audit" | "high-risk";
 
+function getDeviceReportTimestamp(): string {
+  return new Intl.DateTimeFormat(undefined, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZoneName: "short",
+  }).format(new Date());
+}
+
 export async function downloadMonthlyReport(
   month?: string,
   type: ReportType = "monthly",
@@ -12,6 +23,7 @@ export async function downloadMonthlyReport(
 
   const params = new URLSearchParams({ type });
   if (month) params.set("month", month);
+  params.set("generated_at", getDeviceReportTimestamp());
   try {
     const response = await fetch(`${getApiBase()}/reports/monthly.pdf?${params.toString()}`, {
       headers: getAuthHeaders(),
