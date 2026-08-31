@@ -3,14 +3,15 @@ import { getApiBase, getAuthHeaders, isApiEnabled } from "./api";
 export type ReportType = "monthly" | "officer-performance" | "farmer-audit" | "high-risk";
 
 function getDeviceReportTimestamp(): string {
-  return new Intl.DateTimeFormat(undefined, {
+  return `${new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-    timeZoneName: "short",
-  }).format(new Date());
+    hour12: true,
+    timeZone: "Asia/Manila",
+  }).format(new Date())} PHT`;
 }
 
 export async function downloadMonthlyReport(
