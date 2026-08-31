@@ -554,9 +554,9 @@ export default function FarmerPortal() {
         )}
 
         {step === 3 && (
-          <div className="animate-fade-in grid grid-cols-1 gap-6 md:grid-cols-12">
+          <div className="animate-fade-in grid grid-cols-1 gap-8 md:grid-cols-12">
             {/* Primary Result Column */}
-            <div className="md:col-span-7 space-y-6">
+            <div className="flex flex-col gap-8 md:col-span-7">
               <div className="f-card !mb-0 overflow-hidden !p-0">
                 <div className={`p-6 border-l-8 ${cardClass === "healthy" ? "border-pca-green bg-pca-green-light" : cardClass === "warning" ? "border-orange-500 bg-orange-50" : "border-pca-red bg-pca-red-light"}`}>
                   <h3 className={`mb-3 flex min-w-0 items-start gap-2.5 text-2xl font-black leading-tight ${cardClass === "healthy" ? "text-pca-green" : cardClass === "warning" ? "text-orange-700" : "text-pca-red"}`}>
@@ -587,7 +587,7 @@ export default function FarmerPortal() {
               {photoCounts && photoSharePct && (
                 <div className="f-card !mb-0">
                   <h3 className="mb-5 text-[15px] font-black uppercase tracking-wider text-pca-text">Breakdown by condition</h3>
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-x-8 gap-y-7 sm:grid-cols-2">
                     {CLASS_ORDER.map((name) => {
                       const count = photoCounts[name] ?? 0;
                       const share = photoSharePct[name] ?? 0;
@@ -634,7 +634,7 @@ export default function FarmerPortal() {
             </div>
 
             {/* Actions & Context Column */}
-            <div className="md:col-span-5 space-y-6">
+            <div className="flex flex-col gap-8 md:col-span-5">
               <div className="f-card !mb-0">
                 <h3 className="mb-4 text-sm font-black uppercase tracking-widest text-pca-muted">Verify & Submit</h3>
                 <div className="mb-6 rounded-2xl border-2 border-pca-border p-5">
