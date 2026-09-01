@@ -83,6 +83,7 @@ export default function FarmerPortal() {
   const [detectedPest, setDetectedPest] = useState<PestType>("healthy");
   const [feedback, setFeedback] = useState<"yes" | "no" | null>(null);
   const [feedbackMsg, setFeedbackMsg] = useState("");
+  const [isSubmittingResult, setIsSubmittingResult] = useState(false);
   const [provincialStats, setProvincialStats] = useState<ProvincialStats | null>(null);
   const [sectorRows, setSectorRows] = useState<FarmerSectorRow[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -120,6 +121,7 @@ export default function FarmerPortal() {
     setDetectedPest("healthy");
     setFeedback(null);
     setFeedbackMsg("");
+    setIsSubmittingResult(false);
     setAnalyzing(false);
     if (fileRef.current) fileRef.current.value = "";
   }
@@ -268,6 +270,8 @@ export default function FarmerPortal() {
   }
 
   async function submitResult() {
+    if (isSubmittingResult) return;
+
     const submission: FarmerSubmission = {
       date:
         new Date().toLocaleDateString("en-PH", { month: "short", day: "numeric", year: "numeric" }) +
@@ -279,12 +283,13 @@ export default function FarmerPortal() {
     };
 
     if (isApiEnabled()) {
-      const ok = await createFarmerSubmissionApi(submission, {
+      setIsSubmittingResult(true);
+      const result = await createFarmerSubmissionApi(submission, {
         confidencePct: confidencePct ?? 0,
-        uncertain: isUncertain,
+        uncertain: isUncertain || feedback === "no",
         imageCount: photosAnalyzed || previews.length || 1,
       });
-      if (ok) {
+      if (result.ok) {
         const data = await fetchFarmerBootstrap();
         if (data) {
           syncFarmerDomain(data);
@@ -295,7 +300,9 @@ export default function FarmerPortal() {
         });
         void fetchProvincialStats().then(setProvincialStats);
       } else {
-        addFarmerSubmission(submission);
+        setFeedbackMsg(result.message);
+        setIsSubmittingResult(false);
+        return;
       }
     } else {
       addFarmerSubmission(submission);
@@ -643,7 +650,7 @@ export default function FarmerPortal() {
                 </div>
 
                 <div className="flex flex-col gap-3">
-                  <button type="button" onClick={submitResult} className="flex items-center justify-center gap-2 rounded-xl bg-pca-green py-4 text-[16px] font-bold text-white shadow-lg shadow-pca-green/20 transition-all hover:-translate-y-0.5"><IconSend size={20} />{lang === "hil" ? "Ipadala sa PCA" : "Send to PCA"}</button>
+                  <button type="button" disabled={isSubmittingResult} onClick={submitResult} className="flex items-center justify-center gap-2 rounded-xl bg-pca-green py-4 text-[16px] font-bold text-white shadow-lg shadow-pca-green/20 transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70"><IconSend size={20} />{isSubmittingResult ? (lang === "hil" ? "Ginapadala..." : "Sending...") : lang === "hil" ? "Ipadala sa PCA" : "Send to PCA"}</button>
                   <button type="button" onClick={() => { resetUploadSession(); setStep(1); }} className="rounded-xl border border-pca-border py-4 text-[15px] font-bold text-pca-muted transition-all hover:bg-pca-bg hover:text-pca-text">{lang === "hil" ? "Mag-uli" : "Start over"}</button>
                 </div>
               </div>

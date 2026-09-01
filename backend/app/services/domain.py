@@ -1,4 +1,5 @@
 from datetime import UTC, datetime
+from uuid import uuid4
 
 from fastapi import HTTPException, status
 from sqlalchemy import func, select
@@ -53,6 +54,10 @@ TAG_CLASS_TO_FARM_STATUS = {
     "orange": "caution",
     "red": "risk",
 }
+
+
+def _external_id(prefix: str) -> str:
+    return f"{prefix}{uuid4().hex[:12]}"
 
 
 def _count_farms_in_brgy(db: Session, brgy: str) -> int:
@@ -325,7 +330,7 @@ def schedule_visit(db: Session, body: ScheduleVisitRequest) -> ScheduledVisitOut
                 detail="Afternoon slot is closed after 6:00 PM.",
             )
 
-    external_id = f"visit{int(datetime.now(UTC).timestamp())}"
+    external_id = _external_id("visit")
     visit = ScheduledVisit(
         external_id=external_id,
         farm=body.farm,
@@ -352,7 +357,7 @@ def schedule_visit(db: Session, body: ScheduleVisitRequest) -> ScheduledVisitOut
     if body.notify_farmer_id:
         db.add(
             FarmerNotification(
-                external_id=f"n{int(datetime.now(UTC).timestamp())}",
+                external_id=_external_id("n"),
                 farmer_id=body.notify_farmer_id,
                 date_line=f"{date_disp} | {slot_label}",
                 body=(
@@ -496,7 +501,7 @@ def create_farmer_submission(
     sector_code = body.sector.strip().upper()[:1]
     sector_label = SECTOR_LABELS.get(sector_code, body.sector)
     today = datetime.now(UTC).strftime("%Y-%m-%d")
-    queue_id = f"q{int(datetime.now(UTC).timestamp())}"
+    queue_id = _external_id("q")
 
     conf_label = f"{body.confidence_pct}%" if body.confidence_pct else "—"
     db.add(
@@ -510,7 +515,7 @@ def create_farmer_submission(
         ),
     )
 
-    survey_status = "needs_review" if body.uncertain else "pending"
+    survey_status = "review" if body.uncertain else "pending"
     db.add(
         Survey(
             external_id=queue_id,
@@ -533,7 +538,7 @@ def create_farmer_submission(
     if body.uncertain:
         db.add(
             PriorityVisit(
-                external_id=f"pv{int(datetime.now(UTC).timestamp())}",
+                external_id=_external_id("pv"),
                 farm=farm_name,
                 description=f"Low-confidence CNN result ({body.tag}). Officer validation required.",
                 level="high",
@@ -546,7 +551,7 @@ def create_farmer_submission(
 
     db.add(
         FarmerNotification(
-            external_id=f"n{int(datetime.now(UTC).timestamp())}",
+            external_id=_external_id("n"),
             farmer_id=farmer_id,
             date_line=datetime.now(UTC).strftime("%b %d, %Y"),
             body=f"Your report for sector {sector_code} was sent to PCA. Status: {body.tag}.",

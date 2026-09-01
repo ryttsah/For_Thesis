@@ -419,8 +419,8 @@ export async function removeOfficerApi(empId: string): Promise<boolean> {
 export async function createFarmerSubmissionApi(
   payload: FarmerSubmission,
   extras?: { confidencePct?: number; uncertain?: boolean; imageCount?: number },
-): Promise<boolean> {
-  if (!isApiEnabled()) return false;
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  if (!isApiEnabled()) return { ok: false, message: "API not configured." };
   try {
     const response = await fetch(`${getApiBase()}/farmers/me/submissions`, {
       method: "POST",
@@ -436,9 +436,15 @@ export async function createFarmerSubmissionApi(
         image_count: extras?.imageCount ?? 1,
       }),
     });
-    return response.ok;
+    if (!response.ok) {
+      return {
+        ok: false,
+        message: await parseErrorMessage(response, "Could not send this result to PCA."),
+      };
+    }
+    return { ok: true };
   } catch {
-    return false;
+    return { ok: false, message: "Cannot reach the server. Please try again." };
   }
 }
 
