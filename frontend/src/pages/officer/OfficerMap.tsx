@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { useDemoStore } from "../../context/DemoStoreContext";
 import { filterByBrgy, useOfficerScope } from "../../hooks/useOfficerScope";
 import { isApiEnabled } from "../../services/api";
-import type { FarmRow } from "../../types/demoStore";
+import type { FarmRow, SurveyRow } from "../../types/demoStore";
 import { Card, CardHead } from "../../components/ui/Card";
 
 const SECTOR_META: Record<
@@ -28,20 +28,61 @@ function statusLabel(status: FarmRow["status"]): { label: string; color: string 
   return { label: "Pending", color: "#6b7280" };
 }
 
+function statusFromSurvey(row: SurveyRow): FarmRow["status"] {
+  const result = row.aiResult.toLowerCase();
+  if (result.includes("rhino") || result.includes("rhinoceros") || result.includes("beetle") || result.includes("bagangan") || result.includes("scale") || result.includes("csi") || result.includes("lisap")) {
+    return "risk";
+  }
+  if (result.includes("yellow") || result.includes("dilaw") || row.status === "review") {
+    return "caution";
+  }
+  if (result.includes("healthy") || result.includes("maayo")) {
+    return "healthy";
+  }
+  return row.status === "pending" ? "pending" : "caution";
+}
+
 export default function OfficerMap() {
   const [selected, setSelected] = useState<string | null>(null);
   const { assignedBrgy } = useOfficerScope();
-  const { farms } = useDemoStore();
+  const { farms, surveys } = useDemoStore();
 
   const scopedFarms = useMemo(
     () => filterByBrgy(farms, assignedBrgy),
     [farms, assignedBrgy],
   );
 
+  const scopedSurveys = useMemo(
+    () => filterByBrgy(surveys, assignedBrgy),
+    [surveys, assignedBrgy],
+  );
+
   const mapSectors = useMemo(() => {
     const groups = new Map<string, FarmRow[]>();
+    const farmLookup = new Map(scopedFarms.map((farm) => [farm.name, farm]));
+
+    for (const survey of scopedSurveys) {
+      const code = sectorCodeFromFarm(survey.sector);
+      if (code === "?") continue;
+      const farm = farmLookup.get(survey.farm);
+      const list = groups.get(code) ?? [];
+      list.push({
+        farmerId: farm?.farmerId,
+        name: survey.farm,
+        owner: farm?.owner ?? "Registered farmer",
+        phone: farm?.phone,
+        sector: survey.sector,
+        brgy: survey.brgy,
+        trees: farm?.trees ?? 0,
+        status: statusFromSurvey(survey),
+        lastSurvey: survey.date,
+      });
+      groups.set(code, list);
+    }
+
     for (const farm of scopedFarms) {
       const code = sectorCodeFromFarm(farm.sector);
+      if (code === "?" || groups.has(code)) continue;
       const list = groups.get(code) ?? [];
       list.push(farm);
       groups.set(code, list);
@@ -73,7 +114,7 @@ export default function OfficerMap() {
           farms: list,
         };
       });
-  }, [scopedFarms, assignedBrgy]);
+  }, [scopedFarms, scopedSurveys, assignedBrgy]);
 
   const selectedGroup = mapSectors.find((s) => s.code === selected);
 

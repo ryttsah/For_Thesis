@@ -17,11 +17,20 @@ ConditionKey = Literal["healthy", "yellowing", "scale", "beetle"]
 MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 TAG_TO_CONDITION: dict[str, ConditionKey] = {
-    "healthy": "healthy",
-    "yellowing": "yellowing",
-    "scale insect": "scale",
+    "rhinoceros beetle": "beetle",
     "rhino beetle": "beetle",
+    "bagangan": "beetle",
+    "coconut scale insect": "scale",
+    "scale insect": "scale",
+    "cocolisap": "scale",
+    "lisap": "scale",
     "csi": "scale",
+    "yellowing": "yellowing",
+    "pagkadilaw": "yellowing",
+    "nagdilaw": "yellowing",
+    "dilaw": "yellowing",
+    "healthy": "healthy",
+    "maayo": "healthy",
 }
 
 
@@ -84,21 +93,6 @@ def condition_trend(
         cond = _classify_tag(row.ai_result)
         counts[key][cond] += 1
 
-    submissions = db.scalars(select(FarmerSubmission)).all()
-    for row in submissions:
-        if brgy:
-            reg = db.scalar(
-                select(FarmerRegistration).where(FarmerRegistration.farmer_id == row.farmer_id),
-            )
-            if reg is None or reg.brgy != brgy:
-                continue
-        now = datetime.now(UTC)
-        key = _month_key(now)
-        if key not in counts:
-            continue
-        cond = _classify_tag(row.tag)
-        counts[key][cond] += 1
-
     healthy: list[int] = []
     yellowing: list[int] = []
     scale: list[int] = []
@@ -124,8 +118,8 @@ def condition_trend(
 
 
 def provincial_statistics(db: Session) -> dict:
-    submissions = db.scalars(select(FarmerSubmission)).all()
-    if not submissions:
+    surveys = db.scalars(select(Survey)).all()
+    if not surveys:
         return {
             "healthy_pct": 0,
             "yellowing_pct": 0,
@@ -139,8 +133,8 @@ def provincial_statistics(db: Session) -> dict:
         }
 
     buckets = {"healthy": 0, "yellowing": 0, "pest": 0}
-    for row in submissions:
-        cond = _classify_tag(row.tag)
+    for row in surveys:
+        cond = _classify_tag(row.ai_result)
         if cond == "healthy":
             buckets["healthy"] += 1
         elif cond == "yellowing":
@@ -148,7 +142,7 @@ def provincial_statistics(db: Session) -> dict:
         else:
             buckets["pest"] += 1
 
-    total = len(submissions)
+    total = len(surveys)
     return {
         "healthy_pct": round(buckets["healthy"] / total * 100),
         "yellowing_pct": round(buckets["yellowing"] / total * 100),
