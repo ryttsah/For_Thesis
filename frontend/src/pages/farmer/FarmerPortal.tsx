@@ -39,7 +39,7 @@ import type { FarmerSubmission, PestType } from "../../types/demoStore";
 type Lang = "hil" | "en";
 
 const PESTS: PestType[] = ["healthy", "yellowing", "scale insect", "rhino beetle"];
-const MAX_FARMER_ANALYSIS_PHOTOS = 3;
+const MAX_FARMER_ANALYSIS_PHOTOS = 10;
 
 const SECTOR_ICONS = { A: IconArrowUp, B: IconArrowDown, C: IconArrowRight, D: IconArrowLeft };
 

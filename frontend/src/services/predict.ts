@@ -39,6 +39,7 @@ const UPLOAD_JPEG_QUALITY = 0.82;
 const PREDICT_TIMEOUT_MS = 45_000;
 const BETWEEN_IMAGE_DELAY_MS = 300;
 const BATCH_PREDICT_TIMEOUT_MS = 120_000;
+const BATCH_IMAGE_LIMIT = 3;
 
 export const CLASS_ORDER = [
   "Healthy",
@@ -276,8 +277,9 @@ export async function predictLeafImage(
 
 async function predictLeafImagesBatch(
   items: { file: File; previewUrl: string }[],
+  startIndex = 0,
 ): Promise<
-  | { success: true; aggregated: AggregatedPredictResult }
+  | { success: true; perImage: PerImagePredictResult[] }
   | { success: false; message: string; shouldFallback?: boolean }
 > {
   const form = new FormData();
@@ -323,7 +325,7 @@ async function predictLeafImagesBatch(
     };
 
     const perImage = data.results.map((row, index) => ({
-      index,
+      index: startIndex + index,
       fileName: row.file_name || items[index]?.file.name || "leaf-photo",
       previewUrl: items[index]?.previewUrl ?? "",
       result: {
@@ -338,7 +340,7 @@ async function predictLeafImagesBatch(
       },
     }));
 
-    return { success: true, aggregated: summarizeFromPerImage(perImage) };
+    return { success: true, perImage };
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") {
       return {
@@ -362,12 +364,26 @@ export async function predictLeafImages(
     return { success: false, message: "No images to analyze." };
   }
 
-  const batchOutcome = await predictLeafImagesBatch(items);
-  if (batchOutcome.success) {
-    return batchOutcome;
-  }
-  if (!batchOutcome.shouldFallback) {
+  const batchedPerImage: PerImagePredictResult[] = [];
+  let canUseBatchEndpoint = true;
+  for (let offset = 0; offset < items.length && canUseBatchEndpoint; offset += BATCH_IMAGE_LIMIT) {
+    const chunk = items.slice(offset, offset + BATCH_IMAGE_LIMIT);
+    const batchOutcome = await predictLeafImagesBatch(chunk, offset);
+    if (batchOutcome.success) {
+      batchedPerImage.push(...batchOutcome.perImage);
+      if (offset + BATCH_IMAGE_LIMIT < items.length) {
+        await new Promise((resolve) => window.setTimeout(resolve, BETWEEN_IMAGE_DELAY_MS));
+      }
+      continue;
+    }
+    if (batchOutcome.shouldFallback) {
+      canUseBatchEndpoint = false;
+      break;
+    }
     return { success: false, message: batchOutcome.message };
+  }
+  if (canUseBatchEndpoint) {
+    return { success: true, aggregated: summarizeFromPerImage(batchedPerImage) };
   }
 
   const perImage: PerImagePredictResult[] = [];
