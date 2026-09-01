@@ -26,8 +26,10 @@ export default function AdminFarms() {
   const tableRows = useMemo(
     () =>
       baseRows.map((f) => ({
+        farmerId: f.farmerId,
         name: f.name,
         owner: f.owner,
+        phone: f.phone,
         sector: f.sector,
         brgy: displayBrgyLabel(f.brgy),
         trees: f.trees,
@@ -77,7 +79,7 @@ export default function AdminFarms() {
                 <table className="w-full border-collapse text-[13px]">
                   <thead>
                     <tr className="border-b border-pca-border bg-pca-bg text-left text-xs font-semibold uppercase text-pca-muted">
-                      {["Farm", "Owner", "Sector", "Brgy.", "Trees", "Status", "Last Survey"].map((h) => (
+                      {["Farmer ID", "Farm", "Owner", "Phone", "Sector", "Brgy.", "Trees", "Status", "Last Survey"].map((h) => (
                         <th key={h} className="px-4 py-3">
                           {h}
                         </th>
@@ -87,8 +89,10 @@ export default function AdminFarms() {
                   <tbody>
                     {filtered.map((f) => (
                       <tr key={f.name} className="border-b border-pca-border hover:bg-pca-bg">
+                        <td className="px-4 py-3.5 font-mono text-xs font-semibold">{f.farmerId ?? "—"}</td>
                         <td className="px-4 py-3.5 font-semibold">{f.name}</td>
                         <td className="px-4 py-3.5">{f.owner}</td>
+                        <td className="px-4 py-3.5">{f.phone ?? "—"}</td>
                         <td className="px-4 py-3.5">{f.sector}</td>
                         <td className="px-4 py-3.5">{f.brgy}</td>
                         <td className="px-4 py-3.5">{f.trees}</td>

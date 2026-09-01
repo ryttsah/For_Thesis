@@ -246,7 +246,7 @@ export default function FarmerPortal() {
       setAnalyzeError(
         lang === "hil"
           ? `Tubtob ${MAX_FARMER_ANALYSIS_PHOTOS} lang ka litrato kada analysis. Gamita ang pinakaklaro nga litrato.`
-          : `You can analyze up to ${MAX_FARMER_ANALYSIS_PHOTOS} photos only. Please use the clearest photos.`,
+          : `You can analyze up to ${MAX_FARMER_ANALYSIS_PHOTOS} photos per analysis. Use the clearest photos.`,
       );
     }
     if (!allowed.length) {

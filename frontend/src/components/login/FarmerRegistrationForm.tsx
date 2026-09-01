@@ -60,8 +60,8 @@ function sanitizeLetters(raw: string) {
 }
 
 function sanitizeBrgy(raw: string) {
-  // Allow letters, spaces, dot, hyphen, apostrophe.
-  return raw.replace(/[^A-Za-zÀ-ÿ.' -]/g, "");
+  // Allow barangays such as "Brgy. 2", "Purok 4", and named barangays.
+  return raw.replace(/[^A-Za-zÀ-ÿ0-9.' -]/g, "");
 }
 
 function formatMiddleInitial(raw: string) {

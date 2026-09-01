@@ -24,7 +24,15 @@ def submit_registration(
     body: RegistrationCreate,
     db: Annotated[Session, Depends(get_db)],
 ) -> RegistrationCreateResponse:
-    row = reg_service.create_registration(db, body)
+    try:
+        row = reg_service.create_registration(db, body)
+    except ValueError as exc:
+        if str(exc) == "duplicate_registration":
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Duplicate registration is not allowed. This farmer or phone number already has a pending or approved registration.",
+            ) from exc
+        raise
     return RegistrationCreateResponse(
         farmer_id=row.farmer_id,
         message="Registration submitted for PCA review.",

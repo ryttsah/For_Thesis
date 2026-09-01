@@ -107,10 +107,12 @@ def list_barangays(db: Session) -> list[str]:
     return sorted(names, key=str.casefold)
 
 
-def farm_to_out(row: Farm) -> FarmOut:
+def farm_to_out(row: Farm, registration: FarmerRegistration | None = None) -> FarmOut:
     return FarmOut(
+        farmer_id=registration.farmer_id if registration else None,
         name=row.name,
         owner=row.owner,
+        phone=registration.phone if registration else None,
         sector=row.sector,
         brgy=row.brgy,
         trees=row.trees,
@@ -206,8 +208,12 @@ def submission_to_out(row: FarmerSubmission) -> FarmerSubmissionOut:
 
 
 def officer_bootstrap(db: Session) -> OfficerBootstrap:
+    registrations = {
+        f"farm-reg-{row.id}": row
+        for row in db.scalars(select(FarmerRegistration).where(FarmerRegistration.status == "approved")).all()
+    }
     return OfficerBootstrap(
-        farms=[farm_to_out(r) for r in db.scalars(select(Farm).order_by(Farm.name)).all()],
+        farms=[farm_to_out(r, registrations.get(r.external_id or "")) for r in db.scalars(select(Farm).order_by(Farm.name)).all()],
         surveys=[survey_to_out(r) for r in db.scalars(select(Survey).order_by(Survey.id.desc())).all()],
         queue=[
             queue_to_out(r)
@@ -229,8 +235,12 @@ def officer_bootstrap(db: Session) -> OfficerBootstrap:
 
 
 def admin_bootstrap(db: Session) -> AdminBootstrap:
+    registrations = {
+        f"farm-reg-{row.id}": row
+        for row in db.scalars(select(FarmerRegistration).where(FarmerRegistration.status == "approved")).all()
+    }
     return AdminBootstrap(
-        farms=[farm_to_out(r) for r in db.scalars(select(Farm).order_by(Farm.name)).all()],
+        farms=[farm_to_out(r, registrations.get(r.external_id or "")) for r in db.scalars(select(Farm).order_by(Farm.name)).all()],
         surveys=[survey_to_out(r) for r in db.scalars(select(Survey).order_by(Survey.id.desc())).all()],
         officers=[officer_to_out(r) for r in db.scalars(select(Officer).order_by(Officer.emp_id)).all()],
         scheduled_visits=[

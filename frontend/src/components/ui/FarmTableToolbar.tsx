@@ -4,8 +4,10 @@ import type { FarmStatus } from "../../types/demoStore";
 import { normalizeBrgyLabel } from "../../utils/pcaFormat";
 
 export interface FarmRowLike {
+  farmerId?: string | null;
   name: string;
   owner: string;
+  phone?: string | null;
   sector: string;
   brgy: string;
   trees: number;
@@ -40,7 +42,9 @@ export default function FarmTableToolbar({ rows, children, brgyOptions }: FarmTa
       if (!q) return true;
       return (
         r.name.toLowerCase().includes(q) ||
+        (r.farmerId ?? "").toLowerCase().includes(q) ||
         r.owner.toLowerCase().includes(q) ||
+        (r.phone ?? "").toLowerCase().includes(q) ||
         r.brgy.toLowerCase().includes(q) ||
         r.sector.toLowerCase().includes(q)
       );
@@ -58,7 +62,7 @@ export default function FarmTableToolbar({ rows, children, brgyOptions }: FarmTa
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Farm, owner, barangay…"
+              placeholder="Farm, farmer ID, owner, phone, barangay..."
               className="w-full bg-transparent text-sm outline-none"
             />
           </div>

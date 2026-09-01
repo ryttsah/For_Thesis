@@ -7,8 +7,10 @@ PriorityLevel = Literal["urgent", "high", "medium"]
 
 
 class FarmOut(BaseModel):
+    farmer_id: str | None = None
     name: str
     owner: str
+    phone: str | None = None
     sector: str
     brgy: str
     trees: int

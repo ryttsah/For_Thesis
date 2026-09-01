@@ -15,8 +15,10 @@ import type {
 import { getApiBase, getAuthHeaders, isApiEnabled, parseErrorMessage } from "./api";
 
 type ApiFarm = {
+  farmer_id?: string | null;
   name: string;
   owner: string;
+  phone?: string | null;
   sector: string;
   brgy: string;
   trees: number;
@@ -94,8 +96,10 @@ type ApiSubmission = {
 
 function mapFarm(f: ApiFarm): FarmRow {
   return {
+    farmerId: f.farmer_id ?? null,
     name: f.name,
     owner: f.owner,
+    phone: f.phone ?? null,
     sector: f.sector,
     brgy: f.brgy,
     trees: f.trees,

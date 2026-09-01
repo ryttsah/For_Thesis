@@ -11,8 +11,10 @@ export interface QueueItem {
 }
 
 export interface FarmRow {
+  farmerId?: string | null;
   name: string;
   owner: string;
+  phone?: string | null;
   sector: string;
   brgy: string;
   trees: number;

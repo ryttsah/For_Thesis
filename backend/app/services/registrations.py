@@ -1,4 +1,5 @@
 from datetime import UTC, datetime
+import re
 
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
@@ -110,7 +111,48 @@ def get_registration(db: Session, registration_id: int) -> FarmerRegistration | 
     return db.get(FarmerRegistration, registration_id)
 
 
+def _clean_text(value: str) -> str:
+    return re.sub(r"\s+", " ", value.strip()).casefold()
+
+
+def _digits(value: str) -> str:
+    return re.sub(r"\D", "", value)
+
+
+def _find_duplicate_registration(db: Session, body: RegistrationCreate) -> FarmerRegistration | None:
+    first_name = _clean_text(body.first_name)
+    middle_initial = _clean_text(body.middle_initial)
+    last_name = _clean_text(body.last_name)
+    brgy = _clean_text(body.brgy)
+    municipality = _clean_text(body.municipality)
+    phone_digits = _digits(body.phone)
+    alt_phone_digits = _digits(body.alt_phone)
+
+    existing_rows = db.scalars(
+        select(FarmerRegistration).where(FarmerRegistration.status.in_(["pending", "approved"])),
+    ).all()
+    for row in existing_rows:
+        same_person_and_farm = (
+            _clean_text(row.first_name) == first_name
+            and _clean_text(row.middle_initial) == middle_initial
+            and _clean_text(row.last_name) == last_name
+            and _clean_text(row.brgy) == brgy
+            and _clean_text(row.municipality) == municipality
+        )
+        row_phone = _digits(row.phone)
+        row_alt_phone = _digits(row.alt_phone)
+        same_phone = bool(phone_digits) and phone_digits in {row_phone, row_alt_phone}
+        same_alt_phone = bool(alt_phone_digits) and alt_phone_digits in {row_phone, row_alt_phone}
+        if same_person_and_farm or same_phone or same_alt_phone:
+            return row
+    return None
+
+
 def create_registration(db: Session, body: RegistrationCreate) -> FarmerRegistration:
+    duplicate = _find_duplicate_registration(db, body)
+    if duplicate is not None:
+        raise ValueError("duplicate_registration")
+
     row = FarmerRegistration(
         farmer_id=next_farmer_id(db),
         status="pending",

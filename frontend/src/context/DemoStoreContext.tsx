@@ -141,8 +141,10 @@ export function DemoStoreProvider({ children }: { children: ReactNode }) {
     const name = `${reg.lastName} Farm`;
     setFarms((f) => [
       {
+        farmerId: reg.farmerId,
         name,
         owner: `${reg.firstName} ${reg.lastName.charAt(0)}.`,
+        phone: reg.phone,
         sector: "— (survey pending)",
         brgy: reg.brgy,
         trees: Math.max(10, Math.round(reg.areaHectares * 45)),
@@ -173,8 +175,10 @@ export function DemoStoreProvider({ children }: { children: ReactNode }) {
       ]);
       setFarms((f) => [
         {
+          farmerId: reg.farmerId,
           name: `${reg.lastName} Farm`,
           owner: `${reg.firstName} ${reg.lastName.charAt(0)}.`,
+          phone: reg.phone,
           sector: "— (survey pending)",
           brgy: reg.brgy,
           trees: Math.max(10, Math.round(reg.areaHectares * 45)),
