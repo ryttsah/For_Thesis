@@ -27,6 +27,7 @@ from app.schemas.domain import (
     FarmerBootstrap,
     FarmerNotificationCreate,
     FarmerNotificationOut,
+    FarmerProfileOut,
     FarmerSubmissionCreate,
     FarmerSubmissionOut,
     OfficerAssignRequest,
@@ -79,15 +80,35 @@ def _farm_for_farmer(db: Session, farmer_id: str) -> Farm | None:
     reg = db.scalar(select(FarmerRegistration).where(FarmerRegistration.farmer_id == farmer_id))
     if reg is None:
         return None
+    farm = db.scalar(select(Farm).where(Farm.external_id == f"farm-reg-{reg.id}"))
+    if farm is not None:
+        return farm
     farm_name = f"{reg.last_name} Farm"
     return db.scalar(select(Farm).where(Farm.name == farm_name))
 
 
-def _officer_name_for_brgy(db: Session, brgy: str) -> str:
-    row = db.scalar(
-        select(Officer).where(Officer.brgy == brgy, Officer.status == "Active").limit(1),
+def _farmer_profile(db: Session, farmer_id: str) -> FarmerProfileOut | None:
+    reg = db.scalar(select(FarmerRegistration).where(FarmerRegistration.farmer_id == farmer_id))
+    if reg is None:
+        return None
+    farm = _farm_for_farmer(db, farmer_id)
+    return FarmerProfileOut(
+        farmer_id=reg.farmer_id,
+        name=" ".join(part for part in [reg.first_name, reg.middle_initial, reg.last_name] if part),
+        farm=farm.name if farm is not None else f"{reg.last_name} Farm",
+        sector=farm.sector if farm is not None else "— (survey pending)",
+        brgy=reg.brgy,
+        municipality=reg.municipality,
+        phone=reg.phone,
     )
-    return row.name if row else "—"
+
+
+def _officer_name_for_brgy(db: Session, brgy: str) -> str:
+    officers = db.scalars(select(Officer).where(Officer.status == "Active")).all()
+    for row in officers:
+        if brgy_match(row.brgy, brgy):
+            return row.name
+    return "—"
 
 
 def list_barangays(db: Session) -> list[str]:
@@ -262,6 +283,7 @@ def farmer_bootstrap(db: Session, farmer_id: str) -> FarmerBootstrap:
         .order_by(FarmerSubmission.id.desc()),
     ).all()
     return FarmerBootstrap(
+        profile=_farmer_profile(db, farmer_id),
         notifications=[notification_to_out(r) for r in notifications],
         submissions=[submission_to_out(r) for r in submissions],
     )

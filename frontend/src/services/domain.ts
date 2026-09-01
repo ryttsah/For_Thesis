@@ -94,6 +94,26 @@ type ApiSubmission = {
   color: string;
 };
 
+export interface FarmerProfile {
+  farmerId: string;
+  name: string;
+  farm: string;
+  sector: string;
+  brgy: string;
+  municipality: string;
+  phone: string;
+}
+
+type ApiFarmerProfile = {
+  farmer_id: string;
+  name: string;
+  farm: string;
+  sector: string;
+  brgy: string;
+  municipality: string;
+  phone: string;
+};
+
 function mapFarm(f: ApiFarm): FarmRow {
   return {
     farmerId: f.farmer_id ?? null,
@@ -208,6 +228,7 @@ export interface AdminDomainData {
 }
 
 export interface FarmerDomainData {
+  profile: FarmerProfile | null;
   notifications: FarmerNotification[];
   submissions: FarmerSubmission[];
 }
@@ -265,6 +286,17 @@ export async function fetchFarmerBootstrap(): Promise<FarmerDomainData | null> {
     if (!response.ok) return null;
     const data = await response.json();
     return {
+      profile: data.profile
+        ? {
+            farmerId: (data.profile as ApiFarmerProfile).farmer_id,
+            name: (data.profile as ApiFarmerProfile).name,
+            farm: (data.profile as ApiFarmerProfile).farm,
+            sector: (data.profile as ApiFarmerProfile).sector,
+            brgy: (data.profile as ApiFarmerProfile).brgy,
+            municipality: (data.profile as ApiFarmerProfile).municipality,
+            phone: (data.profile as ApiFarmerProfile).phone,
+          }
+        : null,
       notifications: (data.notifications as ApiNotification[]).map(mapNotification),
       submissions: (data.submissions as ApiSubmission[]).map(mapSubmission),
     };

@@ -24,7 +24,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useDemoStore } from "../../context/DemoStoreContext";
 import { hasAuthToken, isApiEnabled } from "../../services/api";
 import { fetchFarmerSectorStatus, fetchProvincialStats, type FarmerSectorRow, type ProvincialStats } from "../../services/analytics";
-import { createFarmerSubmissionApi, fetchFarmerBootstrap } from "../../services/domain";
+import { createFarmerSubmissionApi, fetchFarmerBootstrap, type FarmerProfile } from "../../services/domain";
 import {
   CLASS_DISPLAY,
   CLASS_ORDER,
@@ -53,14 +53,18 @@ function LoadingRing({ size = "h-16 w-16" }: { size?: string }) {
 }
 
 export default function FarmerPortal() {
-  const { logout, isAuthLoading } = useAuth();
+  const { user, logout, isAuthLoading } = useAuth();
   const navigate = useNavigate();
   const { farmerNotifications, farmerSubmissions, addFarmerSubmission, syncFarmerDomain } = useDemoStore();
 
+  const [farmerProfile, setFarmerProfile] = useState<FarmerProfile | null>(null);
   useEffect(() => {
     if (!isApiEnabled() || isAuthLoading || !hasAuthToken()) return;
     void fetchFarmerBootstrap().then((data) => {
-      if (data) syncFarmerDomain(data);
+      if (data) {
+        syncFarmerDomain(data);
+        setFarmerProfile(data.profile);
+      }
     });
   }, [syncFarmerDomain, isAuthLoading]);
   const [lang, setLang] = useState<Lang>("hil");
@@ -308,7 +312,10 @@ export default function FarmerPortal() {
       });
       if (ok) {
         const data = await fetchFarmerBootstrap();
-        if (data) syncFarmerDomain(data);
+        if (data) {
+          syncFarmerDomain(data);
+          setFarmerProfile(data.profile);
+        }
         void fetchFarmerSectorStatus().then((rows) => {
           if (rows) setSectorRows(rows);
         });
@@ -334,10 +341,15 @@ export default function FarmerPortal() {
     navigate("/", { replace: true });
   }
 
+  const farmerName = farmerProfile?.name || user?.displayName || user?.id || "Farmer";
+  const farmerFarmLine = farmerProfile
+    ? `${farmerProfile.farm} — ${farmerProfile.sector}, ${farmerProfile.brgy}, ${farmerProfile.municipality}`
+    : `${user?.id ?? "Farmer account"} — ${lang === "hil" ? "ginakuha ang detalye sang umahan" : "loading farm details"}`;
+
   const t = {
     portal: FARMER_I18N.portal[lang],
     logout: FARMER_I18N.logout[lang],
-    welcome: FARMER_I18N.welcome[lang],
+    welcome: lang === "hil" ? `Maayong adlaw, ${farmerName}!` : `Good day, ${farmerName}!`,
     step1: FARMER_I18N.step1[lang],
     step2: FARMER_I18N.step2[lang],
     step3: FARMER_I18N.step3[lang],
@@ -394,7 +406,7 @@ export default function FarmerPortal() {
           <div className="f-card !mb-0 flex flex-col justify-center">
             <h2 className="text-xl font-bold">{t.welcome}</h2>
             <div className="mt-4 rounded-xl border border-pca-green-soft bg-pca-green-light px-4 py-3.5 text-[14px] text-pca-green">
-              <span className="font-bold">{lang === "hil" ? "Imo Umahan:" : "Your Farm:"}</span> Juan Espinosa — Sector C, Brgy. Conception
+              <span className="font-bold">{lang === "hil" ? "Imo Umahan:" : "Your Farm:"}</span> {farmerFarmLine}
             </div>
           </div>
 

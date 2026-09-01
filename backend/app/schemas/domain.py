@@ -91,6 +91,16 @@ class FarmerSubmissionOut(BaseModel):
     color: str
 
 
+class FarmerProfileOut(BaseModel):
+    farmer_id: str
+    name: str
+    farm: str
+    sector: str
+    brgy: str
+    municipality: str
+    phone: str
+
+
 class OfficerBootstrap(BaseModel):
     farms: list[FarmOut]
     surveys: list[SurveyOut]
@@ -109,6 +119,7 @@ class AdminBootstrap(BaseModel):
 
 
 class FarmerBootstrap(BaseModel):
+    profile: FarmerProfileOut | None = None
     notifications: list[FarmerNotificationOut]
     submissions: list[FarmerSubmissionOut]
 
