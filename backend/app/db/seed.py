@@ -8,15 +8,14 @@ from app.db.base import Base
 from app.db.session import get_engine
 from app.models.farmer_registration import FarmerRegistration
 from app.models.user import User
-DEMO_DISPLAY_NAMES: dict[str, str] = {
-    "PCA-2024-0012": "M. Aguilar",
-    "FARMER-001": "Juan Espinosa",
+
+INITIAL_DISPLAY_NAMES: dict[str, str] = {
     "PCA-ADMIN-001": "PCA Administrator",
 }
 
 
-def seed_demo_users(db: Session) -> int:
-    """Insert demo users if missing. Returns number of rows inserted."""
+def seed_initial_users(db: Session) -> int:
+    """Insert required initial users if missing. Returns number of rows inserted."""
     inserted = 0
     for seed in SEED_USERS:
         exists = db.scalar(select(User.id).where(User.id == seed.id))
@@ -27,7 +26,7 @@ def seed_demo_users(db: Session) -> int:
                 id=seed.id,
                 password_hash=seed.password_hash,
                 role=seed.role,
-                display_name=DEMO_DISPLAY_NAMES.get(seed.id),
+                display_name=INITIAL_DISPLAY_NAMES.get(seed.id),
                 is_active=True,
             ),
         )
@@ -35,6 +34,11 @@ def seed_demo_users(db: Session) -> int:
     if inserted:
         db.commit()
     return inserted
+
+
+def seed_demo_users(db: Session) -> int:
+    """Compatibility wrapper for older local scripts."""
+    return seed_initial_users(db)
 
 
 PENDING_REGISTRATION_SEEDS: tuple[dict, ...] = (
@@ -196,7 +200,7 @@ def seed_demo_registrations(db: Session) -> int:
 
 
 def init_local_database(*, seed_demo_data: bool = False) -> None:
-    """Create tables and seed login users. Optional mock domain data for demos."""
+    """Create tables and seed the initial admin user. Optional mock domain data for local testing."""
     engine = get_engine()
     if engine is None:
         raise RuntimeError("DATABASE_URL is not configured")
@@ -212,7 +216,7 @@ def init_local_database(*, seed_demo_data: bool = False) -> None:
         raise RuntimeError("Session factory unavailable")
 
     with factory() as db:
-        seed_demo_users(db)
+        seed_initial_users(db)
         if seed_demo_data:
             seed_demo_registrations(db)
             from app.db.seed_domain import seed_domain_data

@@ -118,6 +118,7 @@ export default function ScheduleVisitModal({ open, onClose }: ScheduleVisitModal
       slot: selectedSlot,
       scheduledBy: user?.displayName ?? officerId ?? "PCA Officer",
       purpose: "Registration and field validation",
+      notifyFarmerId: row?.farmerId ?? undefined,
     };
 
     setBooking(true);

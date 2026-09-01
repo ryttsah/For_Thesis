@@ -341,7 +341,7 @@ export async function scheduleVisitApi(payload: {
         slot: payload.slot,
         scheduled_by: payload.scheduledBy,
         purpose: payload.purpose,
-        notify_farmer_id: payload.notifyFarmerId ?? "FARMER-001",
+        notify_farmer_id: payload.notifyFarmerId ?? null,
       }),
     });
     if (!response.ok) {

@@ -11,18 +11,8 @@ class SeedUser:
     role: UserRole
 
 
-# Demo accounts (same as frontend). Used when DATABASE_URL is unset or DB is unreachable.
+# Initial system account. Additional users should come from the database.
 SEED_USERS: tuple[SeedUser, ...] = (
-    SeedUser(
-        id="PCA-2024-0012",
-        role="officer",
-        password_hash="$2b$12$Mfywwt/uIOth0Hx2d2qvouD0Xh6OqkbUGd4PkXFCoX9hfpbW5oATe",
-    ),
-    SeedUser(
-        id="FARMER-001",
-        role="farmer",
-        password_hash="$2b$12$K4sKoISKg5KPdlop3tbKIudyiRXi0M2wrYgz9czUrk3DbPj8eIi5C",
-    ),
     SeedUser(
         id="PCA-ADMIN-001",
         role="admin",

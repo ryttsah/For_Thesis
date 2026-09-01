@@ -35,7 +35,7 @@ export default function RoleLoginForm({
   idPlaceholder,
   headerIcon,
 }: RoleLoginFormProps) {
-  const { login: authLogin, establishSession } = useAuth();
+  const { establishSession } = useAuth();
   const navigate = useNavigate();
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
@@ -104,14 +104,6 @@ export default function RoleLoginForm({
         return;
       }
       establishSession(me.userId, role, me?.displayName, me?.assignedBrgy);
-      navigate(ROLE_PATH[role], { replace: true });
-      setIsSubmitting(false);
-      return;
-    }
-
-    // Fallback: Check demo accounts if API login failed or is unreachable.
-    // This allows the demo credentials (officer123, etc.) to always work locally.
-    if (authLogin(submitId, submitPass, role)) {
       navigate(ROLE_PATH[role], { replace: true });
       setIsSubmitting(false);
       return;

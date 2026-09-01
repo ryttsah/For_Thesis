@@ -30,7 +30,6 @@ import {
   CLASS_ORDER,
   getTopClassFromPredictions,
   predictLeafImages,
-  summarizeFromPerImage,
   type AggregatedPredictResult,
   type PerImagePredictResult,
 } from "../../services/predict";
@@ -38,7 +37,6 @@ import type { FarmerSubmission, PestType } from "../../types/demoStore";
 
 type Lang = "hil" | "en";
 
-const PESTS: PestType[] = ["healthy", "yellowing", "scale insect", "rhino beetle"];
 const MAX_FARMER_ANALYSIS_PHOTOS = 10;
 
 const SECTOR_ICONS = { A: IconArrowUp, B: IconArrowDown, C: IconArrowRight, D: IconArrowLeft };
@@ -164,8 +162,8 @@ export default function FarmerPortal() {
         if (!hasAuthToken()) {
           setAnalyzeError(
             lang === "hil"
-              ? "Kinahanglan mag-sign in sa live server (indi demo offline) aron magamit ang CNN."
-              : "Sign in while the backend is running — offline demo login cannot run CNN analysis.",
+              ? "Kinahanglan mag-sign in liwat aron magamit ang CNN analysis."
+              : "Sign in again to use CNN analysis.",
           );
           setAnalyzing(false);
           return;
@@ -184,36 +182,12 @@ export default function FarmerPortal() {
         return;
       }
 
-      // Demo-only when VITE_API_URL is unset
-      const demoPerImage: PerImagePredictResult[] = batch.map((item, index) => {
-        const pest = PESTS[Math.floor(Math.random() * PESTS.length)]!;
-        const scores: Record<string, number> = {
-          Healthy: pest === "healthy" ? 99 : 5,
-          Yellowing: pest === "yellowing" ? 99 : 5,
-          Coconut_Scale_Insect: pest === "scale insect" ? 99 : 5,
-          Rhinoceros_Beetle: pest === "rhino beetle" ? 99 : 5,
-        };
-        const topClass = getTopClassFromPredictions(scores);
-        return {
-          index,
-          fileName: item.file.name,
-          previewUrl: item.previewUrl,
-          result: {
-            pest,
-            label: pest,
-            confidence: scores[topClass] ?? 99,
-            uncertain: false,
-            predictions: scores,
-            thresholdedLabels: [],
-            topGuesses: [],
-          },
-        };
-      });
-      applyAggregatedResult(summarizeFromPerImage(demoPerImage));
-      setTimeout(() => {
-        setAnalyzing(false);
-        setStep(3);
-      }, 1200);
+      setAnalyzeError(
+        lang === "hil"
+          ? "Wala ma-configure ang backend API. Indi maka-run ang CNN analysis."
+          : "The backend API is not configured. CNN analysis cannot run.",
+      );
+      setAnalyzing(false);
     },
     [lang],
   );

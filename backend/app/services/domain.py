@@ -4,7 +4,6 @@ from fastapi import HTTPException, status
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.data.demo_catalog import DEFAULT_FARMER_ID
 from app.models.farmer_registration import FarmerRegistration
 from app.services.brgy import brgy_match, normalize_brgy_label
 from app.services.user_accounts import default_officer_password, ensure_user
@@ -348,22 +347,22 @@ def schedule_visit(db: Session, body: ScheduleVisitRequest) -> ScheduledVisitOut
     if existing_slot is None:
         db.add(BookedSlot(visit_date=body.date, slot=body.slot))
 
-    farmer_id = body.notify_farmer_id or DEFAULT_FARMER_ID
     date_disp = datetime.strptime(body.date, "%Y-%m-%d").strftime("%a %b %d, %Y")
     slot_label = "8:00 AM - 11:30 AM" if body.slot == "AM" else "1:00 PM - 4:30 PM"
-    db.add(
-        FarmerNotification(
-            external_id=f"n{int(datetime.now(UTC).timestamp())}",
-            farmer_id=farmer_id,
-            date_line=f"{date_disp} | {slot_label}",
-            body=(
-                f"Farm visit scheduled by your PCA officer for {body.farm}. "
-                "Please prepare access to the plot."
+    if body.notify_farmer_id:
+        db.add(
+            FarmerNotification(
+                external_id=f"n{int(datetime.now(UTC).timestamp())}",
+                farmer_id=body.notify_farmer_id,
+                date_line=f"{date_disp} | {slot_label}",
+                body=(
+                    f"Farm visit scheduled by your PCA officer for {body.farm}. "
+                    "Please prepare access to the plot."
+                ),
+                dot_color="#ea580c",
+                is_new=True,
             ),
-            dot_color="#ea580c",
-            is_new=True,
-        ),
-    )
+        )
 
     db.commit()
     db.refresh(visit)

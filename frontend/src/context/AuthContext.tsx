@@ -7,7 +7,6 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { DEMO_ACCOUNTS } from "../constants/demoAccounts";
 import { hasAuthToken, isApiEnabled } from "../services/api";
 import { fetchCurrentUser } from "../services/auth";
 import type { UserRole } from "../types/auth";
@@ -31,16 +30,6 @@ const USER_PROFILES: Record<
   string,
   { displayName: string; initials: string; subtitle: string }
 > = {
-  "PCA-2024-0012": {
-    displayName: "M. Aguilar",
-    initials: "MA",
-    subtitle: "PCA Officer",
-  },
-  "FARMER-001": {
-    displayName: "Juan Espinosa",
-    initials: "JE",
-    subtitle: "Farmer",
-  },
   "PCA-ADMIN-001": {
     displayName: "PCA Administrator",
     initials: "AD",
@@ -51,9 +40,6 @@ const USER_PROFILES: Record<
 interface AuthContextValue {
   user: AuthUser | null;
   isAuthLoading: boolean;
-  /** Demo accounts only (offline). */
-  login: (id: string, password: string, role: UserRole) => boolean;
-  /** After successful API login — any user id from the database. */
   establishSession: (id: string, role: UserRole, displayName?: string, assignedBrgy?: string | null) => void;
   logout: () => void;
   homePath: string | null;
@@ -146,18 +132,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [],
   );
 
-  const login = useCallback(
-    (id: string, password: string, role: UserRole) => {
-      const match = DEMO_ACCOUNTS.find(
-        (a) => a.id === id && a.password === password && a.role === role,
-      );
-      if (!match) return false;
-      establishSession(match.id, match.role);
-      return true;
-    },
-    [establishSession],
-  );
-
   const logout = useCallback(() => {
     sessionStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem("pca_access_token");
@@ -168,12 +142,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     () => ({
       user,
       isAuthLoading,
-      login,
       establishSession,
       logout,
       homePath: user ? ROLE_HOME[user.role] : null,
     }),
-    [user, isAuthLoading, login, establishSession, logout],
+    [user, isAuthLoading, establishSession, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

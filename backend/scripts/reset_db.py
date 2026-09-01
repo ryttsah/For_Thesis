@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT))
 
 from app.core.config import get_settings
 from app.db.base import Base
-from app.db.seed import seed_demo_users
+from app.db.seed import seed_initial_users
 from app.db.session import get_engine, get_session_factory
 
 
@@ -35,9 +35,9 @@ def main() -> None:
 
     Base.metadata.create_all(bind=engine)
     with factory() as db:
-        users = seed_demo_users(db)
+        users = seed_initial_users(db)
 
-    print(f"Clean database ready. Seeded {users} login user(s) (officer, farmer, admin).")
+    print(f"Clean database ready. Seeded {users} login user(s) (initial admin only).")
     print("No mock farms, queue, or registrations — data comes from real use.")
 
 
