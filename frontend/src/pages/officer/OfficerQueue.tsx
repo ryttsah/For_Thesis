@@ -1,5 +1,5 @@
 import { IconChecklist, IconPhotoCheck } from "@tabler/icons-react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useDemoStore } from "../../context/DemoStoreContext";
 import { filterByBrgy, useOfficerScope } from "../../hooks/useOfficerScope";
 import { Card, CardHead } from "../../components/ui/Card";
@@ -11,6 +11,13 @@ export default function OfficerQueue() {
   const { assignedBrgy } = useOfficerScope();
 
   const scoped = useMemo(() => filterByBrgy(queue, assignedBrgy), [queue, assignedBrgy]);
+
+  useEffect(() => {
+    if (!isApiEnabled()) return;
+    void fetchOfficerBootstrap().then((data) => {
+      if (data) syncOfficerDomain(data);
+    });
+  }, [syncOfficerDomain]);
 
   async function handleValidate(id: string) {
     if (isApiEnabled()) {
@@ -37,7 +44,13 @@ export default function OfficerQueue() {
           }
         />
         <div className="flex flex-col gap-2">
-          {scoped.map((q) => (
+          {scoped.length === 0 ? (
+            <p className="rounded-xl border border-dashed border-pca-border bg-pca-bg px-4 py-6 text-center text-sm text-pca-muted">
+              {assignedBrgy
+                ? `No farmer analysis records are awaiting validation in ${assignedBrgy}.`
+                : "No farmer analysis records are awaiting validation. Ask admin to assign your officer account to a barangay."}
+            </p>
+          ) : scoped.map((q) => (
             <div
               key={q.id}
               className="flex flex-wrap items-center gap-3 rounded-xl border border-pca-border p-3.5 hover:bg-pca-bg sm:flex-nowrap"

@@ -505,7 +505,7 @@ def create_farmer_submission(
             external_id=queue_id,
             brgy=brgy,
             title=f"{farm_name} — {body.tag}",
-            sub=f"Sector {sector_code} · {body.image_count} photo(s) · {owner}",
+            sub=f"{farmer_id} · Sector {sector_code} · {body.image_count} photo(s) · {owner}",
             conf=conf_label,
             validated=False,
         ),
