@@ -39,6 +39,7 @@ import type { FarmerSubmission, PestType } from "../../types/demoStore";
 type Lang = "hil" | "en";
 
 const PESTS: PestType[] = ["healthy", "yellowing", "scale insect", "rhino beetle"];
+const MAX_FARMER_ANALYSIS_PHOTOS = 3;
 
 const SECTOR_ICONS = { A: IconArrowUp, B: IconArrowDown, C: IconArrowRight, D: IconArrowLeft };
 
@@ -237,20 +238,29 @@ export default function FarmerPortal() {
   function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const incoming = Array.from(e.target.files ?? []);
     if (!incoming.length) return;
-    const remaining = 10 - previews.length;
+    const remaining = MAX_FARMER_ANALYSIS_PHOTOS - previews.length;
     const allowed = incoming.slice(0, remaining);
+    const hasTooManyPhotos = incoming.length > remaining;
+    setAnalyzeError(null);
+    if (incoming.length > remaining) {
+      setAnalyzeError(
+        lang === "hil"
+          ? `Tubtob ${MAX_FARMER_ANALYSIS_PHOTOS} lang ka litrato kada analysis. Gamita ang pinakaklaro nga litrato.`
+          : `You can analyze up to ${MAX_FARMER_ANALYSIS_PHOTOS} photos only. Please use the clearest photos.`,
+      );
+    }
     if (!allowed.length) {
       e.target.value = "";
       return;
     }
 
     setPreparingUploads(true);
-    setAnalyzeError(null);
+    if (!hasTooManyPhotos) setAnalyzeError(null);
 
     const nextPreviews = allowed.map((file) => URL.createObjectURL(file));
     previewUrlsRef.current.push(...nextPreviews);
-    setPreviews((prev) => [...prev, ...nextPreviews].slice(0, 10));
-    setUploadedFiles((prev) => [...prev, ...allowed].slice(0, 10));
+    setPreviews((prev) => [...prev, ...nextPreviews].slice(0, MAX_FARMER_ANALYSIS_PHOTOS));
+    setUploadedFiles((prev) => [...prev, ...allowed].slice(0, MAX_FARMER_ANALYSIS_PHOTOS));
     setPreparingUploads(false);
 
     e.target.value = "";

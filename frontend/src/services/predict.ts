@@ -37,6 +37,8 @@ const UNCERTAIN_MAX_PCT = 40;
 const MAX_UPLOAD_IMAGE_SIDE = 1280;
 const UPLOAD_JPEG_QUALITY = 0.82;
 const PREDICT_TIMEOUT_MS = 45_000;
+const BETWEEN_IMAGE_DELAY_MS = 300;
+const BATCH_PREDICT_TIMEOUT_MS = 120_000;
 
 export const CLASS_ORDER = [
   "Healthy",
@@ -272,6 +274,84 @@ export async function predictLeafImage(
   }
 }
 
+async function predictLeafImagesBatch(
+  items: { file: File; previewUrl: string }[],
+): Promise<
+  | { success: true; aggregated: AggregatedPredictResult }
+  | { success: false; message: string; shouldFallback?: boolean }
+> {
+  const form = new FormData();
+  const uploadFiles = await Promise.all(items.map((item) => prepareImageForUpload(item.file)));
+  uploadFiles.forEach((file) => form.append("files", file, file.name));
+
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), BATCH_PREDICT_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(`${getApiBase()}/predict/batch`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: form,
+      cache: "no-store",
+      signal: controller.signal,
+    });
+
+    if (response.status === 404 || response.status === 405) {
+      return { success: false, message: "Batch endpoint is not available yet.", shouldFallback: true };
+    }
+    if (!response.ok) {
+      return {
+        success: false,
+        message: await parseErrorMessage(response, "Could not analyze the images."),
+      };
+    }
+
+    const data = (await response.json()) as {
+      results: {
+        file_name: string;
+        result: {
+          pest: string;
+          label: string;
+          confidence: number;
+          uncertain: boolean;
+          predictions: Record<string, number>;
+          thresholded_labels: string[];
+          top_guesses: string[];
+          message?: string;
+        };
+      }[];
+    };
+
+    const perImage = data.results.map((row, index) => ({
+      index,
+      fileName: row.file_name || items[index]?.file.name || "leaf-photo",
+      previewUrl: items[index]?.previewUrl ?? "",
+      result: {
+        pest: normalizePest(row.result.pest),
+        label: row.result.label,
+        confidence: row.result.confidence,
+        uncertain: row.result.uncertain,
+        predictions: row.result.predictions,
+        thresholdedLabels: row.result.thresholded_labels,
+        topGuesses: row.result.top_guesses,
+        message: row.result.message,
+      },
+    }));
+
+    return { success: true, aggregated: summarizeFromPerImage(perImage) };
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") {
+      return {
+        success: false,
+        message: "Analysis is taking too long. Please try again with one clear coconut leaf photo.",
+      };
+    }
+    return { success: false, message: "Cannot reach the analysis server. Try again later." };
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+}
+
 export async function predictLeafImages(
   items: { file: File; previewUrl: string }[],
 ): Promise<
@@ -282,28 +362,30 @@ export async function predictLeafImages(
     return { success: false, message: "No images to analyze." };
   }
 
-  const outcomes = await Promise.all(
-    items.map(async (item, index) => {
-      const outcome = await predictLeafImage(item.file);
-      return { index, item, outcome };
-    }),
-  );
-
-  const failed = outcomes.find((o) => !o.outcome.success);
-  if (failed && !failed.outcome.success) {
-    return { success: false, message: failed.outcome.message };
+  const batchOutcome = await predictLeafImagesBatch(items);
+  if (batchOutcome.success) {
+    return batchOutcome;
+  }
+  if (!batchOutcome.shouldFallback) {
+    return { success: false, message: batchOutcome.message };
   }
 
   const perImage: PerImagePredictResult[] = [];
 
-  for (const row of outcomes) {
-    if (!row.outcome.success) continue;
+  for (const [index, item] of items.entries()) {
+    const outcome = await predictLeafImage(item.file);
+    if (!outcome.success) {
+      return { success: false, message: outcome.message };
+    }
     perImage.push({
-      index: row.index,
-      fileName: row.item.file.name,
-      previewUrl: row.item.previewUrl,
-      result: row.outcome.result,
+      index,
+      fileName: item.file.name,
+      previewUrl: item.previewUrl,
+      result: outcome.result,
     });
+    if (index < items.length - 1) {
+      await new Promise((resolve) => window.setTimeout(resolve, BETWEEN_IMAGE_DELAY_MS));
+    }
   }
 
   const aggregated = summarizeFromPerImage(perImage);

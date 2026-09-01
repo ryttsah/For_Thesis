@@ -10,3 +10,12 @@ class PredictResponse(BaseModel):
     thresholded_labels: list[str]
     top_guesses: list[str]
     message: str | None = None
+
+
+class PredictBatchItem(BaseModel):
+    file_name: str
+    result: PredictResponse
+
+
+class PredictBatchResponse(BaseModel):
+    results: list[PredictBatchItem]
