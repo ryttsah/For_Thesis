@@ -421,7 +421,7 @@ export async function createFarmerSubmissionApi(
   extras?: { confidencePct?: number; uncertain?: boolean; imageCount?: number },
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   if (!isApiEnabled()) return { ok: false, message: "API not configured." };
-  const confidencePct = Math.max(0, Math.min(100, Math.round(extras?.confidencePct ?? 0)));
+  const confidencePct = Math.max(0, Math.min(100, Math.round((extras?.confidencePct ?? 0) * 10) / 10));
   try {
     const response = await fetch(`${getApiBase()}/farmers/me/submissions`, {
       method: "POST",

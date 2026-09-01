@@ -145,7 +145,7 @@ class FarmerSubmissionCreate(BaseModel):
     tag: str
     tag_class: Literal["green", "orange", "red"]
     color: str
-    confidence_pct: int = Field(default=0, ge=0, le=100)
+    confidence_pct: float = Field(default=0, ge=0, le=100)
     uncertain: bool = False
     image_count: int = Field(default=1, ge=1, le=10)
 

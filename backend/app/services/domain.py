@@ -60,6 +60,13 @@ def _external_id(prefix: str) -> str:
     return f"{prefix}{uuid4().hex[:12]}"
 
 
+def _format_percent(value: float) -> str:
+    rounded = round(value, 1)
+    if rounded.is_integer():
+        return f"{int(rounded)}%"
+    return f"{rounded}%"
+
+
 def _count_farms_in_brgy(db: Session, brgy: str) -> int:
     if brgy in ("Unassigned", "—", ""):
         return 0
@@ -503,7 +510,7 @@ def create_farmer_submission(
     today = datetime.now(UTC).strftime("%Y-%m-%d")
     queue_id = _external_id("q")
 
-    conf_label = f"{body.confidence_pct}%" if body.confidence_pct else "—"
+    conf_label = _format_percent(body.confidence_pct) if body.confidence_pct else "—"
     db.add(
         ValidationQueueItem(
             external_id=queue_id,

@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Integer, String, Text, UniqueConstraint
+from sqlalchemy import Boolean, Float, Integer, String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -116,6 +116,6 @@ class FarmerSubmission(Base):
     tag: Mapped[str] = mapped_column(String(32), nullable=False)
     tag_class: Mapped[str] = mapped_column(String(16), nullable=False)
     color: Mapped[str] = mapped_column(String(16), nullable=False)
-    confidence_pct: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    confidence_pct: Mapped[float] = mapped_column(Float, nullable=False, default=0)
     uncertain: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     image_count: Mapped[int] = mapped_column(Integer, nullable=False, default=1)

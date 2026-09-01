@@ -10,7 +10,7 @@ def ensure_sqlite_columns(engine: Engine) -> None:
 
     patches: dict[str, list[tuple[str, str]]] = {
         "farmer_submissions": [
-            ("confidence_pct", "INTEGER NOT NULL DEFAULT 0"),
+            ("confidence_pct", "REAL NOT NULL DEFAULT 0"),
             ("uncertain", "BOOLEAN NOT NULL DEFAULT 0"),
             ("image_count", "INTEGER NOT NULL DEFAULT 1"),
         ],
