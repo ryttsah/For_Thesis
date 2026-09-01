@@ -111,9 +111,9 @@ class FarmerSubmission(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     farmer_id: Mapped[str] = mapped_column(String(32), nullable=False, index=True)
-    date_label: Mapped[str] = mapped_column(String(80), nullable=False)
+    date_label: Mapped[str] = mapped_column(Text, nullable=False)
     sector: Mapped[str] = mapped_column(String(8), nullable=False)
-    tag: Mapped[str] = mapped_column(String(32), nullable=False)
+    tag: Mapped[str] = mapped_column(Text, nullable=False)
     tag_class: Mapped[str] = mapped_column(String(16), nullable=False)
     color: Mapped[str] = mapped_column(String(16), nullable=False)
     confidence_pct: Mapped[float] = mapped_column(Float, nullable=False, default=0)
