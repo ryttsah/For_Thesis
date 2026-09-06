@@ -3,13 +3,16 @@ import AppShell from "../components/layout/AppShell";
 import { useAuth } from "../context/AuthContext";
 import { useDemoStore } from "../context/DemoStoreContext";
 import { OFFICER_NAV, OFFICER_PAGE_TITLES } from "../constants/navigation";
+import { filterByBrgy, useOfficerScope } from "../hooks/useOfficerScope";
 import { hasAuthToken, isApiEnabled } from "../services/api";
 import { fetchCurrentUser } from "../services/auth";
 import { fetchOfficerBootstrap } from "../services/domain";
 
 export default function OfficerLayout() {
   const { user, isAuthLoading, establishSession } = useAuth();
-  const { queuePendingCount, syncOfficerDomain } = useDemoStore();
+  const { queue, syncOfficerDomain } = useDemoStore();
+  const { assignedBrgy } = useOfficerScope();
+  const scopedQueuePendingCount = filterByBrgy(queue, assignedBrgy).filter((q) => !q.validated).length;
 
   useEffect(() => {
     if (!isApiEnabled() || isAuthLoading || !hasAuthToken()) return;
@@ -28,7 +31,7 @@ export default function OfficerLayout() {
       portalLabel="Officer Portal"
       navGroups={OFFICER_NAV}
       pageTitles={OFFICER_PAGE_TITLES}
-      getNavBadge={(id) => (id === "officer-queue" ? queuePendingCount : undefined)}
+      getNavBadge={(id) => (id === "officer-queue" ? scopedQueuePendingCount : undefined)}
     />
   );
 }

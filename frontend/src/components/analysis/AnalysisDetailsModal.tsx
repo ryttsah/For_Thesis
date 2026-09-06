@@ -120,9 +120,13 @@ export default function AnalysisDetailsModal({ open, record, onClose }: Props) {
               <div className="grid gap-2 sm:grid-cols-2">
                 {details.perPhoto.map((photo, index) => (
                   <div key={`${photo.fileName}-${index}`} className="flex items-center gap-3 rounded-xl border border-pca-border p-3">
-                    <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-pca-bg text-pca-green">
-                      <IconPhoto size={20} />
-                    </span>
+                    {photo.imageUrl ? (
+                      <img src={photo.imageUrl} alt="" className="h-14 w-14 shrink-0 rounded-lg object-cover" />
+                    ) : (
+                      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-pca-bg text-pca-green">
+                        <IconPhoto size={20} />
+                      </span>
+                    )}
                     <div className="min-w-0">
                       <div className="truncate text-xs font-semibold text-pca-muted">{photo.fileName}</div>
                       <div className="break-words text-sm font-bold">{photo.label}</div>

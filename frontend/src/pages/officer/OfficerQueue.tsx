@@ -8,11 +8,15 @@ import { isApiEnabled } from "../../services/api";
 import { fetchOfficerBootstrap, validateQueueApi } from "../../services/domain";
 
 export default function OfficerQueue() {
-  const { queue, surveys, queuePendingCount, validateQueueItem, syncOfficerDomain } = useDemoStore();
+  const { queue, surveys, validateQueueItem, syncOfficerDomain } = useDemoStore();
   const { assignedBrgy } = useOfficerScope();
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const scoped = useMemo(() => filterByBrgy(queue, assignedBrgy), [queue, assignedBrgy]);
+  const scoped = useMemo(
+    () => filterByBrgy(queue, assignedBrgy).sort((a, b) => b.id.localeCompare(a.id, undefined, { numeric: true })),
+    [queue, assignedBrgy],
+  );
+  const scopedPendingCount = scoped.filter((q) => !q.validated).length;
   const selectedQueue = scoped.find((q) => q.id === selectedId) ?? null;
   const selectedSurvey = selectedQueue ? surveys.find((s) => s.id === selectedQueue.id) ?? null : null;
 
@@ -43,7 +47,7 @@ export default function OfficerQueue() {
           icon={<IconChecklist size={16} />}
           action={
             <span className="rounded-full bg-pca-green-light px-2.5 py-0.5 text-[11px] font-semibold text-pca-green">
-              {queuePendingCount} pending
+              {scopedPendingCount} pending
             </span>
           }
         />

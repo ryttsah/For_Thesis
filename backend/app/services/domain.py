@@ -282,7 +282,7 @@ def officer_bootstrap(db: Session) -> OfficerBootstrap:
         surveys=[survey_to_out(r) for r in db.scalars(select(Survey).order_by(Survey.id.desc())).all()],
         queue=[
             queue_to_out(r)
-            for r in db.scalars(select(ValidationQueueItem).order_by(ValidationQueueItem.id)).all()
+            for r in db.scalars(select(ValidationQueueItem).order_by(ValidationQueueItem.id.desc())).all()
         ],
         scheduled_visits=[
             visit_to_out(r)

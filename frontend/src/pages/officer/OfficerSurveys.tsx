@@ -27,6 +27,12 @@ function surveyStatusLabel(s: FarmStatus | "review" | string) {
   return "Review";
 }
 
+function monthKey(dateText: string) {
+  const parsed = new Date(dateText.includes(",") ? dateText : `${dateText}T12:00:00`);
+  if (Number.isNaN(parsed.getTime())) return "";
+  return `${parsed.getFullYear()}-${String(parsed.getMonth() + 1).padStart(2, "0")}`;
+}
+
 export default function OfficerSurveys() {
   const { surveys } = useDemoStore();
   const { assignedBrgy } = useOfficerScope();
@@ -36,6 +42,7 @@ export default function OfficerSurveys() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [sectorFilter, setSectorFilter] = useState("all");
   const [brgyFilter, setBrgyFilter] = useState(assignedBrgy ? normalizeBrgyLabel(assignedBrgy) : "all");
+  const [monthFilter, setMonthFilter] = useState("");
   const [selectedSurvey, setSelectedSurvey] = useState<SurveyRow | null>(null);
   const scoped = useMemo(() => filterByBrgy(surveys, assignedBrgy), [surveys, assignedBrgy]);
   const filtered = useMemo(() => {
@@ -46,9 +53,10 @@ export default function OfficerSurveys() {
       const matchesStatus = statusFilter === "all" || surveyStatusKey(s.status) === statusFilter;
       const matchesSector = sectorFilter === "all" || sectorCode(s.sector) === sectorFilter;
       const matchesBrgy = brgyFilter === "all" || normalizeBrgyLabel(s.brgy) === normalizeBrgyLabel(brgyFilter);
-      return matchesText && matchesStatus && matchesSector && matchesBrgy;
+      const matchesMonth = !monthFilter || monthKey(s.date) === monthFilter;
+      return matchesText && matchesStatus && matchesSector && matchesBrgy && matchesMonth;
     });
-  }, [scoped, query, statusFilter, sectorFilter, brgyFilter]);
+  }, [scoped, query, statusFilter, sectorFilter, brgyFilter, monthFilter]);
 
   return (
     <div className="animate-fade-in">
@@ -57,8 +65,18 @@ export default function OfficerSurveys() {
           title="Recent Surveys"
           icon={<IconClipboardList size={16} />}
           action={
-            <div className="flex gap-2">
-              <GhostButton><IconCalendar size={14} className="mr-1 inline" />May 2026</GhostButton>
+            <div className="flex flex-wrap items-center gap-2">
+              <label className="inline-flex min-h-[38px] items-center gap-2 rounded-[10px] border border-pca-border bg-white px-3 text-xs font-semibold text-pca-muted">
+                <IconCalendar size={14} />
+                <input
+                  type="month"
+                  value={monthFilter}
+                  onChange={(e) => setMonthFilter(e.target.value)}
+                  className="bg-transparent text-xs font-semibold text-pca-text outline-none"
+                  aria-label="Filter surveys by month"
+                />
+              </label>
+              {monthFilter && <GhostButton onClick={() => setMonthFilter("")}>All months</GhostButton>}
               <GhostButton onClick={() => setShowFilters((v) => !v)}><IconFilter size={14} className="mr-1 inline" />Filter</GhostButton>
               <GhostButton onClick={() => alert("Export started.")}><IconDownload size={14} className="mr-1 inline" />Export</GhostButton>
             </div>

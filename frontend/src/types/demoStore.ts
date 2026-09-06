@@ -23,6 +23,7 @@ export interface AnalysisPhotoDetail {
   label: string;
   labelHil?: string;
   confidence: number;
+  imageUrl?: string;
 }
 
 export interface AnalysisDetails {

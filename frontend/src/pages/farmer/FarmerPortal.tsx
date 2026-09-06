@@ -22,6 +22,7 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AnalysisDetailsModal, { type AnalysisModalRecord } from "../../components/analysis/AnalysisDetailsModal";
+import RecommendationPlanModal from "../../components/analysis/RecommendationPlanModal";
 import { RECOMMENDATIONS } from "../../constants/demoData";
 import { FARMER_I18N } from "../../constants/farmerI18n";
 import { useAuth } from "../../context/AuthContext";
@@ -142,7 +143,7 @@ export default function FarmerPortal() {
   const [provincialStats, setProvincialStats] = useState<ProvincialStats | null>(null);
   const [sectorRows, setSectorRows] = useState<FarmerSectorRow[]>([]);
   const [farmerNotificationsExpanded, setFarmerNotificationsExpanded] = useState(false);
-  const [recommendationsExpanded, setRecommendationsExpanded] = useState(false);
+  const [recommendationsOpen, setRecommendationsOpen] = useState(false);
   const [seenFarmerNotificationIds, setSeenFarmerNotificationIds] = useState<Set<string>>(() => new Set());
   const [selectedHistory, setSelectedHistory] = useState<FarmerSubmission | null>(null);
   const [selectedImage, setSelectedImage] = useState<PerImagePredictResult | null>(null);
@@ -361,6 +362,34 @@ export default function FarmerPortal() {
     );
   }
 
+  async function imageThumbnailDataUrl(file: File): Promise<string> {
+    return new Promise((resolve) => {
+      const image = new Image();
+      const objectUrl = URL.createObjectURL(file);
+      image.onload = () => {
+        const maxSide = 360;
+        const scale = Math.min(1, maxSide / Math.max(image.naturalWidth, image.naturalHeight));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+        canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          URL.revokeObjectURL(objectUrl);
+          resolve("");
+          return;
+        }
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(objectUrl);
+        resolve(canvas.toDataURL("image/jpeg", 0.72));
+      };
+      image.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        resolve("");
+      };
+      image.src = objectUrl;
+    });
+  }
+
   async function submitResult() {
     if (isSubmittingResult) return;
     if (!feedback) {
@@ -382,6 +411,9 @@ export default function FarmerPortal() {
         color: meta.barColor,
       };
     });
+    const thumbnails = await Promise.all(
+      perImageResults.map((row) => (uploadedFiles[row.index] ? imageThumbnailDataUrl(uploadedFiles[row.index]) : "")),
+    );
     const perPhoto = perImageResults.map((row) => {
       const topClass = getTopClassFromPredictions(row.result.predictions);
       const meta = CLASS_DISPLAY[topClass];
@@ -390,6 +422,7 @@ export default function FarmerPortal() {
         label: meta.en,
         labelHil: meta.hil,
         confidence: Math.round(row.result.confidence * 10) / 10,
+        imageUrl: thumbnails[row.index] || row.previewUrl,
       };
     });
     const recommendationText = [rec.rec, ...extraRecommendations].join(" ");
@@ -732,29 +765,19 @@ export default function FarmerPortal() {
                     <span className="min-w-0 break-words">{rec.title}</span>
                   </h3>
                   <p className="mb-5 text-sm font-medium leading-relaxed text-pca-text/80">{rec.desc}</p>
-                  <div className="rounded-2xl bg-white/80 p-5 text-[14px] shadow-sm backdrop-blur-sm">
+                  <button
+                    type="button"
+                    onClick={() => setRecommendationsOpen(true)}
+                    className="block w-full rounded-2xl bg-white/80 p-5 text-left text-[14px] shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white"
+                  >
                     <div className="mb-2 text-[11px] font-black uppercase tracking-widest text-pca-muted">{rec.heading}</div>
                     <p className="font-bold leading-relaxed text-pca-text">{rec.rec}</p>
-                    <button
-                      type="button"
-                      onClick={() => setRecommendationsExpanded((v) => !v)}
-                      className="mt-4 inline-flex items-center gap-2 rounded-lg border border-pca-border bg-white px-3 py-2 text-xs font-bold text-pca-muted transition-all hover:bg-pca-bg hover:text-pca-text"
-                      aria-expanded={recommendationsExpanded}
-                    >
-                      {lang === "hil" ? "Dugang nga rekomendasyon" : "Additional recommendations"}
-                      <IconChevronDown size={16} className={`transition-transform ${recommendationsExpanded ? "rotate-180" : ""}`} />
-                    </button>
-                    {recommendationsExpanded && (
-                      <ul className="mt-3 space-y-2 text-sm font-semibold leading-relaxed text-pca-text">
-                        {extraRecommendations.map((item) => (
-                          <li key={item} className="flex gap-2">
-                            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-pca-green" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
+                    <div className="mt-4 inline-flex items-center gap-2 rounded-lg border border-pca-border bg-white px-3 py-2 text-xs font-bold text-pca-muted">
+                      {lang === "hil"
+                        ? "Tap ukon click diri para makita ang detalyado nga rekomendasyon"
+                        : "Tap or Click here to view the detailed recommendations"}
+                    </div>
+                  </button>
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 bg-pca-bg/30 p-6 sm:grid-cols-2">
@@ -937,6 +960,12 @@ export default function FarmerPortal() {
             : null
         }
         onClose={() => setSelectedHistory(null)}
+      />
+      <RecommendationPlanModal
+        open={recommendationsOpen}
+        pest={detectedPest}
+        lang={lang}
+        onClose={() => setRecommendationsOpen(false)}
       />
     </div>
   );
