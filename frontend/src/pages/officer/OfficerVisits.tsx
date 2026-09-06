@@ -1,5 +1,6 @@
-import { IconAlertCircle, IconCalendar, IconCalendarEvent, IconCheck, IconFlag, IconFlag2, IconPlus } from "@tabler/icons-react";
+import { IconAlertCircle, IconCalendar, IconCalendarEvent, IconCheck, IconEye, IconFlag, IconFlag2, IconPlus } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
+import AnalysisDetailsModal, { type AnalysisModalRecord } from "../../components/analysis/AnalysisDetailsModal";
 import ScheduleVisitModal from "../../components/modals/ScheduleVisitModal";
 import { useDemoStore } from "../../context/DemoStoreContext";
 import { filterByBrgy, useOfficerScope } from "../../hooks/useOfficerScope";
@@ -32,9 +33,10 @@ function formatVisitLine(date: string, slot: string) {
 }
 
 export default function OfficerVisits() {
-  const { priorityVisits, scheduledVisits, completePriorityVisit, syncOfficerDomain } = useDemoStore();
+  const { priorityVisits, scheduledVisits, surveys, completePriorityVisit, syncOfficerDomain } = useDemoStore();
   const { assignedBrgy } = useOfficerScope();
   const [scheduleOpen, setScheduleOpen] = useState(false);
+  const [selectedPriorityId, setSelectedPriorityId] = useState<string | null>(null);
 
   const scopedFlags = useMemo(
     () => filterByBrgy(priorityVisits.filter((v) => !v.completed), assignedBrgy),
@@ -47,6 +49,11 @@ export default function OfficerVisits() {
 
   const urgent = scopedFlags.filter((f) => f.level === "urgent").length;
   const high = scopedFlags.filter((f) => f.level === "high").length;
+  const selectedPriority = scopedFlags.find((item) => item.id === selectedPriorityId) ?? null;
+  const selectedPriorityFarm = selectedPriority?.farm.replace(/\s+-\s+Sector\s+[A-D].*$/i, "").trim();
+  const selectedSurvey = selectedPriorityFarm
+    ? surveys.find((s) => s.farm === selectedPriorityFarm || Boolean(selectedPriority?.farm.includes(s.farm)))
+    : null;
 
   function openSchedule() {
     if (!assignedBrgy) {
@@ -115,6 +122,14 @@ export default function OfficerVisits() {
                   <IconCheck size={14} className="mr-1 inline" />
                   Complete
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedPriorityId(f.id)}
+                  className="rounded-lg border-[1.5px] border-pca-border bg-white/70 px-3.5 py-1.5 text-xs font-semibold text-pca-text hover:bg-white"
+                >
+                  <IconEye size={14} className="mr-1 inline" />
+                  View
+                </button>
               </div>
             </div>
           ))}
@@ -155,6 +170,23 @@ export default function OfficerVisits() {
       </Card>
 
       <ScheduleVisitModal open={scheduleOpen} onClose={() => setScheduleOpen(false)} />
+      <AnalysisDetailsModal
+        open={Boolean(selectedPriority)}
+        record={
+          selectedPriority
+            ? ({
+                title: selectedPriority.farm,
+                date: selectedSurvey?.date ?? selectedPriority.due,
+                farm: selectedPriorityFarm ?? selectedPriority.farm,
+                sector: selectedSurvey?.sector?.trim().match(/^([A-D])/i)?.[1]?.toUpperCase(),
+                brgy: selectedPriority.brgy,
+                result: selectedSurvey?.aiResult ?? selectedPriority.desc,
+                details: selectedSurvey?.details,
+              } satisfies AnalysisModalRecord)
+            : null
+        }
+        onClose={() => setSelectedPriorityId(null)}
+      />
     </div>
   );
 }

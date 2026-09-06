@@ -28,6 +28,7 @@ class QueueItemOut(BaseModel):
 
 
 class SurveyOut(BaseModel):
+    id: str
     date: str
     farm: str
     sector: str
@@ -36,6 +37,14 @@ class SurveyOut(BaseModel):
     ai_result: str
     officer: str
     status: str
+    confidence_pct: float = 0
+    majority: str = ""
+    breakdown: list[dict] = Field(default_factory=list)
+    per_photo: list[dict] = Field(default_factory=list)
+    recommendation_title: str = ""
+    recommendation_description: str = ""
+    recommendation_heading: str = ""
+    recommendation_text: str = ""
 
 
 class ScheduledVisitOut(BaseModel):
@@ -84,11 +93,21 @@ class FarmerNotificationOut(BaseModel):
 
 
 class FarmerSubmissionOut(BaseModel):
+    id: str
     date: str
     sector: str
     tag: str
     tag_class: str
     color: str
+    confidence_pct: float = 0
+    image_count: int = 1
+    majority: str = ""
+    breakdown: list[dict] = Field(default_factory=list)
+    per_photo: list[dict] = Field(default_factory=list)
+    recommendation_title: str = ""
+    recommendation_description: str = ""
+    recommendation_heading: str = ""
+    recommendation_text: str = ""
 
 
 class FarmerProfileOut(BaseModel):
@@ -148,6 +167,13 @@ class FarmerSubmissionCreate(BaseModel):
     confidence_pct: float = Field(default=0, ge=0, le=100)
     uncertain: bool = False
     image_count: int = Field(default=1, ge=1, le=10)
+    majority: str = ""
+    breakdown: list[dict] = Field(default_factory=list)
+    per_photo: list[dict] = Field(default_factory=list)
+    recommendation_title: str = ""
+    recommendation_description: str = ""
+    recommendation_heading: str = ""
+    recommendation_text: str = ""
 
 
 class OfficerCreateRequest(BaseModel):

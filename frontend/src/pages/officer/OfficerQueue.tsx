@@ -1,5 +1,6 @@
-import { IconChecklist, IconPhotoCheck } from "@tabler/icons-react";
-import { useEffect, useMemo } from "react";
+import { IconChecklist, IconEye, IconPhotoCheck } from "@tabler/icons-react";
+import { useEffect, useMemo, useState } from "react";
+import AnalysisDetailsModal, { type AnalysisModalRecord } from "../../components/analysis/AnalysisDetailsModal";
 import { useDemoStore } from "../../context/DemoStoreContext";
 import { filterByBrgy, useOfficerScope } from "../../hooks/useOfficerScope";
 import { Card, CardHead } from "../../components/ui/Card";
@@ -7,10 +8,13 @@ import { isApiEnabled } from "../../services/api";
 import { fetchOfficerBootstrap, validateQueueApi } from "../../services/domain";
 
 export default function OfficerQueue() {
-  const { queue, queuePendingCount, validateQueueItem, syncOfficerDomain } = useDemoStore();
+  const { queue, surveys, queuePendingCount, validateQueueItem, syncOfficerDomain } = useDemoStore();
   const { assignedBrgy } = useOfficerScope();
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const scoped = useMemo(() => filterByBrgy(queue, assignedBrgy), [queue, assignedBrgy]);
+  const selectedQueue = scoped.find((q) => q.id === selectedId) ?? null;
+  const selectedSurvey = selectedQueue ? surveys.find((s) => s.id === selectedQueue.id) ?? null : null;
 
   useEffect(() => {
     if (!isApiEnabled()) return;
@@ -79,10 +83,35 @@ export default function OfficerQueue() {
               >
                 {q.validated ? "Validated" : "Validate"}
               </button>
+              <button
+                type="button"
+                onClick={() => setSelectedId(q.id)}
+                className="rounded-lg border-[1.5px] border-pca-border px-3.5 py-1.5 text-xs font-semibold text-pca-text hover:bg-pca-bg"
+              >
+                <IconEye size={14} className="mr-1 inline" />
+                View
+              </button>
             </div>
           ))}
         </div>
       </Card>
+      <AnalysisDetailsModal
+        open={Boolean(selectedQueue)}
+        record={
+          selectedQueue
+            ? ({
+                title: selectedSurvey?.farm ?? selectedQueue.title,
+                date: selectedSurvey?.date ?? selectedQueue.sub,
+                farm: selectedSurvey?.farm ?? selectedQueue.title.split(" — ")[0],
+                sector: selectedSurvey?.sector?.trim().match(/^([A-D])/i)?.[1]?.toUpperCase(),
+                brgy: selectedQueue.brgy,
+                result: selectedSurvey?.aiResult ?? selectedQueue.title,
+                details: selectedSurvey?.details,
+              } satisfies AnalysisModalRecord)
+            : null
+        }
+        onClose={() => setSelectedId(null)}
+      />
     </div>
   );
 }

@@ -21,6 +21,7 @@ import {
 } from "@tabler/icons-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AnalysisDetailsModal, { type AnalysisModalRecord } from "../../components/analysis/AnalysisDetailsModal";
 import { RECOMMENDATIONS } from "../../constants/demoData";
 import { FARMER_I18N } from "../../constants/farmerI18n";
 import { useAuth } from "../../context/AuthContext";
@@ -43,6 +44,57 @@ type Lang = "hil" | "en";
 const MAX_FARMER_ANALYSIS_PHOTOS = 10;
 
 const SECTOR_ICONS = { A: IconArrowUp, B: IconArrowDown, C: IconArrowRight, D: IconArrowLeft };
+
+const EXTRA_RECOMMENDATIONS: Record<PestType, Record<Lang, string[]>> = {
+  healthy: {
+    hil: [
+      "Padayon nga limpyohan ang palibot sang puno para malikawan ang puluy-an sang peste.",
+      "Tandaan ang petsa sang sunod nga pag-abono kag regular nga pagtan-aw sang bag-o nga dahon.",
+      "Kung may bag-o nga marka ukon pagdilaw, kuhaan dayon sang klaro nga litrato.",
+    ],
+    en: [
+      "Keep the area around the palm clean to reduce possible pest shelter.",
+      "Record the next fertilizer schedule and keep checking new leaves.",
+      "If new marks or yellowing appear, capture a clear photo right away.",
+    ],
+  },
+  yellowing: {
+    hil: [
+      "Tan-awa kung naga-ipon ang tubig sa palibot sang gamot pagkatapos sang ulan.",
+      "Ibulag sa rekord ang mga puno nga nagadilaw para mabalikan sang opisyal.",
+      "Likawan anay ang sobra nga pagbutang sang abono tubtob may rekomendasyon sang PCA.",
+    ],
+    en: [
+      "Check if water collects near the roots after rain.",
+      "Mark the yellowing palms in your record so the officer can inspect them.",
+      "Avoid over-fertilizing until PCA gives a specific recommendation.",
+    ],
+  },
+  "scale insect": {
+    hil: [
+      "Likawan nga magkuha sang dahon halin sa apektado nga puno pakadto sa iban nga parte sang uma.",
+      "Tan-awa ang likod sang dahon kung may nagdamo nga puti ukon brown nga tuldok.",
+      "Mag-coordinate sa PCA antes mag-spray para husto ang klase kag kadamuon sang gamiton.",
+    ],
+    en: [
+      "Avoid moving fronds from affected palms to other parts of the farm.",
+      "Inspect the underside of leaves for spreading white or brown scale spots.",
+      "Coordinate with PCA before spraying so the treatment and dosage are correct.",
+    ],
+  },
+  "rhino beetle": {
+    hil: [
+      "Pangitaa kag kuhaa ang posible nga breeding site pareho sang nagakadunot nga puno ukon compost pile.",
+      "Tan-awa ang spear leaf kag bag-o nga dahon kada pila ka adlaw para sa V-shaped damage.",
+      "Kung madamo na ang apektado nga puno, ipa-priority visit ini sa PCA opisyal.",
+    ],
+    en: [
+      "Find and remove possible breeding sites such as decaying trunks or compost piles.",
+      "Check the spear leaf and new fronds every few days for V-shaped damage.",
+      "If several palms are affected, request a priority visit from the PCA officer.",
+    ],
+  },
+};
 
 function LoadingRing({ size = "h-16 w-16" }: { size?: string }) {
   return (
@@ -90,6 +142,7 @@ export default function FarmerPortal() {
   const [provincialStats, setProvincialStats] = useState<ProvincialStats | null>(null);
   const [sectorRows, setSectorRows] = useState<FarmerSectorRow[]>([]);
   const [farmerNotificationsExpanded, setFarmerNotificationsExpanded] = useState(false);
+  const [recommendationsExpanded, setRecommendationsExpanded] = useState(false);
   const [seenFarmerNotificationIds, setSeenFarmerNotificationIds] = useState<Set<string>>(() => new Set());
   const [selectedHistory, setSelectedHistory] = useState<FarmerSubmission | null>(null);
   const [selectedImage, setSelectedImage] = useState<PerImagePredictResult | null>(null);
@@ -178,6 +231,7 @@ export default function FarmerPortal() {
   );
   const visibleFarmerNotifications = farmerNotificationsExpanded ? farmerNotifications : farmerNotifications.slice(0, 2);
   const rec = RECOMMENDATIONS[detectedPest][lang];
+  const extraRecommendations = EXTRA_RECOMMENDATIONS[detectedPest][lang];
   const cardClass =
     detectedPest === "healthy" ? "healthy" : detectedPest === "yellowing" ? "warning" : "danger";
 
@@ -318,6 +372,38 @@ export default function FarmerPortal() {
       return;
     }
 
+    const breakdown = CLASS_ORDER.map((name) => {
+      const meta = CLASS_DISPLAY[name];
+      return {
+        label: meta.en,
+        labelHil: meta.hil,
+        count: photoCounts?.[name] ?? 0,
+        share: photoSharePct?.[name] ?? 0,
+        color: meta.barColor,
+      };
+    });
+    const perPhoto = perImageResults.map((row) => {
+      const topClass = getTopClassFromPredictions(row.result.predictions);
+      const meta = CLASS_DISPLAY[topClass];
+      return {
+        fileName: row.fileName,
+        label: meta.en,
+        labelHil: meta.hil,
+        confidence: Math.round(row.result.confidence * 10) / 10,
+      };
+    });
+    const recommendationText = [rec.rec, ...extraRecommendations].join(" ");
+    const details = {
+      confidencePct: confidencePct ?? 0,
+      imageCount: photosAnalyzed || previews.length || 1,
+      majority: majorityClass ? CLASS_DISPLAY[majorityClass].en : rec.title,
+      breakdown,
+      perPhoto,
+      recommendationTitle: rec.title,
+      recommendationDescription: rec.desc,
+      recommendationHeading: rec.heading,
+      recommendationText,
+    };
     const submission: FarmerSubmission = {
       date:
         new Date().toLocaleDateString("en-PH", { month: "short", day: "numeric", year: "numeric" }) +
@@ -326,6 +412,7 @@ export default function FarmerPortal() {
       tag: rec.title,
       tagClass: detectedPest === "healthy" ? "green" : detectedPest === "yellowing" ? "orange" : "red",
       color: detectedPest === "healthy" ? "#22a355" : detectedPest === "yellowing" ? "#f59e0b" : "#dc2626",
+      details,
     };
 
     if (isApiEnabled()) {
@@ -334,6 +421,13 @@ export default function FarmerPortal() {
         confidencePct: confidencePct ?? 0,
         uncertain: isUncertain || feedback === "no",
         imageCount: photosAnalyzed || previews.length || 1,
+        majority: details.majority,
+        breakdown,
+        perPhoto,
+        recommendationTitle: rec.title,
+        recommendationDescription: rec.desc,
+        recommendationHeading: rec.heading,
+        recommendationText,
       });
       if (result.ok) {
         const data = await fetchFarmerBootstrap();
@@ -429,8 +523,8 @@ export default function FarmerPortal() {
         </header>
 
         {/* Top Info Grid */}
-        <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="f-card !mb-0 flex flex-col justify-center">
+        <div className="mb-8 grid grid-cols-1 items-start gap-4 md:grid-cols-2">
+          <div className="f-card !mb-0 flex min-h-[180px] flex-col justify-center">
             <h2 className="text-xl font-bold">{t.welcome}</h2>
             <div className="mt-4 rounded-xl border border-pca-green-soft bg-pca-green-light px-4 py-3.5 text-[14px] text-pca-green">
               <span className="font-bold">{lang === "hil" ? "Imo Umahan:" : "Your Farm:"}</span> {farmerFarmLine}
@@ -641,6 +735,25 @@ export default function FarmerPortal() {
                   <div className="rounded-2xl bg-white/80 p-5 text-[14px] shadow-sm backdrop-blur-sm">
                     <div className="mb-2 text-[11px] font-black uppercase tracking-widest text-pca-muted">{rec.heading}</div>
                     <p className="font-bold leading-relaxed text-pca-text">{rec.rec}</p>
+                    <button
+                      type="button"
+                      onClick={() => setRecommendationsExpanded((v) => !v)}
+                      className="mt-4 inline-flex items-center gap-2 rounded-lg border border-pca-border bg-white px-3 py-2 text-xs font-bold text-pca-muted transition-all hover:bg-pca-bg hover:text-pca-text"
+                      aria-expanded={recommendationsExpanded}
+                    >
+                      {lang === "hil" ? "Dugang nga rekomendasyon" : "Additional recommendations"}
+                      <IconChevronDown size={16} className={`transition-transform ${recommendationsExpanded ? "rotate-180" : ""}`} />
+                    </button>
+                    {recommendationsExpanded && (
+                      <ul className="mt-3 space-y-2 text-sm font-semibold leading-relaxed text-pca-text">
+                        {extraRecommendations.map((item) => (
+                          <li key={item} className="flex gap-2">
+                            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-pca-green" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </div>
 
@@ -808,44 +921,23 @@ export default function FarmerPortal() {
           </div>
         </div>
       )}
-      {selectedHistory && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4" role="dialog" aria-modal="true">
-          <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-2xl">
-            <div className="mb-4 flex items-start justify-between gap-4">
-              <div>
-                <div className="text-xs font-black uppercase tracking-widest text-pca-muted">
-                  {lang === "hil" ? "Detalye sang Analysis" : "Analysis Details"}
-                </div>
-                <h3 className="mt-1 text-xl font-black text-pca-text">Sector {selectedHistory.sector}</h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setSelectedHistory(null)}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-pca-border text-pca-muted hover:bg-pca-bg hover:text-pca-text"
-                aria-label="Close history details"
-              >
-                <IconX size={18} />
-              </button>
-            </div>
-            <div className="space-y-3 text-sm">
-              <div className="rounded-xl border border-pca-border bg-pca-bg p-4">
-                <div className="text-xs font-bold uppercase tracking-wider text-pca-muted">
-                  {lang === "hil" ? "Petsa" : "Date"}
-                </div>
-                <div className="mt-1 font-bold text-pca-text">{selectedHistory.date}</div>
-              </div>
-              <div className="rounded-xl border border-pca-border bg-pca-bg p-4">
-                <div className="text-xs font-bold uppercase tracking-wider text-pca-muted">
-                  {lang === "hil" ? "Resulta" : "Result"}
-                </div>
-                <div className="mt-2 inline-flex rounded-lg bg-white px-3 py-2 font-black uppercase leading-snug text-pca-green">
-                  {selectedHistory.tag}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <AnalysisDetailsModal
+        open={Boolean(selectedHistory)}
+        record={
+          selectedHistory
+            ? ({
+                title: `Sector ${selectedHistory.sector}`,
+                date: selectedHistory.date,
+                farm: farmerProfile?.farm,
+                sector: selectedHistory.sector,
+                brgy: farmerProfile?.brgy,
+                result: selectedHistory.tag,
+                details: selectedHistory.details,
+              } satisfies AnalysisModalRecord)
+            : null
+        }
+        onClose={() => setSelectedHistory(null)}
+      />
     </div>
   );
 }

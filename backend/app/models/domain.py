@@ -43,6 +43,14 @@ class Survey(Base):
     ai_result: Mapped[str] = mapped_column(String(120), nullable=False)
     officer: Mapped[str] = mapped_column(String(80), nullable=False, default="—")
     status: Mapped[str] = mapped_column(String(20), nullable=False)
+    confidence_pct: Mapped[float] = mapped_column(Float, nullable=False, default=0)
+    majority: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    breakdown_json: Mapped[str] = mapped_column(Text, nullable=False, default="[]")
+    per_photo_json: Mapped[str] = mapped_column(Text, nullable=False, default="[]")
+    recommendation_title: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    recommendation_description: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    recommendation_heading: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    recommendation_text: Mapped[str] = mapped_column(Text, nullable=False, default="")
 
 
 class ScheduledVisit(Base):
@@ -110,6 +118,7 @@ class FarmerSubmission(Base):
     __tablename__ = "farmer_submissions"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    external_id: Mapped[str | None] = mapped_column(String(32), unique=True, nullable=True)
     farmer_id: Mapped[str] = mapped_column(String(32), nullable=False, index=True)
     date_label: Mapped[str] = mapped_column(Text, nullable=False)
     sector: Mapped[str] = mapped_column(String(8), nullable=False)
@@ -119,3 +128,10 @@ class FarmerSubmission(Base):
     confidence_pct: Mapped[float] = mapped_column(Float, nullable=False, default=0)
     uncertain: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     image_count: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+    majority: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    breakdown_json: Mapped[str] = mapped_column(Text, nullable=False, default="[]")
+    per_photo_json: Mapped[str] = mapped_column(Text, nullable=False, default="[]")
+    recommendation_title: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    recommendation_description: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    recommendation_heading: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    recommendation_text: Mapped[str] = mapped_column(Text, nullable=False, default="")

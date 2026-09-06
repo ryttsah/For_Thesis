@@ -208,9 +208,9 @@ def init_local_database(*, seed_demo_data: bool = False) -> None:
     from app.db.session import get_session_factory
 
     Base.metadata.create_all(bind=engine)
-    from app.db.migrate import ensure_sqlite_columns
+    from app.db.migrate import ensure_database_columns
 
-    ensure_sqlite_columns(engine)
+    ensure_database_columns(engine)
     factory = get_session_factory()
     if factory is None:
         raise RuntimeError("Session factory unavailable")

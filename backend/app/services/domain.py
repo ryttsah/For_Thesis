@@ -1,4 +1,5 @@
 from datetime import UTC, datetime
+import json
 from uuid import uuid4
 
 from fastapi import HTTPException, status
@@ -65,6 +66,18 @@ def _format_percent(value: float) -> str:
     if rounded.is_integer():
         return f"{int(rounded)}%"
     return f"{rounded}%"
+
+
+def _json_dump(value: list[dict]) -> str:
+    return json.dumps(value, ensure_ascii=False)
+
+
+def _json_load(value: str) -> list[dict]:
+    try:
+        decoded = json.loads(value or "[]")
+    except json.JSONDecodeError:
+        return []
+    return decoded if isinstance(decoded, list) else []
 
 
 def _count_farms_in_brgy(db: Session, brgy: str) -> int:
@@ -166,6 +179,7 @@ def queue_to_out(row: ValidationQueueItem) -> QueueItemOut:
 
 def survey_to_out(row: Survey) -> SurveyOut:
     return SurveyOut(
+        id=row.external_id or f"s{row.id}",
         date=row.survey_date,
         farm=row.farm,
         sector=row.sector,
@@ -174,6 +188,14 @@ def survey_to_out(row: Survey) -> SurveyOut:
         ai_result=row.ai_result,
         officer=row.officer,
         status=row.status,
+        confidence_pct=row.confidence_pct,
+        majority=row.majority,
+        breakdown=_json_load(row.breakdown_json),
+        per_photo=_json_load(row.per_photo_json),
+        recommendation_title=row.recommendation_title,
+        recommendation_description=row.recommendation_description,
+        recommendation_heading=row.recommendation_heading,
+        recommendation_text=row.recommendation_text,
     )
 
 
@@ -231,15 +253,26 @@ def notification_to_out(row: FarmerNotification) -> FarmerNotificationOut:
 
 def submission_to_out(row: FarmerSubmission) -> FarmerSubmissionOut:
     return FarmerSubmissionOut(
+        id=row.external_id or f"fs{row.id}",
         date=row.date_label,
         sector=row.sector,
         tag=row.tag,
         tag_class=row.tag_class,  # type: ignore[arg-type]
         color=row.color,
+        confidence_pct=row.confidence_pct,
+        image_count=row.image_count,
+        majority=row.majority,
+        breakdown=_json_load(row.breakdown_json),
+        per_photo=_json_load(row.per_photo_json),
+        recommendation_title=row.recommendation_title,
+        recommendation_description=row.recommendation_description,
+        recommendation_heading=row.recommendation_heading,
+        recommendation_text=row.recommendation_text,
     )
 
 
 def officer_bootstrap(db: Session) -> OfficerBootstrap:
+    _refresh_officer_farm_counts(db)
     registrations = {
         f"farm-reg-{row.id}": row
         for row in db.scalars(select(FarmerRegistration).where(FarmerRegistration.status == "approved")).all()
@@ -267,6 +300,7 @@ def officer_bootstrap(db: Session) -> OfficerBootstrap:
 
 
 def admin_bootstrap(db: Session) -> AdminBootstrap:
+    _refresh_officer_farm_counts(db)
     registrations = {
         f"farm-reg-{row.id}": row
         for row in db.scalars(select(FarmerRegistration).where(FarmerRegistration.status == "approved")).all()
@@ -486,7 +520,11 @@ def create_farmer_submission(
     farmer_id: str,
     body: FarmerSubmissionCreate,
 ) -> FarmerSubmissionOut:
+    queue_id = _external_id("q")
+    breakdown_json = _json_dump(body.breakdown)
+    per_photo_json = _json_dump(body.per_photo)
     row = FarmerSubmission(
+        external_id=queue_id,
         farmer_id=farmer_id,
         date_label=body.date_label,
         sector=body.sector,
@@ -496,6 +534,13 @@ def create_farmer_submission(
         confidence_pct=body.confidence_pct,
         uncertain=body.uncertain,
         image_count=body.image_count,
+        majority=body.majority,
+        breakdown_json=breakdown_json,
+        per_photo_json=per_photo_json,
+        recommendation_title=body.recommendation_title,
+        recommendation_description=body.recommendation_description,
+        recommendation_heading=body.recommendation_heading,
+        recommendation_text=body.recommendation_text,
     )
     db.add(row)
 
@@ -508,7 +553,6 @@ def create_farmer_submission(
     sector_code = body.sector.strip().upper()[:1]
     sector_label = SECTOR_LABELS.get(sector_code, body.sector)
     today = datetime.now(UTC).strftime("%Y-%m-%d")
-    queue_id = _external_id("q")
 
     conf_label = _format_percent(body.confidence_pct) if body.confidence_pct else "—"
     db.add(
@@ -534,6 +578,14 @@ def create_farmer_submission(
             ai_result=body.tag,
             officer=_officer_name_for_brgy(db, brgy),
             status=survey_status,
+            confidence_pct=body.confidence_pct,
+            majority=body.majority,
+            breakdown_json=breakdown_json,
+            per_photo_json=per_photo_json,
+            recommendation_title=body.recommendation_title,
+            recommendation_description=body.recommendation_description,
+            recommendation_heading=body.recommendation_heading,
+            recommendation_text=body.recommendation_text,
         ),
     )
 

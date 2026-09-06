@@ -1,18 +1,30 @@
 import { IconCalendar, IconClipboardList, IconDownload, IconFilter, IconSearch } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
+import AnalysisDetailsModal, { type AnalysisModalRecord } from "../../components/analysis/AnalysisDetailsModal";
 import { useDemoStore } from "../../context/DemoStoreContext";
 import { useBarangayOptions } from "../../hooks/useBarangayOptions";
 import { filterByBrgy, useOfficerScope } from "../../hooks/useOfficerScope";
 import { Card, CardHead, GhostButton, Pagination } from "../../components/ui/Card";
 import StatusBadge from "../../components/ui/StatusBadge";
-import type { FarmStatus } from "../../types/demoStore";
+import type { FarmStatus, SurveyRow } from "../../types/demoStore";
 import { displayBrgyLabel, normalizeBrgyLabel } from "../../utils/pcaFormat";
 
-function surveyStatusLabel(s: FarmStatus | "review") {
-  if (s === "healthy") return "Validated";
+function sectorCode(sector: string) {
+  return sector.trim().match(/^([A-D])/i)?.[1]?.toUpperCase() ?? sector.trim().toUpperCase();
+}
+
+function surveyStatusKey(s: FarmStatus | "review" | string) {
+  if (s === "healthy" || s === "validated") return "validated";
+  return s;
+}
+
+function surveyStatusLabel(s: FarmStatus | "review" | string) {
+  if (surveyStatusKey(s) === "validated") return "Validated";
   if (s === "pending") return "Pending";
   if (s === "review") return "Review";
-  return "Validated";
+  if (s === "caution") return "Caution";
+  if (s === "risk") return "Risk";
+  return "Review";
 }
 
 export default function OfficerSurveys() {
@@ -24,14 +36,15 @@ export default function OfficerSurveys() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [sectorFilter, setSectorFilter] = useState("all");
   const [brgyFilter, setBrgyFilter] = useState(assignedBrgy ? normalizeBrgyLabel(assignedBrgy) : "all");
+  const [selectedSurvey, setSelectedSurvey] = useState<SurveyRow | null>(null);
   const scoped = useMemo(() => filterByBrgy(surveys, assignedBrgy), [surveys, assignedBrgy]);
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim();
     return scoped.filter((s) => {
       const matchesText =
         !q || `${s.date} ${s.farm} ${s.sector} ${s.brgy} ${s.aiResult} ${s.officer}`.toLowerCase().includes(q);
-      const matchesStatus = statusFilter === "all" || s.status === statusFilter;
-      const matchesSector = sectorFilter === "all" || s.sector === sectorFilter;
+      const matchesStatus = statusFilter === "all" || surveyStatusKey(s.status) === statusFilter;
+      const matchesSector = sectorFilter === "all" || sectorCode(s.sector) === sectorFilter;
       const matchesBrgy = brgyFilter === "all" || normalizeBrgyLabel(s.brgy) === normalizeBrgyLabel(brgyFilter);
       return matchesText && matchesStatus && matchesSector && matchesBrgy;
     });
@@ -75,7 +88,7 @@ export default function OfficerSurveys() {
               <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-pca-muted">Status</span>
               <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="w-full rounded-lg border border-pca-border bg-white px-3 py-2 text-sm">
                 <option value="all">All statuses</option>
-                <option value="healthy">Validated</option>
+                <option value="validated">Validated</option>
                 <option value="pending">Pending</option>
                 <option value="review">Review</option>
                 <option value="caution">Caution</option>
@@ -113,7 +126,11 @@ export default function OfficerSurveys() {
             </thead>
             <tbody>
               {filtered.map((s) => (
-                <tr key={s.date + s.farm} className="border-b border-pca-border hover:bg-pca-bg">
+                <tr
+                  key={s.id ?? s.date + s.farm}
+                  onClick={() => setSelectedSurvey(s)}
+                  className="cursor-pointer border-b border-pca-border hover:bg-pca-bg"
+                >
                   <td className="px-4 py-3.5">{s.date}</td>
                   <td className="px-4 py-3.5">{s.farm}</td>
                   <td className="px-4 py-3.5">{s.sector}</td>
@@ -122,7 +139,7 @@ export default function OfficerSurveys() {
                   <td className="px-4 py-3.5">{s.aiResult}</td>
                   <td className="px-4 py-3.5">{s.officer}</td>
                   <td className="px-4 py-3.5">
-                    <StatusBadge status={s.status === "review" ? "caution" : s.status} label={surveyStatusLabel(s.status)} />
+                    <StatusBadge status={surveyStatusKey(s.status) === "validated" ? "healthy" : s.status === "review" ? "caution" : s.status} label={surveyStatusLabel(s.status)} />
                   </td>
                 </tr>
               ))}
@@ -134,6 +151,23 @@ export default function OfficerSurveys() {
         <span className="text-[13px] text-pca-muted">Showing {filtered.length} of {scoped.length} survey records</span>
         <Pagination />
       </div>
+      <AnalysisDetailsModal
+        open={Boolean(selectedSurvey)}
+        record={
+          selectedSurvey
+            ? ({
+                title: selectedSurvey.farm,
+                date: selectedSurvey.date,
+                farm: selectedSurvey.farm,
+                sector: sectorCode(selectedSurvey.sector),
+                brgy: selectedSurvey.brgy,
+                result: selectedSurvey.aiResult,
+                details: selectedSurvey.details,
+              } satisfies AnalysisModalRecord)
+            : null
+        }
+        onClose={() => setSelectedSurvey(null)}
+      />
     </div>
   );
 }

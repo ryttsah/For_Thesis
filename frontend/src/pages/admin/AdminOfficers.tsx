@@ -6,13 +6,13 @@ import { useDemoStore } from "../../context/DemoStoreContext";
 import { Card, CardHead } from "../../components/ui/Card";
 import { FormInput, FormSelect } from "../../components/ui/FormField";
 import { isApiEnabled } from "../../services/api";
-import { useBarangayOptions } from "../../hooks/useBarangayOptions";
+import { brgyMatches, useBarangayOptions } from "../../hooks/useBarangayOptions";
 import { assignOfficerApi, fetchAdminBootstrap, removeOfficerApi } from "../../services/domain";
 import { displayBrgyLabel, normalizeBrgyLabel } from "../../utils/pcaFormat";
 import type { OfficerRecord } from "../../types/demoStore";
 
 export default function AdminOfficers() {
-  const { officers, assignOfficer, removeOfficer, assignToast, syncAdminDomain } = useDemoStore();
+  const { officers, farms, assignOfficer, removeOfficer, assignToast, syncAdminDomain } = useDemoStore();
   const barangayOptions = useBarangayOptions();
   const [selectedEmp, setSelectedEmp] = useState(officers[0]?.empId ?? "");
   const [selectedBrgy, setSelectedBrgy] = useState("");
@@ -45,6 +45,10 @@ export default function AdminOfficers() {
   function resolveBrgy(): string {
     if (selectedBrgy === "__CUSTOM__") return customBrgy.trim();
     return selectedBrgy;
+  }
+
+  function farmsCoveredFor(brgy: string) {
+    return brgy && brgy !== "Unassigned" ? farms.filter((farm) => brgyMatches(farm.brgy, brgy)).length : "—";
   }
 
   async function handleAssign(empId: string, brgy: string) {
@@ -142,7 +146,7 @@ export default function AdminOfficers() {
                   <td className="px-4 py-3.5 font-mono text-xs">{o.empId}</td>
                   <td className="px-4 py-3.5">{o.phone}</td>
                   <td className="px-4 py-3.5">{displayBrgyLabel(o.brgy)}</td>
-                  <td className="px-4 py-3.5">{o.farmsCovered}</td>
+                  <td className="px-4 py-3.5">{farmsCoveredFor(o.brgy)}</td>
                   <td className="px-4 py-3.5">
                     <span
                       className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${o.status === "Active" ? "bg-pca-green-light text-pca-green" : "bg-yellow-50 text-amber-600"}`}

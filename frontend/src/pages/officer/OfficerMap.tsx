@@ -58,15 +58,16 @@ export default function OfficerMap() {
   );
 
   const mapSectors = useMemo(() => {
-    const groups = new Map<string, FarmRow[]>();
+    const groups = new Map<string, Map<string, FarmRow>>();
     const farmLookup = new Map(scopedFarms.map((farm) => [farm.name, farm]));
 
     for (const survey of scopedSurveys) {
       const code = sectorCodeFromFarm(survey.sector);
       if (code === "?") continue;
       const farm = farmLookup.get(survey.farm);
-      const list = groups.get(code) ?? [];
-      list.push({
+      const farmsByName = groups.get(code) ?? new Map<string, FarmRow>();
+      if (farmsByName.has(survey.farm)) continue;
+      farmsByName.set(survey.farm, {
         farmerId: farm?.farmerId,
         name: survey.farm,
         owner: farm?.owner ?? "Registered farmer",
@@ -77,21 +78,21 @@ export default function OfficerMap() {
         status: statusFromSurvey(survey),
         lastSurvey: survey.date,
       });
-      groups.set(code, list);
+      groups.set(code, farmsByName);
     }
 
     for (const farm of scopedFarms) {
       const code = sectorCodeFromFarm(farm.sector);
-      if (code === "?" || groups.has(code)) continue;
-      const list = groups.get(code) ?? [];
-      list.push(farm);
-      groups.set(code, list);
+      if (code === "?") continue;
+      const farmsByName = groups.get(code) ?? new Map<string, FarmRow>();
+      if (!farmsByName.has(farm.name)) farmsByName.set(farm.name, farm);
+      groups.set(code, farmsByName);
     }
 
     return ["A", "B", "C", "D"]
       .filter((code) => groups.has(code))
       .map((code) => {
-        const list = groups.get(code)!;
+        const list = [...groups.get(code)!.values()];
         const meta = SECTOR_META[code] ?? { dir: "Farm area", color: "#6b7280" };
         const brgy = list[0]?.brgy ?? assignedBrgy ?? "—";
         const healthy = list.filter((f) => f.status === "healthy").length;

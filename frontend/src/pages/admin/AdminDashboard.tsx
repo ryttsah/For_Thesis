@@ -6,6 +6,7 @@ import EmptyChartNote from "../../components/ui/EmptyChartNote";
 import { isApiEnabled } from "../../services/api";
 import { fetchConditionTrend, type ConditionTrendData } from "../../services/analytics";
 import { useDemoStore } from "../../context/DemoStoreContext";
+import { brgyMatches } from "../../hooks/useBarangayOptions";
 import { Card, CardHead } from "../../components/ui/Card";
 import MetricCard from "../../components/ui/MetricCard";
 
@@ -24,6 +25,8 @@ export default function AdminDashboard() {
   }, [farms.length, officers.length, pendingCount]);
 
   const highRisk = farms.filter((f) => f.status === "risk").length;
+  const farmsCoveredFor = (brgy: string) =>
+    brgy && brgy !== "Unassigned" ? farms.filter((farm) => brgyMatches(farm.brgy, brgy)).length : "—";
   const brgyGroups = farms.reduce<Record<string, number>>((acc, f) => {
     acc[f.brgy] = (acc[f.brgy] ?? 0) + 1;
     return acc;
@@ -123,7 +126,7 @@ export default function AdminDashboard() {
                   <tr key={o.empId} className="border-b border-pca-border hover:bg-pca-bg">
                     <td className="px-4 py-3.5 font-semibold">{o.name}</td>
                     <td className="px-4 py-3.5">{o.brgy}</td>
-                    <td className="px-4 py-3.5">{o.farmsCovered}</td>
+                    <td className="px-4 py-3.5">{farmsCoveredFor(o.brgy)}</td>
                     <td className="px-4 py-3.5">{o.lastActive}</td>
                   </tr>
                 ))

@@ -1,5 +1,7 @@
 import type {
   ApprovedFarmer,
+  AnalysisBreakdownItem,
+  AnalysisPhotoDetail,
   BookedSlot,
   FarmRow,
   FarmerNotification,
@@ -36,6 +38,7 @@ type ApiQueue = {
 };
 
 type ApiSurvey = {
+  id?: string;
   date: string;
   farm: string;
   sector: string;
@@ -44,6 +47,14 @@ type ApiSurvey = {
   ai_result: string;
   officer: string;
   status: string;
+  confidence_pct?: number;
+  majority?: string;
+  breakdown?: Record<string, unknown>[];
+  per_photo?: Record<string, unknown>[];
+  recommendation_title?: string;
+  recommendation_description?: string;
+  recommendation_heading?: string;
+  recommendation_text?: string;
 };
 
 type ApiVisit = {
@@ -87,11 +98,21 @@ type ApiNotification = {
 };
 
 type ApiSubmission = {
+  id?: string;
   date: string;
   sector: string;
   tag: string;
   tag_class: "green" | "orange" | "red";
   color: string;
+  confidence_pct?: number;
+  image_count?: number;
+  majority?: string;
+  breakdown?: Record<string, unknown>[];
+  per_photo?: Record<string, unknown>[];
+  recommendation_title?: string;
+  recommendation_description?: string;
+  recommendation_heading?: string;
+  recommendation_text?: string;
 };
 
 export interface FarmerProfile {
@@ -141,6 +162,7 @@ function mapQueue(q: ApiQueue): QueueItem {
 
 function mapSurvey(s: ApiSurvey): SurveyRow {
   return {
+    id: s.id,
     date: s.date,
     farm: s.farm,
     sector: s.sector,
@@ -149,6 +171,17 @@ function mapSurvey(s: ApiSurvey): SurveyRow {
     aiResult: s.ai_result,
     officer: s.officer,
     status: s.status as SurveyRow["status"],
+    details: {
+      confidencePct: s.confidence_pct ?? 0,
+      imageCount: s.images,
+      majority: s.majority ?? "",
+      breakdown: (s.breakdown ?? []) as unknown as AnalysisBreakdownItem[],
+      perPhoto: (s.per_photo ?? []) as unknown as AnalysisPhotoDetail[],
+      recommendationTitle: s.recommendation_title ?? "",
+      recommendationDescription: s.recommendation_description ?? "",
+      recommendationHeading: s.recommendation_heading ?? "",
+      recommendationText: s.recommendation_text ?? "",
+    },
   };
 }
 
@@ -202,11 +235,23 @@ function mapNotification(n: ApiNotification): FarmerNotification {
 
 function mapSubmission(s: ApiSubmission): FarmerSubmission {
   return {
+    id: s.id,
     date: s.date,
     sector: s.sector,
     tag: s.tag,
     tagClass: s.tag_class,
     color: s.color,
+    details: {
+      confidencePct: s.confidence_pct ?? 0,
+      imageCount: s.image_count ?? 1,
+      majority: s.majority ?? "",
+      breakdown: (s.breakdown ?? []) as unknown as AnalysisBreakdownItem[],
+      perPhoto: (s.per_photo ?? []) as unknown as AnalysisPhotoDetail[],
+      recommendationTitle: s.recommendation_title ?? "",
+      recommendationDescription: s.recommendation_description ?? "",
+      recommendationHeading: s.recommendation_heading ?? "",
+      recommendationText: s.recommendation_text ?? "",
+    },
   };
 }
 
@@ -418,7 +463,18 @@ export async function removeOfficerApi(empId: string): Promise<boolean> {
 
 export async function createFarmerSubmissionApi(
   payload: FarmerSubmission,
-  extras?: { confidencePct?: number; uncertain?: boolean; imageCount?: number },
+  extras?: {
+    confidencePct?: number;
+    uncertain?: boolean;
+    imageCount?: number;
+    majority?: string;
+    breakdown?: AnalysisBreakdownItem[];
+    perPhoto?: AnalysisPhotoDetail[];
+    recommendationTitle?: string;
+    recommendationDescription?: string;
+    recommendationHeading?: string;
+    recommendationText?: string;
+  },
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   if (!isApiEnabled()) return { ok: false, message: "API not configured." };
   const confidencePct = Math.max(0, Math.min(100, Math.round((extras?.confidencePct ?? 0) * 10) / 10));
@@ -435,6 +491,13 @@ export async function createFarmerSubmissionApi(
         confidence_pct: confidencePct,
         uncertain: extras?.uncertain ?? false,
         image_count: extras?.imageCount ?? 1,
+        majority: extras?.majority ?? payload.details?.majority ?? "",
+        breakdown: extras?.breakdown ?? payload.details?.breakdown ?? [],
+        per_photo: extras?.perPhoto ?? payload.details?.perPhoto ?? [],
+        recommendation_title: extras?.recommendationTitle ?? payload.details?.recommendationTitle ?? "",
+        recommendation_description: extras?.recommendationDescription ?? payload.details?.recommendationDescription ?? "",
+        recommendation_heading: extras?.recommendationHeading ?? payload.details?.recommendationHeading ?? "",
+        recommendation_text: extras?.recommendationText ?? payload.details?.recommendationText ?? "",
       }),
     });
     if (!response.ok) {

@@ -10,8 +10,9 @@ from app.api.predict import router as predict_router
 from app.api.reports import router as reports_router
 from app.api.registrations import router as registrations_router
 from app.core.config import get_settings
+from app.db.migrate import ensure_database_columns
 from app.db.seed import init_local_database
-from app.db.session import check_database_connection
+from app.db.session import check_database_connection, get_engine
 from app.ml.predictor import get_model_status
 
 settings = get_settings()
@@ -25,6 +26,10 @@ async def lifespan(_app: FastAPI):
         and settings.database_url.startswith("sqlite")
     ):
         init_local_database(seed_demo_data=settings.seed_demo_data)
+    elif settings.database_url and settings.auto_create_db:
+        engine = get_engine()
+        if engine is not None:
+            ensure_database_columns(engine)
     yield
 
 

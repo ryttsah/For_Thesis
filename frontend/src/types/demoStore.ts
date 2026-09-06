@@ -10,6 +10,33 @@ export interface QueueItem {
   validated?: boolean;
 }
 
+export interface AnalysisBreakdownItem {
+  label: string;
+  labelHil?: string;
+  count: number;
+  share: number;
+  color: string;
+}
+
+export interface AnalysisPhotoDetail {
+  fileName: string;
+  label: string;
+  labelHil?: string;
+  confidence: number;
+}
+
+export interface AnalysisDetails {
+  confidencePct?: number;
+  imageCount?: number;
+  majority?: string;
+  breakdown?: AnalysisBreakdownItem[];
+  perPhoto?: AnalysisPhotoDetail[];
+  recommendationTitle?: string;
+  recommendationDescription?: string;
+  recommendationHeading?: string;
+  recommendationText?: string;
+}
+
 export interface FarmRow {
   farmerId?: string | null;
   name: string;
@@ -23,6 +50,7 @@ export interface FarmRow {
 }
 
 export interface SurveyRow {
+  id?: string;
   date: string;
   farm: string;
   sector: string;
@@ -31,6 +59,7 @@ export interface SurveyRow {
   aiResult: string;
   officer: string;
   status: FarmStatus | "review";
+  details?: AnalysisDetails;
 }
 
 export interface PendingRegistration {
@@ -127,9 +156,11 @@ export interface SectorDetail {
 }
 
 export interface FarmerSubmission {
+  id?: string;
   date: string;
   sector: string;
   tag: string;
   tagClass: "green" | "orange" | "red";
   color: string;
+  details?: AnalysisDetails;
 }
