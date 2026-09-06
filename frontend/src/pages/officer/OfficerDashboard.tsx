@@ -126,10 +126,10 @@ export default function OfficerDashboard() {
               <p className="py-4 text-center text-sm text-pca-muted">No priority visits scheduled.</p>
             ) : (
               scopedPriority.slice(0, 3).map((v) => (
-                <div key={v.id} className="flex gap-3 rounded-xl border border-pca-red-soft bg-pca-red-light p-4">
-                  <IconAlertTriangle size={22} className="text-pca-red" />
-                  <div className="flex-1"><strong className="text-sm">{v.farm}</strong><p className="text-[13px] text-pca-muted">{v.desc}</p></div>
-                  <Link to="/officer/visits" className="rounded-lg border border-pca-green px-3 py-1.5 text-xs font-semibold text-pca-green"><IconEye size={14} className="inline" /> Review</Link>
+                <div key={v.id} className="flex flex-wrap items-start gap-3 rounded-xl border border-pca-red-soft bg-pca-red-light p-4 sm:flex-nowrap">
+                  <IconAlertTriangle size={22} className="mt-1 shrink-0 text-pca-red" />
+                  <div className="min-w-0 flex-1"><strong className="text-sm">{v.farm}</strong><p className="text-[13px] leading-relaxed text-pca-muted">{v.desc}</p></div>
+                  <Link to="/officer/visits" className="inline-flex h-9 shrink-0 items-center justify-center gap-1.5 self-center rounded-lg border border-pca-green bg-white px-3 text-xs font-semibold text-pca-green hover:bg-pca-green hover:text-white"><IconEye size={14} /> Review</Link>
                 </div>
               ))
             )}

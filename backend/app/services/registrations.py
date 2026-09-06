@@ -123,27 +123,34 @@ def _find_duplicate_registration(db: Session, body: RegistrationCreate) -> Farme
     first_name = _clean_text(body.first_name)
     middle_initial = _clean_text(body.middle_initial)
     last_name = _clean_text(body.last_name)
+    farm_address = _clean_text(body.farm_address)
     brgy = _clean_text(body.brgy)
     municipality = _clean_text(body.municipality)
+    province = _clean_text(body.province)
     phone_digits = _digits(body.phone)
     alt_phone_digits = _digits(body.alt_phone)
+    incoming_phones = {value for value in (phone_digits, alt_phone_digits) if value}
 
     existing_rows = db.scalars(
         select(FarmerRegistration).where(FarmerRegistration.status.in_(["pending", "approved"])),
     ).all()
     for row in existing_rows:
-        same_person_and_farm = (
+        same_name = (
             _clean_text(row.first_name) == first_name
             and _clean_text(row.middle_initial) == middle_initial
             and _clean_text(row.last_name) == last_name
+        )
+        same_address = (
+            _clean_text(row.farm_address) == farm_address
             and _clean_text(row.brgy) == brgy
             and _clean_text(row.municipality) == municipality
+            and _clean_text(row.province) == province
         )
         row_phone = _digits(row.phone)
         row_alt_phone = _digits(row.alt_phone)
-        same_phone = bool(phone_digits) and phone_digits in {row_phone, row_alt_phone}
-        same_alt_phone = bool(alt_phone_digits) and alt_phone_digits in {row_phone, row_alt_phone}
-        if same_person_and_farm or same_phone or same_alt_phone:
+        existing_phones = {value for value in (row_phone, row_alt_phone) if value}
+        same_phone = bool(incoming_phones & existing_phones)
+        if same_name and same_address and same_phone:
             return row
     return None
 

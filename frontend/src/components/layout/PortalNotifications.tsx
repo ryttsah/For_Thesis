@@ -1,19 +1,50 @@
 import { IconBell, IconX } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import { isApiEnabled } from "../../services/api";
 import { fetchPortalNotifications, type PortalNotification } from "../../services/analytics";
 
 export default function PortalNotifications() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<PortalNotification[]>([]);
+  const [seenIds, setSeenIds] = useState<Set<string>>(() => new Set());
   const rootRef = useRef<HTMLDivElement>(null);
+  const seenKey = user ? `pca_seen_notifications_${user.role}_${user.id}` : "";
 
   useEffect(() => {
-    if (!isApiEnabled() || !open) return;
+    if (!isApiEnabled()) return;
     void fetchPortalNotifications().then(setItems);
-  }, [open]);
+  }, [user?.id, user?.role]);
+
+  useEffect(() => {
+    if (!seenKey) return;
+    try {
+      const raw = localStorage.getItem(seenKey);
+      setSeenIds(new Set(raw ? (JSON.parse(raw) as string[]) : []));
+    } catch {
+      setSeenIds(new Set());
+    }
+  }, [seenKey]);
+
+  useEffect(() => {
+    if (!open || !seenKey || items.length === 0) return;
+    setSeenIds((current) => {
+      const next = new Set(current);
+      let changed = false;
+      for (const item of items) {
+        if (item.is_new && !item.id.endsWith("-ok") && !next.has(item.id)) {
+          next.add(item.id);
+          changed = true;
+        }
+      }
+      if (!changed) return current;
+      localStorage.setItem(seenKey, JSON.stringify([...next]));
+      return next;
+    });
+  }, [open, items, seenKey]);
 
   useEffect(() => {
     function onDocClick(e: MouseEvent) {
@@ -25,7 +56,7 @@ export default function PortalNotifications() {
     return () => document.removeEventListener("mousedown", onDocClick);
   }, [open]);
 
-  const unread = items.filter((n) => n.is_new && !n.id.endsWith("-ok")).length;
+  const unread = items.filter((n) => n.is_new && !n.id.endsWith("-ok") && !seenIds.has(n.id)).length;
 
   function openItem(href: string) {
     setOpen(false);

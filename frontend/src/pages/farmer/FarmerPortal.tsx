@@ -7,16 +7,19 @@ import {
   IconBell,
   IconCamera,
   IconChartBar,
+  IconChevronDown,
   IconCheck,
   IconCircleCheck,
   IconHistory,
   IconLeaf,
   IconLogout,
+  IconPhoto,
   IconSend,
   IconThumbDown,
   IconThumbUp,
+  IconX,
 } from "@tabler/icons-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RECOMMENDATIONS } from "../../constants/demoData";
 import { FARMER_I18N } from "../../constants/farmerI18n";
@@ -86,8 +89,13 @@ export default function FarmerPortal() {
   const [isSubmittingResult, setIsSubmittingResult] = useState(false);
   const [provincialStats, setProvincialStats] = useState<ProvincialStats | null>(null);
   const [sectorRows, setSectorRows] = useState<FarmerSectorRow[]>([]);
+  const [farmerNotificationsExpanded, setFarmerNotificationsExpanded] = useState(false);
+  const [seenFarmerNotificationIds, setSeenFarmerNotificationIds] = useState<Set<string>>(() => new Set());
+  const [selectedHistory, setSelectedHistory] = useState<FarmerSubmission | null>(null);
+  const [selectedImage, setSelectedImage] = useState<PerImagePredictResult | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const previewUrlsRef = useRef<string[]>([]);
+  const farmerSeenKey = `pca_seen_farmer_notifications_${user?.id ?? "guest"}`;
 
   useEffect(() => {
     if (!isApiEnabled() || isAuthLoading || !hasAuthToken()) return;
@@ -138,7 +146,37 @@ export default function FarmerPortal() {
     setAnalyzeError(aggregated.uncertain && aggregated.message ? aggregated.message : null);
   }
 
-  const newCount = farmerNotifications.filter((n) => n.isNew).length;
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(farmerSeenKey);
+      setSeenFarmerNotificationIds(new Set(raw ? (JSON.parse(raw) as string[]) : []));
+    } catch {
+      setSeenFarmerNotificationIds(new Set());
+    }
+  }, [farmerSeenKey]);
+
+  useEffect(() => {
+    if (!farmerNotificationsExpanded) return;
+    setSeenFarmerNotificationIds((current) => {
+      const next = new Set(current);
+      let changed = false;
+      for (const item of farmerNotifications) {
+        if (item.isNew && !next.has(item.id)) {
+          next.add(item.id);
+          changed = true;
+        }
+      }
+      if (!changed) return current;
+      localStorage.setItem(farmerSeenKey, JSON.stringify([...next]));
+      return next;
+    });
+  }, [farmerNotificationsExpanded, farmerNotifications, farmerSeenKey]);
+
+  const newCount = useMemo(
+    () => farmerNotifications.filter((n) => n.isNew && !seenFarmerNotificationIds.has(n.id)).length,
+    [farmerNotifications, seenFarmerNotificationIds],
+  );
+  const visibleFarmerNotifications = farmerNotificationsExpanded ? farmerNotifications : farmerNotifications.slice(0, 2);
   const rec = RECOMMENDATIONS[detectedPest][lang];
   const cardClass =
     detectedPest === "healthy" ? "healthy" : detectedPest === "yellowing" ? "warning" : "danger";
@@ -271,6 +309,14 @@ export default function FarmerPortal() {
 
   async function submitResult() {
     if (isSubmittingResult) return;
+    if (!feedback) {
+      setFeedbackMsg(
+        lang === "hil"
+          ? "Pilia anay kun husto ukon indi ang resulta antes ipadala sa PCA."
+          : "Please choose Yes or No before sending the result to PCA.",
+      );
+      return;
+    }
 
     const submission: FarmerSubmission = {
       date:
@@ -392,23 +438,48 @@ export default function FarmerPortal() {
           </div>
 
           <div className="f-card !mb-0">
-            <h3 className="mb-3 flex items-center gap-2 text-[15px] font-bold">
-              <IconBell size={18} className="text-orange-600" />
-              {FARMER_I18N.notifications[lang]}
-              <span className="rounded-full bg-pca-red-light px-2 py-0.5 text-[11px] font-bold text-pca-red">
-                {newCount} new
-              </span>
-            </h3>
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <h3 className="flex min-w-0 items-center gap-2 text-[15px] font-bold">
+                <IconBell size={18} className="shrink-0 text-orange-600" />
+                <span className="truncate">{FARMER_I18N.notifications[lang]}</span>
+                {newCount > 0 && (
+                  <span className="shrink-0 rounded-full bg-pca-red-light px-2 py-0.5 text-[11px] font-bold text-pca-red">
+                    {newCount} new
+                  </span>
+                )}
+              </h3>
+              {farmerNotifications.length > 2 && (
+                <button
+                  type="button"
+                  onClick={() => setFarmerNotificationsExpanded((v) => !v)}
+                  className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-pca-border text-pca-muted transition-all hover:bg-pca-bg hover:text-pca-text"
+                  aria-label={farmerNotificationsExpanded ? "Collapse notifications" : "Expand notifications"}
+                  aria-expanded={farmerNotificationsExpanded}
+                >
+                  <IconChevronDown
+                    size={18}
+                    className={`transition-transform ${farmerNotificationsExpanded ? "rotate-180" : ""}`}
+                  />
+                </button>
+              )}
+            </div>
             <div className="space-y-2">
-              {farmerNotifications.slice(0, 2).map((n) => (
+              {visibleFarmerNotifications.map((n) => (
                 <div key={n.id} className="flex items-center gap-3 rounded-xl border border-pca-bg bg-pca-bg/50 p-3">
                   <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: n.dot }} />
                   <div className="min-w-0 flex-1">
                     <div className="truncate text-xs font-bold">{n.dateLine}</div>
-                    <div className="truncate text-[11px] text-pca-muted">{n.body}</div>
+                    <div className={farmerNotificationsExpanded ? "text-[11px] leading-relaxed text-pca-muted" : "truncate text-[11px] text-pca-muted"}>
+                      {n.body}
+                    </div>
                   </div>
                 </div>
               ))}
+              {farmerNotifications.length === 0 && (
+                <p className="rounded-xl bg-pca-bg/50 p-3 text-sm text-pca-muted">
+                  {lang === "hil" ? "Wala pa sang pahibalo." : "No notifications yet."}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -612,7 +683,7 @@ export default function FarmerPortal() {
                 </div>
               )}
 
-              {perImageResults.length > 1 && (
+              {perImageResults.length > 0 && (
                 <div className="f-card !mb-0">
                   <h3 className="mb-4 text-[15px] font-black uppercase tracking-wider text-pca-text">Per-photo analysis</h3>
                   <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -621,7 +692,17 @@ export default function FarmerPortal() {
                       const meta = CLASS_DISPLAY[topLabel];
                       return (
                         <div key={`${row.index}-${row.fileName}`} className="flex items-center gap-3 rounded-xl border border-pca-border bg-white p-2.5 transition-all hover:border-pca-green-soft">
-                          <img src={row.previewUrl} alt="" className="h-12 w-12 shrink-0 rounded-lg object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => setSelectedImage(row)}
+                            className="group relative h-12 w-12 shrink-0 overflow-hidden rounded-lg"
+                            aria-label="View uploaded photo"
+                          >
+                            <img src={row.previewUrl} alt="" className="h-full w-full object-cover" />
+                            <span className="absolute inset-0 hidden items-center justify-center bg-black/35 text-white group-hover:flex">
+                              <IconPhoto size={18} />
+                            </span>
+                          </button>
                           <div className="min-w-0 flex-1">
                             <div className="break-words text-xs font-bold leading-snug text-pca-text">
                               {lang === "hil" ? meta.hil : meta.en}
@@ -650,7 +731,7 @@ export default function FarmerPortal() {
                 </div>
 
                 <div className="flex flex-col gap-3">
-                  <button type="button" disabled={isSubmittingResult} onClick={submitResult} className="flex items-center justify-center gap-2 rounded-xl bg-pca-green py-4 text-[16px] font-bold text-white shadow-lg shadow-pca-green/20 transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70"><IconSend size={20} />{isSubmittingResult ? (lang === "hil" ? "Ginapadala..." : "Sending...") : lang === "hil" ? "Ipadala sa PCA" : "Send to PCA"}</button>
+                  <button type="button" disabled={!feedback || isSubmittingResult} onClick={submitResult} className="flex items-center justify-center gap-2 rounded-xl bg-pca-green py-4 text-[16px] font-bold text-white shadow-lg shadow-pca-green/20 transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"><IconSend size={20} />{isSubmittingResult ? (lang === "hil" ? "Ginapadala..." : "Sending...") : lang === "hil" ? "Ipadala sa PCA" : "Send to PCA"}</button>
                   <button type="button" onClick={() => { resetUploadSession(); setStep(1); }} className="rounded-xl border border-pca-border py-4 text-[15px] font-bold text-pca-muted transition-all hover:bg-pca-bg hover:text-pca-text">{lang === "hil" ? "Mag-uli" : "Start over"}</button>
                 </div>
               </div>
@@ -677,7 +758,12 @@ export default function FarmerPortal() {
                 </h3>
                 <div className="space-y-3">
                   {farmerSubmissions.slice(0, 3).map((p, i) => (
-                    <div key={i} className="flex flex-col gap-3 rounded-xl border border-pca-border bg-white p-4 shadow-sm sm:flex-row sm:items-start">
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => setSelectedHistory(p)}
+                      className="flex w-full flex-col gap-3 rounded-xl border border-pca-border bg-white p-4 text-left shadow-sm transition-all hover:border-pca-green-soft hover:bg-pca-green-light/40 sm:flex-row sm:items-start"
+                    >
                       <div className="flex min-w-0 items-center gap-3 sm:w-28 sm:shrink-0">
                         <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: p.color }} />
                         <div className="min-w-0">
@@ -688,14 +774,78 @@ export default function FarmerPortal() {
                       <span className="min-w-0 rounded-lg bg-pca-green-light px-3 py-2 text-[10px] font-black uppercase leading-snug text-pca-green sm:flex-1">
                         {p.tag}
                       </span>
-                    </div>
+                    </button>
                   ))}
+                  {farmerSubmissions.length === 0 && (
+                    <p className="rounded-xl bg-pca-bg p-4 text-sm text-pca-muted">
+                      {lang === "hil" ? "Wala pa sang nakaaging analysis." : "No previous analysis yet."}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         )}
       </div>
+      {selectedImage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" role="dialog" aria-modal="true">
+          <div className="w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl">
+            <div className="flex items-center justify-between border-b border-pca-border px-4 py-3">
+              <div className="min-w-0">
+                <div className="truncate text-sm font-bold text-pca-text">{selectedImage.fileName}</div>
+                <div className="text-xs text-pca-muted">{selectedImage.result.confidence.toFixed(1)}% confidence</div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedImage(null)}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-pca-border text-pca-muted hover:bg-pca-bg hover:text-pca-text"
+                aria-label="Close image preview"
+              >
+                <IconX size={18} />
+              </button>
+            </div>
+            <img src={selectedImage.previewUrl} alt="" className="max-h-[75vh] w-full bg-black object-contain" />
+          </div>
+        </div>
+      )}
+      {selectedHistory && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4" role="dialog" aria-modal="true">
+          <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-2xl">
+            <div className="mb-4 flex items-start justify-between gap-4">
+              <div>
+                <div className="text-xs font-black uppercase tracking-widest text-pca-muted">
+                  {lang === "hil" ? "Detalye sang Analysis" : "Analysis Details"}
+                </div>
+                <h3 className="mt-1 text-xl font-black text-pca-text">Sector {selectedHistory.sector}</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedHistory(null)}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-pca-border text-pca-muted hover:bg-pca-bg hover:text-pca-text"
+                aria-label="Close history details"
+              >
+                <IconX size={18} />
+              </button>
+            </div>
+            <div className="space-y-3 text-sm">
+              <div className="rounded-xl border border-pca-border bg-pca-bg p-4">
+                <div className="text-xs font-bold uppercase tracking-wider text-pca-muted">
+                  {lang === "hil" ? "Petsa" : "Date"}
+                </div>
+                <div className="mt-1 font-bold text-pca-text">{selectedHistory.date}</div>
+              </div>
+              <div className="rounded-xl border border-pca-border bg-pca-bg p-4">
+                <div className="text-xs font-bold uppercase tracking-wider text-pca-muted">
+                  {lang === "hil" ? "Resulta" : "Result"}
+                </div>
+                <div className="mt-2 inline-flex rounded-lg bg-white px-3 py-2 font-black uppercase leading-snug text-pca-green">
+                  {selectedHistory.tag}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

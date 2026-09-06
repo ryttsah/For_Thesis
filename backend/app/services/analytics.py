@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 
 from app.models.domain import Farm, FarmerSubmission, Survey, ValidationQueueItem
 from app.models.farmer_registration import FarmerRegistration
+from app.services.brgy import brgy_match
 
 ConditionKey = Literal["healthy", "yellowing", "scale", "beetle"]
 
@@ -44,10 +45,10 @@ def _last_six_month_keys() -> list[tuple[int, int]]:
     y, m = now.year, now.month
     for _ in range(6):
         keys.append((y, m))
-        m -= 1
-        if m < 1:
-            m = 12
-            y -= 1
+        m += 1
+        if m > 12:
+            m = 1
+            y += 1
     return keys
 
 
@@ -81,7 +82,7 @@ def condition_trend(
 
     surveys = db.scalars(select(Survey).order_by(Survey.id)).all()
     for row in surveys:
-        if brgy and row.brgy != brgy:
+        if brgy and not brgy_match(row.brgy, brgy):
             continue
         try:
             parsed = datetime.strptime(row.survey_date[:10], "%Y-%m-%d")
