@@ -165,3 +165,21 @@ export interface FarmerSubmission {
   color: string;
   details?: AnalysisDetails;
 }
+
+export interface VisitLog {
+  id: string;
+  visitId: string;
+  farm: string;
+  brgy: string;
+  officerId: string;
+  officerName: string;
+  visited: boolean;
+  officerComment: string;
+  notVisitedReason: string;
+  recordedAt: string;
+  farmerConfirmed: boolean | null;
+  farmerRating: number | null;
+  farmerComment: string;
+  farmerReport: string;
+  adminFeedback: string;
+}

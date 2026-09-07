@@ -20,7 +20,8 @@ def format_display_date(dt: datetime) -> str:
 
 
 def full_name(row: FarmerRegistration) -> str:
-    parts = [row.first_name, row.middle_initial, row.last_name]
+    middle = f"{row.middle_initial.rstrip('.')}." if row.middle_initial else ""
+    parts = [row.first_name, middle, row.last_name]
     return " ".join(p for p in parts if p)
 
 

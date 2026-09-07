@@ -93,23 +93,16 @@ export default function PortalNotifications() {
               <IconX size={16} />
             </button>
           </div>
-          <ul className="max-h-80 overflow-y-auto p-2">
+          <ul className="max-h-80 overflow-y-auto">
             {items.length === 0 ? (
               <li className="px-3 py-4 text-center text-sm text-pca-muted">No notifications.</li>
             ) : (
               items.map((n) => (
-                <li key={n.id} className="mb-1 rounded-lg px-3 py-2.5 hover:bg-pca-bg">
-                  <div className="text-[13px] font-semibold text-pca-text">{n.title}</div>
-                  <p className="mt-0.5 text-xs leading-relaxed text-pca-muted">{n.body}</p>
-                  {n.href ? (
-                    <button
-                      type="button"
-                      onClick={() => openItem(n.href)}
-                      className="mt-2 rounded-md bg-pca-green px-2.5 py-1 text-xs font-semibold text-white hover:bg-pca-green-hover"
-                    >
-                      Open
-                    </button>
-                  ) : null}
+                <li key={n.id} className="border-b border-pca-border last:border-b-0">
+                  <button type="button" onClick={() => openItem(n.href)} className="w-full px-4 py-3.5 text-left transition-colors hover:bg-pca-bg">
+                    <div className="text-[13px] font-semibold text-pca-text">{n.title}</div>
+                    <p className="mt-0.5 text-xs leading-relaxed text-pca-muted">{n.body}</p>
+                  </button>
                 </li>
               ))
             )}

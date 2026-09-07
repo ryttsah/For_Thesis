@@ -32,32 +32,45 @@ export default function LoginPage() {
   const subtitle = farmerRegisterMode ? "Farmer registration" : "Sign in to continue";
 
   return (
-    <div className="flex min-h-full items-center justify-center bg-pca-bg p-6 lg:p-12">
-      {/* Container that allows the card to grow horizontally on large screens */}
-      <div className="w-full max-w-[440px] md:max-w-[800px] lg:max-w-[1000px]">
-
-        {/* Simple Branding Header - Stays centered or aligns left on desktop */}
-        <div className="mb-10 text-center md:text-left md:flex md:items-center md:gap-4">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm border border-pca-border md:mx-0 md:mb-0">
-            <IconLeaf size={32} stroke={1.5} className="text-pca-green" />
+    <div className="min-h-full bg-[#f6faf7] px-5 py-8 lg:py-14">
+      <div className="mx-auto w-full max-w-[1180px]">
+        <div className="mb-7 flex items-center gap-3 lg:ml-[11%]">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-pca-border bg-white shadow-sm">
+            <IconLeaf size={27} stroke={1.8} className="text-pca-green" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-pca-text md:text-3xl">CocoAnalytics</h1>
-            <p className="mt-1.5 text-[15px] font-medium text-pca-muted">{subtitle}</p>
+            <h1 className="text-2xl font-bold tracking-tight text-pca-text">CocoAnalytica</h1>
+            <p className="text-sm text-pca-muted">{subtitle}</p>
           </div>
         </div>
 
-        {/* The Card: Expands to a multi-column feel on desktop */}
-        <div className="overflow-hidden rounded-[32px] border border-pca-border bg-white shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
-          {!farmerRegisterMode && (
-            <div className="border-b border-pca-border bg-pca-bg/30 p-2 md:p-3">
-              <div className="mx-auto flex max-w-[500px] gap-2 md:max-w-none">
+        <div className="overflow-hidden rounded-2xl border border-pca-border bg-white shadow-[0_24px_65px_rgba(22,101,52,0.10)] lg:grid lg:grid-cols-[45%_55%]">
+          <section className="relative hidden min-h-[590px] overflow-hidden lg:block">
+            <img src="/images/dwarf-coconut-tree.png" alt="Dwarf coconut tree" className="absolute inset-0 h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-white/55" />
+            <div className="relative z-10 flex h-full max-w-[320px] flex-col justify-between p-10">
+              <div className="pt-20">
+                <h2 className="text-4xl font-bold leading-tight text-pca-green">Smarter Coconut Farming with Data</h2>
+                <p className="mt-4 text-base leading-relaxed text-pca-muted">Capture coconut leaf conditions, receive AI-assisted results, and keep farm records connected with PCA.</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wide text-pca-green">Secure access</p>
+                <p className="mt-2 text-xs leading-relaxed text-pca-muted">Coconut monitoring, field visits, and officer feedback in one system.</p>
+                <p className="mt-6 text-xs text-pca-muted">© 2026 CocoAnalytica</p>
+              </div>
+            </div>
+          </section>
+
+          <section className="p-4 sm:p-7 lg:p-10">
+            {!farmerRegisterMode && (
+              <div className="mb-6 rounded-xl border border-pca-border bg-pca-bg/50 p-1.5">
+              <div className="flex gap-1.5">
                 {TABS.map(({ id, label, icon: Icon }) => (
                   <button
                     key={id}
                     type="button"
                     onClick={() => switchTab(id)}
-                    className={`flex flex-1 items-center justify-center gap-3 rounded-2xl py-3 text-[14px] font-bold transition-all ${
+                    className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-[13px] font-bold transition-all ${
                       activeTab === id
                         ? "bg-white text-pca-green shadow-md ring-1 ring-black/5"
                         : "text-pca-muted hover:bg-white/50 hover:text-pca-text"
@@ -70,27 +83,7 @@ export default function LoginPage() {
               </div>
             </div>
           )}
-
-          <div className="md:flex md:items-stretch">
-            {/* Optional visual/info area for desktop to make card feel "fuller" */}
-            <div className="hidden w-1/3 border-r border-pca-border bg-pca-bg/20 p-8 md:flex flex-col justify-center">
-              <div className="space-y-6">
-                <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-pca-green">Secure Access</h4>
-                  <p className="mt-2 text-sm text-pca-muted leading-relaxed">
-                    Protecting the coconut industry through data-driven insights and AI diagnostics.
-                  </p>
-                </div>
-                <div className="h-px bg-pca-border w-12" />
-                <div className="text-xs text-pca-muted font-medium">
-                  Version 0.1.0-beta <br/>
-                  © 2024 CocoAnalytics
-                </div>
-              </div>
-            </div>
-
-            {/* Form Area: Widens on desktop */}
-            <div className="flex-1 py-4 md:py-8 lg:px-4">
+            <div>
               {activeTab === "officer" && (
                 <div className="animate-fade-in">
                   <RoleLoginForm
@@ -124,12 +117,12 @@ export default function LoginPage() {
                 </div>
               )}
             </div>
-          </div>
+          </section>
         </div>
 
         {/* Footer info */}
         <p className="mt-8 text-center text-xs font-medium text-pca-muted/70 md:text-left">
-          CocoAnalytics · Coconut Farm Monitoring System
+          CocoAnalytica · Coconut Farm Monitoring System
         </p>
       </div>
     </div>

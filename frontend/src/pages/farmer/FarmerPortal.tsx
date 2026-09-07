@@ -15,6 +15,7 @@ import {
   IconLogout,
   IconPhoto,
   IconSend,
+  IconStar,
   IconThumbDown,
   IconThumbUp,
   IconX,
@@ -29,7 +30,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useDemoStore } from "../../context/DemoStoreContext";
 import { hasAuthToken, isApiEnabled } from "../../services/api";
 import { fetchFarmerSectorStatus, fetchProvincialStats, type FarmerSectorRow, type ProvincialStats } from "../../services/analytics";
-import { createFarmerSubmissionApi, fetchFarmerBootstrap, type FarmerProfile } from "../../services/domain";
+import { createFarmerSubmissionApi, fetchFarmerBootstrap, submitFarmerVisitFeedbackApi, type FarmerProfile } from "../../services/domain";
 import {
   CLASS_DISPLAY,
   CLASS_ORDER,
@@ -58,9 +59,15 @@ function LoadingRing({ size = "h-16 w-16" }: { size?: string }) {
 export default function FarmerPortal() {
   const { user, logout, isAuthLoading } = useAuth();
   const navigate = useNavigate();
-  const { farmerNotifications, farmerSubmissions, addFarmerSubmission, syncFarmerDomain } = useDemoStore();
+  const { farmerNotifications, farmerSubmissions, visitLogs, addFarmerSubmission, syncFarmerDomain } = useDemoStore();
 
   const [farmerProfile, setFarmerProfile] = useState<FarmerProfile | null>(null);
+  const [feedbackLogId, setFeedbackLogId] = useState<string | null>(null);
+  const [visitConfirmed, setVisitConfirmed] = useState<boolean | null>(null);
+  const [visitRating, setVisitRating] = useState(0);
+  const [visitComment, setVisitComment] = useState("");
+  const [visitReport, setVisitReport] = useState("");
+  const [visitFeedbackError, setVisitFeedbackError] = useState("");
   useEffect(() => {
     if (!isApiEnabled() || isAuthLoading || !hasAuthToken()) return;
     void fetchFarmerBootstrap().then((data) => {
@@ -447,6 +454,17 @@ export default function FarmerPortal() {
   const farmerFarmLine = farmerProfile
     ? `${farmerProfile.farm} — ${farmerProfile.sector}, ${farmerProfile.brgy}, ${farmerProfile.municipality}`
     : `${user?.id ?? "Farmer account"} — ${lang === "hil" ? "ginakuha ang detalye sang umahan" : "loading farm details"}`;
+  const farmerVisitLogs = farmerProfile ? visitLogs.filter((log) => log.farm === farmerProfile.farm) : [];
+
+  async function saveVisitFeedback() {
+    if (!feedbackLogId || visitConfirmed === null) { setVisitFeedbackError("Please confirm whether the officer completed the visit."); return; }
+    if (visitConfirmed && visitRating === 0) { setVisitFeedbackError("Please choose a rating from 1 to 5 stars."); return; }
+    const result = await submitFarmerVisitFeedbackApi(feedbackLogId, { farmerConfirmed: visitConfirmed, rating: visitConfirmed ? visitRating : undefined, comment: visitComment, report: visitReport });
+    if (!result.ok) { setVisitFeedbackError(result.message ?? "Could not save feedback."); return; }
+    const data = await fetchFarmerBootstrap();
+    if (data) { syncFarmerDomain(data); setFarmerProfile(data.profile); }
+    setFeedbackLogId(null); setVisitConfirmed(null); setVisitRating(0); setVisitComment(""); setVisitReport(""); setVisitFeedbackError("");
+  }
 
   const t = {
     portal: FARMER_I18N.portal[lang],
@@ -472,7 +490,7 @@ export default function FarmerPortal() {
               <IconLeaf size={24} className="text-pca-green" />
             </div>
             <div>
-              <div className="text-[17px] font-bold tracking-tight">CocoAnalytics</div>
+              <div className="text-[17px] font-bold tracking-tight">CocoAnalytica</div>
               <div className="text-xs font-medium text-pca-muted">{t.portal}</div>
             </div>
           </div>
@@ -510,6 +528,9 @@ export default function FarmerPortal() {
             <div className="mt-4 rounded-xl border border-pca-green-soft bg-pca-green-light px-4 py-3.5 text-[14px] text-pca-green">
               <span className="font-bold">{lang === "hil" ? "Imo Umahan:" : "Your Farm:"}</span> {farmerFarmLine}
             </div>
+            <p className="mt-3 text-xs font-medium text-pca-muted">
+              {lang === "hil" ? "Pahanumdom: Ang isa ka litrato katumbas sang isa ka lubi nga puno." : "Note: One photo/picture represents one coconut palm tree."}
+            </p>
           </div>
 
           <div className="f-card !mb-0">
@@ -871,6 +892,15 @@ export default function FarmerPortal() {
           </div>
         )}
       </div>
+      {farmerVisitLogs.length > 0 && (
+        <section className="mx-auto mb-8 max-w-[1000px] px-4 lg:px-8">
+          <div className="f-card !mb-0">
+            <h3 className="flex items-center gap-2 text-base font-bold"><IconCheck size={18} className="text-pca-green" />{lang === "hil" ? "Feedback sa Pagbisita sang Opisyal" : "Officer Visit Feedback"}</h3>
+            <p className="mt-2 text-[13px] text-pca-muted">{lang === "hil" ? "Kumpirmaha kon nakabisita ang opisyal kag ihatag ang imo pagtilaw ukon report." : "Confirm whether the officer completed the visit, rate the service, or report a concern."}</p>
+            <div className="mt-4 space-y-3">{farmerVisitLogs.map((log) => <div key={log.id} className="rounded-xl border border-pca-border p-4"><div className="flex flex-wrap items-start justify-between gap-2"><div><p className="font-semibold">{log.officerName}</p><p className="text-xs text-pca-muted">{log.recordedAt}</p></div><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${log.visited ? "bg-pca-green-light text-pca-green" : "bg-pca-red-light text-pca-red"}`}>{log.visited ? "Visit recorded" : "Visit not completed"}</span></div><p className="mt-3 text-sm">{log.visited ? log.officerComment : log.notVisitedReason}</p>{log.farmerConfirmed !== null ? <p className="mt-3 text-xs font-semibold text-pca-green">Your feedback was submitted{log.farmerRating ? ` · ${log.farmerRating}/5 stars` : ""}.</p> : <button type="button" onClick={() => { setFeedbackLogId(log.visitId); setVisitConfirmed(null); setVisitRating(0); setVisitComment(""); setVisitReport(""); setVisitFeedbackError(""); }} className="mt-3 text-sm font-bold text-pca-green hover:underline">Confirm and rate this visit</button>}</div>)}</div>
+          </div>
+        </section>
+      )}
       {selectedImage && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" role="dialog" aria-modal="true">
           <div className="w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl">
@@ -916,6 +946,7 @@ export default function FarmerPortal() {
         lang={lang}
         onClose={() => setRecommendationsOpen(false)}
       />
+      {feedbackLogId && <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/45 p-4"><div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl"><div className="flex items-start justify-between"><div><p className="text-xs font-bold uppercase tracking-wide text-pca-muted">Officer visit feedback</p><h2 className="mt-1 text-xl font-bold">Confirm the visit</h2></div><button onClick={() => setFeedbackLogId(null)} className="rounded-lg border border-pca-border p-2"><IconX size={20}/></button></div><div className="mt-4 grid grid-cols-2 gap-2"><button type="button" onClick={() => setVisitConfirmed(true)} className={`rounded-lg border p-3 text-sm font-bold ${visitConfirmed === true ? "border-pca-green bg-pca-green-light text-pca-green" : "border-pca-border"}`}>Officer visited</button><button type="button" onClick={() => setVisitConfirmed(false)} className={`rounded-lg border p-3 text-sm font-bold ${visitConfirmed === false ? "border-pca-red bg-pca-red-light text-pca-red" : "border-pca-border"}`}>Officer did not visit</button></div>{visitConfirmed && <div className="mt-4"><p className="text-sm font-semibold">Rate the officer</p><div className="mt-2 flex gap-1">{[1,2,3,4,5].map((star) => <button key={star} type="button" onClick={() => setVisitRating(star)} className={star <= visitRating ? "text-amber-500" : "text-slate-300"} aria-label={`${star} stars`}><IconStar size={28} fill="currentColor"/></button>)}</div></div>}<textarea value={visitComment} onChange={(e) => setVisitComment(e.target.value)} className="mt-4 min-h-24 w-full rounded-lg border border-pca-border p-3 text-sm" placeholder="Comment about the officer's service (optional)"/><textarea value={visitReport} onChange={(e) => setVisitReport(e.target.value)} className="mt-3 min-h-20 w-full rounded-lg border border-pca-border p-3 text-sm" placeholder="Report a concern, if any (optional)"/>{visitFeedbackError && <p className="mt-2 text-sm text-pca-red">{visitFeedbackError}</p>}<button type="button" onClick={() => void saveVisitFeedback()} className="mt-4 w-full rounded-lg bg-pca-green px-4 py-3 text-sm font-bold text-white">Submit feedback</button></div></div>}
     </div>
   );
 }

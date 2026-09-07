@@ -19,6 +19,7 @@ import type {
   QueueItem,
   RejectedAudit,
   ScheduledVisit,
+  VisitLog,
 } from "../types/demoStore";
 
 interface DemoStoreValue {
@@ -29,6 +30,7 @@ interface DemoStoreValue {
   approvedFarmers: ApprovedFarmer[];
   rejectedAudit: RejectedAudit[];
   scheduledVisits: ScheduledVisit[];
+  visitLogs: VisitLog[];
   bookedSlots: BookedSlot[];
   farmerNotifications: FarmerNotification[];
   officers: OfficerRecord[];
@@ -66,16 +68,20 @@ interface DemoStoreValue {
     bookedSlots: BookedSlot[];
     priorityVisits: PriorityVisit[];
     officers: OfficerRecord[];
+    visitLogs: VisitLog[];
   }) => void;
   syncAdminDomain: (data: {
     farms: FarmRow[];
     surveys: SurveyRow[];
     officers: OfficerRecord[];
     scheduledVisits: ScheduledVisit[];
+    visitLogs: VisitLog[];
   }) => void;
   syncFarmerDomain: (data: {
     notifications: FarmerNotification[];
     submissions: FarmerSubmission[];
+    visits?: ScheduledVisit[];
+    visitLogs?: VisitLog[];
   }) => void;
 }
 
@@ -99,6 +105,7 @@ export function DemoStoreProvider({ children }: { children: ReactNode }) {
   const [approvedFarmers, setApproved] = useState<ApprovedFarmer[]>([]);
   const [rejectedAudit, setRejectedAudit] = useState<RejectedAudit[]>([]);
   const [scheduledVisits, setVisits] = useState<ScheduledVisit[]>([]);
+  const [visitLogs, setVisitLogs] = useState<VisitLog[]>([]);
   const [bookedSlots, setBooked] = useState<BookedSlot[]>([]);
   const [farmerNotifications, setNotifs] = useState<FarmerNotification[]>([]);
   const [officers, setOfficers] = useState<OfficerRecord[]>([]);
@@ -307,6 +314,7 @@ export function DemoStoreProvider({ children }: { children: ReactNode }) {
       bookedSlots: BookedSlot[];
       priorityVisits: PriorityVisit[];
       officers: OfficerRecord[];
+      visitLogs: VisitLog[];
     }) => {
       setFarms(data.farms);
       setSurveys(data.surveys);
@@ -315,6 +323,7 @@ export function DemoStoreProvider({ children }: { children: ReactNode }) {
       setBooked(data.bookedSlots);
       setPriority(data.priorityVisits);
       setOfficers(data.officers);
+      setVisitLogs(data.visitLogs);
     },
     [],
   );
@@ -325,19 +334,23 @@ export function DemoStoreProvider({ children }: { children: ReactNode }) {
       surveys: SurveyRow[];
       officers: OfficerRecord[];
       scheduledVisits: ScheduledVisit[];
+      visitLogs: VisitLog[];
     }) => {
       setFarms(data.farms);
       setSurveys(data.surveys);
       setOfficers(data.officers);
       setVisits(data.scheduledVisits);
+      setVisitLogs(data.visitLogs);
     },
     [],
   );
 
   const syncFarmerDomain = useCallback(
-    (data: { notifications: FarmerNotification[]; submissions: FarmerSubmission[] }) => {
+    (data: { notifications: FarmerNotification[]; submissions: FarmerSubmission[]; visits?: ScheduledVisit[]; visitLogs?: VisitLog[] }) => {
       setNotifs(data.notifications);
       setSubmissions(data.submissions);
+      if (data.visits) setVisits(data.visits);
+      if (data.visitLogs) setVisitLogs(data.visitLogs);
     },
     [],
   );
@@ -351,6 +364,7 @@ export function DemoStoreProvider({ children }: { children: ReactNode }) {
       approvedFarmers,
       rejectedAudit,
       scheduledVisits,
+      visitLogs,
       bookedSlots,
       farmerNotifications,
       officers,
@@ -388,6 +402,7 @@ export function DemoStoreProvider({ children }: { children: ReactNode }) {
       approvedFarmers,
       rejectedAudit,
       scheduledVisits,
+      visitLogs,
       bookedSlots,
       farmerNotifications,
       officers,

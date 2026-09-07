@@ -12,6 +12,7 @@ import type {
   QueueItem,
   RejectedAudit,
   ScheduledVisit,
+  VisitLog,
   SurveyRow,
 } from "../types/demoStore";
 import { getApiBase, getAuthHeaders, isApiEnabled, parseErrorMessage } from "./api";
@@ -113,6 +114,13 @@ type ApiSubmission = {
   recommendation_description?: string;
   recommendation_heading?: string;
   recommendation_text?: string;
+};
+
+type ApiVisitLog = {
+  id: string; visit_id: string; farm: string; brgy: string; officer_id: string; officer_name: string;
+  visited: boolean; officer_comment: string; not_visited_reason: string; recorded_at: string;
+  farmer_confirmed: boolean | null; farmer_rating: number | null; farmer_comment: string;
+  farmer_report: string; admin_feedback: string;
 };
 
 export interface FarmerProfile {
@@ -255,6 +263,14 @@ function mapSubmission(s: ApiSubmission): FarmerSubmission {
   };
 }
 
+function mapVisitLog(v: ApiVisitLog): VisitLog {
+  return { id: v.id, visitId: v.visit_id, farm: v.farm, brgy: v.brgy, officerId: v.officer_id,
+    officerName: v.officer_name, visited: v.visited, officerComment: v.officer_comment,
+    notVisitedReason: v.not_visited_reason, recordedAt: v.recorded_at, farmerConfirmed: v.farmer_confirmed,
+    farmerRating: v.farmer_rating, farmerComment: v.farmer_comment, farmerReport: v.farmer_report,
+    adminFeedback: v.admin_feedback };
+}
+
 export interface OfficerDomainData {
   farms: FarmRow[];
   surveys: SurveyRow[];
@@ -263,6 +279,7 @@ export interface OfficerDomainData {
   bookedSlots: BookedSlot[];
   priorityVisits: PriorityVisit[];
   officers: OfficerRecord[];
+  visitLogs: VisitLog[];
 }
 
 export interface AdminDomainData {
@@ -270,12 +287,15 @@ export interface AdminDomainData {
   surveys: SurveyRow[];
   officers: OfficerRecord[];
   scheduledVisits: ScheduledVisit[];
+  visitLogs: VisitLog[];
 }
 
 export interface FarmerDomainData {
   profile: FarmerProfile | null;
   notifications: FarmerNotification[];
   submissions: FarmerSubmission[];
+  visits: ScheduledVisit[];
+  visitLogs: VisitLog[];
 }
 
 export async function fetchOfficerBootstrap(): Promise<OfficerDomainData | null> {
@@ -297,6 +317,7 @@ export async function fetchOfficerBootstrap(): Promise<OfficerDomainData | null>
       })),
       priorityVisits: (data.priority_visits as ApiPriority[]).map(mapPriority),
       officers: (data.officers as ApiOfficer[]).map(mapOfficer),
+      visitLogs: ((data.visit_logs ?? []) as ApiVisitLog[]).map(mapVisitLog),
     };
   } catch {
     return null;
@@ -316,6 +337,7 @@ export async function fetchAdminBootstrap(): Promise<AdminDomainData | null> {
       surveys: (data.surveys as ApiSurvey[]).map(mapSurvey),
       officers: (data.officers as ApiOfficer[]).map(mapOfficer),
       scheduledVisits: (data.scheduled_visits as ApiVisit[]).map(mapVisit),
+      visitLogs: ((data.visit_logs ?? []) as ApiVisitLog[]).map(mapVisitLog),
     };
   } catch {
     return null;
@@ -344,6 +366,8 @@ export async function fetchFarmerBootstrap(): Promise<FarmerDomainData | null> {
         : null,
       notifications: (data.notifications as ApiNotification[]).map(mapNotification),
       submissions: (data.submissions as ApiSubmission[]).map(mapSubmission),
+      visits: ((data.visits ?? []) as ApiVisit[]).map(mapVisit),
+      visitLogs: ((data.visit_logs ?? []) as ApiVisitLog[]).map(mapVisitLog),
     };
   } catch {
     return null;
@@ -510,6 +534,30 @@ export async function createFarmerSubmissionApi(
   } catch {
     return { ok: false, message: "Cannot reach the server. Please try again." };
   }
+}
+
+export async function recordVisitOutcomeApi(visitId: string, payload: { visited: boolean; officerComment: string; notVisitedReason: string }): Promise<{ ok: boolean; message?: string }> {
+  if (!isApiEnabled()) return { ok: false, message: "API not configured." };
+  try {
+    const response = await fetch(`${getApiBase()}/visits/${visitId}/outcome`, { method: "POST", headers: { ...getAuthHeaders(), "Content-Type": "application/json" }, body: JSON.stringify({ visited: payload.visited, officer_comment: payload.officerComment, not_visited_reason: payload.notVisitedReason }) });
+    return response.ok ? { ok: true } : { ok: false, message: await parseErrorMessage(response, "Could not save the visit log.") };
+  } catch { return { ok: false, message: "Could not reach the server." }; }
+}
+
+export async function submitFarmerVisitFeedbackApi(visitId: string, payload: { farmerConfirmed: boolean; rating?: number; comment: string; report: string }): Promise<{ ok: boolean; message?: string }> {
+  if (!isApiEnabled()) return { ok: false, message: "API not configured." };
+  try {
+    const response = await fetch(`${getApiBase()}/visits/${visitId}/farmer-feedback`, { method: "POST", headers: { ...getAuthHeaders(), "Content-Type": "application/json" }, body: JSON.stringify({ farmer_confirmed: payload.farmerConfirmed, rating: payload.rating ?? null, comment: payload.comment, report: payload.report }) });
+    return response.ok ? { ok: true } : { ok: false, message: await parseErrorMessage(response, "Could not save your feedback.") };
+  } catch { return { ok: false, message: "Could not reach the server." }; }
+}
+
+export async function submitAdminVisitFeedbackApi(visitId: string, feedback: string): Promise<{ ok: boolean; message?: string }> {
+  if (!isApiEnabled()) return { ok: false, message: "API not configured." };
+  try {
+    const response = await fetch(`${getApiBase()}/visits/${visitId}/admin-feedback`, { method: "POST", headers: { ...getAuthHeaders(), "Content-Type": "application/json" }, body: JSON.stringify({ feedback }) });
+    return response.ok ? { ok: true } : { ok: false, message: await parseErrorMessage(response, "Could not save admin feedback.") };
+  } catch { return { ok: false, message: "Could not reach the server." }; }
 }
 
 export interface CreateOfficerPayload {

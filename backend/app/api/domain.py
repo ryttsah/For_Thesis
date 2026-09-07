@@ -23,6 +23,10 @@ from app.schemas.domain import (
     QueueItemOut,
     ScheduleVisitRequest,
     ScheduledVisitOut,
+    VisitOutcomeRequest,
+    VisitLogOut,
+    FarmerVisitFeedbackRequest,
+    AdminVisitFeedbackRequest,
 )
 from app.services import domain as domain_service
 
@@ -92,6 +96,47 @@ def complete_priority(
     result = domain_service.complete_priority_visit(db, visit_id)
     if result is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Priority visit not found")
+    return result
+
+
+@router.post("/visits/{visit_id}/outcome", response_model=VisitLogOut)
+def record_visit_outcome(
+    visit_id: str,
+    body: VisitOutcomeRequest,
+    db: Annotated[Session, Depends(get_db)],
+    officer_id: Annotated[str, Depends(get_current_user_id)],
+    _role: Annotated[str, Depends(require_role("officer"))],
+) -> VisitLogOut:
+    result = domain_service.record_visit_outcome(db, visit_id, officer_id, body)
+    if result is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scheduled visit not found")
+    return result
+
+
+@router.post("/visits/{visit_id}/farmer-feedback", response_model=VisitLogOut)
+def farmer_visit_feedback(
+    visit_id: str,
+    body: FarmerVisitFeedbackRequest,
+    db: Annotated[Session, Depends(get_db)],
+    farmer_id: Annotated[str, Depends(get_current_user_id)],
+    _role: Annotated[str, Depends(require_role("farmer"))],
+) -> VisitLogOut:
+    result = domain_service.add_farmer_visit_feedback(db, visit_id, farmer_id, body)
+    if result is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Visit log not found")
+    return result
+
+
+@router.post("/visits/{visit_id}/admin-feedback", response_model=VisitLogOut)
+def admin_visit_feedback(
+    visit_id: str,
+    body: AdminVisitFeedbackRequest,
+    db: Annotated[Session, Depends(get_db)],
+    _role: Annotated[str, Depends(require_role("admin"))],
+) -> VisitLogOut:
+    result = domain_service.add_admin_visit_feedback(db, visit_id, body.feedback)
+    if result is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Visit log not found")
     return result
 
 

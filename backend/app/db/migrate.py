@@ -29,6 +29,13 @@ def ensure_database_columns(engine: Engine) -> None:
             ("recommendation_heading", "TEXT NOT NULL DEFAULT ''"),
             ("recommendation_text", "TEXT NOT NULL DEFAULT ''"),
         ],
+        "visit_logs": [
+            ("farmer_confirmed", "BOOLEAN"),
+            ("farmer_rating", "INTEGER"),
+            ("farmer_comment", "TEXT NOT NULL DEFAULT ''"),
+            ("farmer_report", "TEXT NOT NULL DEFAULT ''"),
+            ("admin_feedback", "TEXT NOT NULL DEFAULT ''"),
+        ],
     }
 
     insp = inspect(engine)

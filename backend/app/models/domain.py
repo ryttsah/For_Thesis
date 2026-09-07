@@ -67,6 +67,28 @@ class ScheduledVisit(Base):
     purpose: Mapped[str] = mapped_column(Text, nullable=False, default="")
 
 
+class VisitLog(Base):
+    """Officer field-visit outcome and the two-way accountability feedback."""
+
+    __tablename__ = "visit_logs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    scheduled_visit_id: Mapped[str] = mapped_column(String(32), unique=True, nullable=False, index=True)
+    farm: Mapped[str] = mapped_column(String(120), nullable=False)
+    brgy: Mapped[str] = mapped_column(String(120), nullable=False, index=True)
+    officer_id: Mapped[str] = mapped_column(String(32), nullable=False)
+    officer_name: Mapped[str] = mapped_column(String(80), nullable=False)
+    visited: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    officer_comment: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    not_visited_reason: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    recorded_at: Mapped[str] = mapped_column(String(40), nullable=False)
+    farmer_confirmed: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    farmer_rating: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    farmer_comment: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    farmer_report: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    admin_feedback: Mapped[str] = mapped_column(Text, nullable=False, default="")
+
+
 class BookedSlot(Base):
     __tablename__ = "booked_slots"
     __table_args__ = (UniqueConstraint("visit_date", "slot", name="uq_booked_slot"),)

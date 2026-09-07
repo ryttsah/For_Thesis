@@ -65,7 +65,8 @@ function sanitizeBrgy(raw: string) {
 }
 
 function formatMiddleInitial(raw: string) {
-  return sanitizeLetters(raw).trim().slice(0, 1).toUpperCase();
+  const initial = sanitizeLetters(raw).replace(/\./g, "").trim().slice(0, 1).toUpperCase();
+  return initial ? `${initial}.` : "";
 }
 
 function formatPhonePH(raw: string) {
@@ -84,7 +85,7 @@ function clampTwoDecimals(raw: string) {
   const cleaned = raw.replace(/,/g, ".").replace(/[^0-9.]/g, "");
   const [intPart, decPart = ""] = cleaned.split(".");
   const dec = decPart.slice(0, 2);
-  return dec.length ? `${intPart || "0"}.${dec}` : intPart;
+  return cleaned.includes(".") ? `${intPart || "0"}.${dec}` : intPart;
 }
 
 export default function FarmerRegistrationForm({ onBackToSignIn }: FarmerRegistrationFormProps) {
@@ -250,8 +251,8 @@ export default function FarmerRegistrationForm({ onBackToSignIn }: FarmerRegistr
             onChange={(e) => setMiddleInitial(formatMiddleInitial(e.target.value))}
             disabled={noMiddleInitial}
             required={!noMiddleInitial}
-            placeholder={noMiddleInitial ? "N/A" : "e.g. S"}
-            maxLength={1}
+            placeholder={noMiddleInitial ? "N/A" : "e.g. S."}
+            maxLength={2}
             className="w-[120px] rounded-[10px] border-[1.5px] border-pca-border bg-pca-bg px-3.5 py-3 text-[15px] uppercase outline-none transition-all placeholder:text-[13px] placeholder:text-[#9ca3af] focus:border-pca-green focus:bg-white focus:shadow-[0_0_0_3px_rgba(22,101,52,0.12)] disabled:opacity-60"
           />
           <label className="flex items-center gap-2 text-[13px] text-pca-muted">
@@ -363,7 +364,7 @@ export default function FarmerRegistrationForm({ onBackToSignIn }: FarmerRegistr
           </select>
         </div>
         <p className="mb-4 text-xs text-pca-muted">
-          1 ha = 10,000 m² (exact). Up to 2 decimals. Switching units converts automatically.
+          1 ha = 10,000 m² (exact). Decimals are accepted, for example 1.5 ha. Switching units converts automatically.
         </p>
 
         <p className="mb-2 text-[13px] font-semibold text-pca-text">

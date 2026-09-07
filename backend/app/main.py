@@ -11,6 +11,7 @@ from app.api.reports import router as reports_router
 from app.api.registrations import router as registrations_router
 from app.core.config import get_settings
 from app.db.migrate import ensure_database_columns
+from app.db.base import Base
 from app.db.seed import init_local_database
 from app.db.session import check_database_connection, get_engine
 from app.ml.predictor import get_model_status
@@ -29,6 +30,13 @@ async def lifespan(_app: FastAPI):
     elif settings.database_url and settings.auto_create_db:
         engine = get_engine()
         if engine is not None:
+            Base.metadata.create_all(bind=engine)
+            ensure_database_columns(engine)
+    elif settings.database_url:
+        # Safe for production: creates only tables that do not already exist, including later additions such as visit_logs.
+        engine = get_engine()
+        if engine is not None:
+            Base.metadata.create_all(bind=engine)
             ensure_database_columns(engine)
     yield
 
@@ -37,7 +45,7 @@ app = FastAPI(
     title=settings.app_name,
     debug=settings.debug,
     version="0.1.0",
-    description="CocoAnalytics thesis API — Phase 2.",
+    description="CocoAnalytica thesis API — Phase 2.",
     lifespan=lifespan,
 )
 

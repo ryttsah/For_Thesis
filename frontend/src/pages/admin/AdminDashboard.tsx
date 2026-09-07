@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import StackedTrendChart from "../../components/charts/StackedTrendChart";
 import EmptyChartNote from "../../components/ui/EmptyChartNote";
 import { isApiEnabled } from "../../services/api";
+import { fetchAdminBootstrap, submitAdminVisitFeedbackApi } from "../../services/domain";
 import { fetchConditionTrend, type ConditionTrendData } from "../../services/analytics";
 import { useDemoStore } from "../../context/DemoStoreContext";
 import { brgyMatches } from "../../hooks/useBarangayOptions";
@@ -16,13 +17,23 @@ function formatVisitLine(date: string, slot: string) {
 }
 
 export default function AdminDashboard() {
-  const { pendingCount, scheduledVisits, farms, officers } = useDemoStore();
+  const { pendingCount, scheduledVisits, visitLogs, farms, officers, syncAdminDomain } = useDemoStore();
   const [trend, setTrend] = useState<ConditionTrendData | null>(null);
+  const [feedbackFor, setFeedbackFor] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState("");
+  const [feedbackError, setFeedbackError] = useState("");
 
   useEffect(() => {
     if (!isApiEnabled()) return;
     void fetchConditionTrend().then(setTrend);
   }, [farms.length, officers.length, pendingCount]);
+
+  useEffect(() => {
+    if (!isApiEnabled()) return;
+    void fetchAdminBootstrap().then((data) => {
+      if (data) syncAdminDomain(data);
+    });
+  }, [syncAdminDomain]);
 
   const highRisk = farms.filter((f) => f.status === "risk").length;
   const farmsCoveredFor = (brgy: string) =>
@@ -98,6 +109,21 @@ export default function AdminDashboard() {
                 <div className="text-sm font-semibold">{v.farm}</div>
                 <span className="text-xs text-pca-muted">{v.brgy} · {formatVisitLine(v.date, v.slot)} · {v.scheduledBy}</span>
               </div>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      <Card className="mb-4">
+        <CardHead title="Officer Visit Logs" icon={<IconUserCheck size={16} />} action={<span className="rounded-full bg-pca-bg px-2.5 py-0.5 text-[11px] font-semibold text-pca-muted">{visitLogs.length} logged</span>} />
+        <p className="mb-3 text-xs text-pca-muted">Visit confirmations, officer activity, farmer ratings/reports, and administrator performance feedback.</p>
+        <div className="flex flex-col gap-3">
+          {visitLogs.length === 0 ? <p className="py-5 text-center text-sm text-pca-muted">No officer visit outcomes have been recorded yet.</p> : visitLogs.map((log) => (
+            <div key={log.id} className="rounded-xl border border-pca-border p-4">
+              <div className="flex flex-wrap items-start justify-between gap-2"><div><p className="font-semibold">{log.farm}</p><p className="text-xs text-pca-muted">{log.officerName} · {log.recordedAt}</p></div><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${log.visited ? "bg-pca-green-light text-pca-green" : "bg-pca-red-light text-pca-red"}`}>{log.visited ? "Visited" : "Not visited"}</span></div>
+              <p className="mt-3 text-sm">{log.visited ? log.officerComment : log.notVisitedReason}</p>
+              {log.farmerConfirmed !== null && <div className="mt-3 border-t border-pca-border pt-3 text-sm"><strong>Farmer feedback:</strong> {log.farmerConfirmed ? `Confirmed${log.farmerRating ? ` · ${log.farmerRating}/5 stars` : ""}` : "Farmer reported that the visit was not completed"}{log.farmerComment ? ` — ${log.farmerComment}` : ""}{log.farmerReport ? ` Report: ${log.farmerReport}` : ""}</div>}
+              {log.adminFeedback ? <p className="mt-3 rounded-lg bg-blue-50 p-3 text-sm text-blue-900"><strong>Admin performance feedback:</strong> {log.adminFeedback}</p> : <div className="mt-3"><button type="button" onClick={() => { setFeedbackFor(log.visitId); setFeedback(""); setFeedbackError(""); }} className="text-xs font-bold text-pca-green hover:underline">Add performance feedback</button>{feedbackFor === log.visitId && <div className="mt-2 flex flex-col gap-2 sm:flex-row"><input value={feedback} onChange={(e) => setFeedback(e.target.value)} className="min-w-0 flex-1 rounded-lg border border-pca-border px-3 py-2 text-sm" placeholder="Feedback for the officer"/><button type="button" onClick={async () => { if (!feedback.trim()) { setFeedbackError("Enter performance feedback."); return; } const result = await submitAdminVisitFeedbackApi(log.visitId, feedback); if (!result.ok) { setFeedbackError(result.message ?? "Could not save feedback."); return; } const data = await fetchAdminBootstrap(); if (data) syncAdminDomain(data); setFeedbackFor(null); }} className="rounded-lg bg-pca-green px-3 py-2 text-xs font-bold text-white">Save</button>{feedbackError && <p className="text-xs text-pca-red">{feedbackError}</p>}</div>}</div>}
             </div>
           ))}
         </div>

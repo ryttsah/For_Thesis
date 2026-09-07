@@ -14,7 +14,7 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    app_name: str = "CocoAnalytics API"
+    app_name: str = "CocoAnalytica API"
     debug: bool = True
     cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
 

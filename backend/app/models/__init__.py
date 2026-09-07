@@ -6,6 +6,7 @@ from app.models.domain import (
     Officer,
     PriorityVisit,
     ScheduledVisit,
+    VisitLog,
     Survey,
     ValidationQueueItem,
 )
@@ -21,6 +22,7 @@ __all__ = [
     "Officer",
     "PriorityVisit",
     "ScheduledVisit",
+    "VisitLog",
     "Survey",
     "User",
     "ValidationQueueItem",

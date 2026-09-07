@@ -1,11 +1,12 @@
 import { IconAlertCircle, IconCalendar, IconCalendarEvent, IconCheck, IconEye, IconFlag, IconFlag2, IconPlus } from "@tabler/icons-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AnalysisDetailsModal, { type AnalysisModalRecord } from "../../components/analysis/AnalysisDetailsModal";
 import ScheduleVisitModal from "../../components/modals/ScheduleVisitModal";
+import VisitOutcomeModal from "../../components/modals/VisitOutcomeModal";
 import { useDemoStore } from "../../context/DemoStoreContext";
 import { filterByBrgy, useOfficerScope } from "../../hooks/useOfficerScope";
 import { isApiEnabled } from "../../services/api";
-import { completePriorityVisitApi, fetchOfficerBootstrap } from "../../services/domain";
+import { completePriorityVisitApi, fetchOfficerBootstrap, recordVisitOutcomeApi } from "../../services/domain";
 import MetricCard from "../../components/ui/MetricCard";
 import { Card, CardHead, GhostButton } from "../../components/ui/Card";
 
@@ -33,10 +34,18 @@ function formatVisitLine(date: string, slot: string) {
 }
 
 export default function OfficerVisits() {
-  const { priorityVisits, scheduledVisits, surveys, completePriorityVisit, syncOfficerDomain } = useDemoStore();
+  const { priorityVisits, scheduledVisits, surveys, visitLogs, completePriorityVisit, syncOfficerDomain } = useDemoStore();
   const { assignedBrgy } = useOfficerScope();
   const [scheduleOpen, setScheduleOpen] = useState(false);
   const [selectedPriorityId, setSelectedPriorityId] = useState<string | null>(null);
+  const [outcomeVisitId, setOutcomeVisitId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isApiEnabled()) return;
+    void fetchOfficerBootstrap().then((data) => {
+      if (data) syncOfficerDomain(data);
+    });
+  }, [syncOfficerDomain]);
 
   const scopedFlags = useMemo(
     () => filterByBrgy(priorityVisits.filter((v) => !v.completed), assignedBrgy),
@@ -54,6 +63,7 @@ export default function OfficerVisits() {
   const selectedSurvey = selectedPriorityFarm
     ? surveys.find((s) => s.farm === selectedPriorityFarm || Boolean(selectedPriority?.farm.includes(s.farm)))
     : null;
+  const outcomeVisit = scopedVisits.find((visit) => visit.id === outcomeVisitId) ?? null;
 
   function openSchedule() {
     if (!assignedBrgy) {
@@ -161,6 +171,7 @@ export default function OfficerVisits() {
                   {v.owner} · {formatVisitLine(v.date, v.slot)} · {v.purpose}
                 </span>
               </div>
+              {visitLogs.some((log) => log.visitId === v.id) ? <span className="rounded-full bg-pca-green-light px-2.5 py-1 text-xs font-bold text-pca-green">Logged</span> : <button type="button" onClick={() => setOutcomeVisitId(v.id)} className="rounded-lg border border-pca-green px-3 py-2 text-xs font-bold text-pca-green hover:bg-pca-green-light">Record outcome</button>}
             </div>
           ))}
           {scopedVisits.length === 0 && (
@@ -170,6 +181,13 @@ export default function OfficerVisits() {
       </Card>
 
       <ScheduleVisitModal open={scheduleOpen} onClose={() => setScheduleOpen(false)} />
+      <VisitOutcomeModal open={Boolean(outcomeVisit)} farm={outcomeVisit?.farm ?? ""} onClose={() => setOutcomeVisitId(null)} onSave={async (value) => {
+        if (!outcomeVisit) return;
+        const result = await recordVisitOutcomeApi(outcomeVisit.id, value);
+        if (!result.ok) throw new Error(result.message);
+        const data = await fetchOfficerBootstrap();
+        if (data) syncOfficerDomain(data);
+      }} />
       <AnalysisDetailsModal
         open={Boolean(selectedPriority)}
         record={

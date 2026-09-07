@@ -47,6 +47,24 @@ CREATE TABLE IF NOT EXISTS scheduled_visits (
     purpose TEXT NOT NULL DEFAULT ''
 );
 
+CREATE TABLE IF NOT EXISTS visit_logs (
+    id SERIAL PRIMARY KEY,
+    scheduled_visit_id VARCHAR(32) NOT NULL UNIQUE,
+    farm VARCHAR(120) NOT NULL,
+    brgy VARCHAR(120) NOT NULL,
+    officer_id VARCHAR(32) NOT NULL,
+    officer_name VARCHAR(80) NOT NULL,
+    visited BOOLEAN NOT NULL,
+    officer_comment TEXT NOT NULL DEFAULT '',
+    not_visited_reason TEXT NOT NULL DEFAULT '',
+    recorded_at VARCHAR(40) NOT NULL,
+    farmer_confirmed BOOLEAN,
+    farmer_rating INTEGER,
+    farmer_comment TEXT NOT NULL DEFAULT '',
+    farmer_report TEXT NOT NULL DEFAULT '',
+    admin_feedback TEXT NOT NULL DEFAULT ''
+);
+
 CREATE TABLE IF NOT EXISTS booked_slots (
     id SERIAL PRIMARY KEY,
     visit_date VARCHAR(16) NOT NULL,
@@ -100,6 +118,7 @@ CREATE INDEX IF NOT EXISTS idx_farms_brgy ON farms (brgy);
 CREATE INDEX IF NOT EXISTS idx_validation_queue_brgy ON validation_queue (brgy);
 CREATE INDEX IF NOT EXISTS idx_surveys_brgy ON surveys (brgy);
 CREATE INDEX IF NOT EXISTS idx_scheduled_visits_brgy ON scheduled_visits (brgy);
+CREATE INDEX IF NOT EXISTS idx_visit_logs_brgy ON visit_logs (brgy);
 CREATE INDEX IF NOT EXISTS idx_priority_visits_brgy ON priority_visits (brgy);
 CREATE INDEX IF NOT EXISTS idx_farmer_notifications_farmer ON farmer_notifications (farmer_id);
 CREATE INDEX IF NOT EXISTS idx_farmer_submissions_farmer ON farmer_submissions (farmer_id);

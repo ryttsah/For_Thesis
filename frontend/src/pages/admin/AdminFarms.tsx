@@ -17,9 +17,9 @@ export default function AdminFarms() {
 
   const baseRows = useMemo(
     () =>
-      activeFilter
+      (activeFilter
         ? farms.filter((f) => brgyMatches(f.brgy, activeFilter))
-        : farms,
+        : farms).slice().sort((a, b) => (b.farmerId ?? "").localeCompare(a.farmerId ?? "", undefined, { numeric: true })),
     [farms, activeFilter],
   );
 
@@ -44,7 +44,7 @@ export default function AdminFarms() {
       <p className="mb-4 text-[13px] text-pca-muted">
         <strong>Status</strong> = farm health from AI/farmer reports: pending (new), healthy, caution, risk.
         <strong> Trees</strong> = estimate from registered hectares (~45 palms/ha).
-        <strong> Sector</strong> = map zone; updated when the farmer submits a photo report.
+        <strong> Sector</strong> = map zone; updated when the farmer submits a photo report. Records are ordered newest to oldest.
       </p>
       <Card className="mb-4">
         <CardHead

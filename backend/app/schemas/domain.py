@@ -58,6 +58,24 @@ class ScheduledVisitOut(BaseModel):
     purpose: str
 
 
+class VisitLogOut(BaseModel):
+    id: str
+    visit_id: str
+    farm: str
+    brgy: str
+    officer_id: str
+    officer_name: str
+    visited: bool
+    officer_comment: str = ""
+    not_visited_reason: str = ""
+    recorded_at: str
+    farmer_confirmed: bool | None = None
+    farmer_rating: int | None = None
+    farmer_comment: str = ""
+    farmer_report: str = ""
+    admin_feedback: str = ""
+
+
 class BookedSlotOut(BaseModel):
     date: str
     slot: SlotType
@@ -128,6 +146,7 @@ class OfficerBootstrap(BaseModel):
     booked_slots: list[BookedSlotOut]
     priority_visits: list[PriorityVisitOut]
     officers: list[OfficerOut]
+    visit_logs: list[VisitLogOut] = Field(default_factory=list)
 
 
 class AdminBootstrap(BaseModel):
@@ -135,12 +154,15 @@ class AdminBootstrap(BaseModel):
     surveys: list[SurveyOut]
     officers: list[OfficerOut]
     scheduled_visits: list[ScheduledVisitOut]
+    visit_logs: list[VisitLogOut] = Field(default_factory=list)
 
 
 class FarmerBootstrap(BaseModel):
     profile: FarmerProfileOut | None = None
     notifications: list[FarmerNotificationOut]
     submissions: list[FarmerSubmissionOut]
+    visits: list[ScheduledVisitOut] = Field(default_factory=list)
+    visit_logs: list[VisitLogOut] = Field(default_factory=list)
 
 
 class ScheduleVisitRequest(BaseModel):
@@ -152,6 +174,23 @@ class ScheduleVisitRequest(BaseModel):
     scheduled_by: str
     purpose: str = "Registration and field validation"
     notify_farmer_id: str | None = None
+
+
+class VisitOutcomeRequest(BaseModel):
+    visited: bool
+    officer_comment: str = Field(default="", max_length=2000)
+    not_visited_reason: str = Field(default="", max_length=2000)
+
+
+class FarmerVisitFeedbackRequest(BaseModel):
+    farmer_confirmed: bool
+    rating: int | None = Field(default=None, ge=1, le=5)
+    comment: str = Field(default="", max_length=2000)
+    report: str = Field(default="", max_length=2000)
+
+
+class AdminVisitFeedbackRequest(BaseModel):
+    feedback: str = Field(min_length=1, max_length=2000)
 
 
 class OfficerAssignRequest(BaseModel):

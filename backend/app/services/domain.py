@@ -1,6 +1,7 @@
 from datetime import UTC, datetime
 import json
 from uuid import uuid4
+from zoneinfo import ZoneInfo
 
 from fastapi import HTTPException, status
 from sqlalchemy import func, select
@@ -17,6 +18,7 @@ from app.models.domain import (
     Officer,
     PriorityVisit,
     ScheduledVisit,
+    VisitLog,
     Survey,
     ValidationQueueItem,
 )
@@ -41,6 +43,9 @@ from app.schemas.domain import (
     ScheduleVisitRequest,
     ScheduledVisitOut,
     SurveyOut,
+    VisitLogOut,
+    VisitOutcomeRequest,
+    FarmerVisitFeedbackRequest,
 )
 
 SECTOR_LABELS = {
@@ -118,7 +123,7 @@ def _farmer_profile(db: Session, farmer_id: str) -> FarmerProfileOut | None:
     farm = _farm_for_farmer(db, farmer_id)
     return FarmerProfileOut(
         farmer_id=reg.farmer_id,
-        name=" ".join(part for part in [reg.first_name, reg.middle_initial, reg.last_name] if part),
+        name=" ".join(part for part in [reg.first_name, f"{reg.middle_initial.rstrip('.')}." if reg.middle_initial else "", reg.last_name] if part),
         farm=farm.name if farm is not None else f"{reg.last_name} Farm",
         sector=farm.sector if farm is not None else "— (survey pending)",
         brgy=reg.brgy,
@@ -271,6 +276,17 @@ def submission_to_out(row: FarmerSubmission) -> FarmerSubmissionOut:
     )
 
 
+def visit_log_to_out(row: VisitLog) -> VisitLogOut:
+    return VisitLogOut(
+        id=f"vl{row.id}", visit_id=row.scheduled_visit_id, farm=row.farm, brgy=row.brgy,
+        officer_id=row.officer_id, officer_name=row.officer_name, visited=row.visited,
+        officer_comment=row.officer_comment, not_visited_reason=row.not_visited_reason,
+        recorded_at=row.recorded_at, farmer_confirmed=row.farmer_confirmed,
+        farmer_rating=row.farmer_rating, farmer_comment=row.farmer_comment,
+        farmer_report=row.farmer_report, admin_feedback=row.admin_feedback,
+    )
+
+
 def officer_bootstrap(db: Session) -> OfficerBootstrap:
     _refresh_officer_farm_counts(db)
     registrations = {
@@ -278,7 +294,7 @@ def officer_bootstrap(db: Session) -> OfficerBootstrap:
         for row in db.scalars(select(FarmerRegistration).where(FarmerRegistration.status == "approved")).all()
     }
     return OfficerBootstrap(
-        farms=[farm_to_out(r, registrations.get(r.external_id or "")) for r in db.scalars(select(Farm).order_by(Farm.name)).all()],
+        farms=[farm_to_out(r, registrations.get(r.external_id or "")) for r in db.scalars(select(Farm).order_by(Farm.id.desc())).all()],
         surveys=[survey_to_out(r) for r in db.scalars(select(Survey).order_by(Survey.id.desc())).all()],
         queue=[
             queue_to_out(r)
@@ -296,6 +312,7 @@ def officer_bootstrap(db: Session) -> OfficerBootstrap:
             for r in db.scalars(select(PriorityVisit).order_by(PriorityVisit.id)).all()
         ],
         officers=[officer_to_out(r) for r in db.scalars(select(Officer).order_by(Officer.emp_id)).all()],
+        visit_logs=[visit_log_to_out(r) for r in db.scalars(select(VisitLog).order_by(VisitLog.id.desc())).all()],
     )
 
 
@@ -306,13 +323,14 @@ def admin_bootstrap(db: Session) -> AdminBootstrap:
         for row in db.scalars(select(FarmerRegistration).where(FarmerRegistration.status == "approved")).all()
     }
     return AdminBootstrap(
-        farms=[farm_to_out(r, registrations.get(r.external_id or "")) for r in db.scalars(select(Farm).order_by(Farm.name)).all()],
+        farms=[farm_to_out(r, registrations.get(r.external_id or "")) for r in db.scalars(select(Farm).order_by(Farm.id.desc())).all()],
         surveys=[survey_to_out(r) for r in db.scalars(select(Survey).order_by(Survey.id.desc())).all()],
         officers=[officer_to_out(r) for r in db.scalars(select(Officer).order_by(Officer.emp_id)).all()],
         scheduled_visits=[
             visit_to_out(r)
             for r in db.scalars(select(ScheduledVisit).order_by(ScheduledVisit.visit_date.desc())).all()
         ],
+        visit_logs=[visit_log_to_out(r) for r in db.scalars(select(VisitLog).order_by(VisitLog.id.desc())).all()],
     )
 
 
@@ -331,6 +349,8 @@ def farmer_bootstrap(db: Session, farmer_id: str) -> FarmerBootstrap:
         profile=_farmer_profile(db, farmer_id),
         notifications=[notification_to_out(r) for r in notifications],
         submissions=[submission_to_out(r) for r in submissions],
+        visits=[visit_to_out(r) for r in db.scalars(select(ScheduledVisit).where(ScheduledVisit.owner == (_farmer_profile(db, farmer_id).name if _farmer_profile(db, farmer_id) else "")).order_by(ScheduledVisit.id.desc())).all()],
+        visit_logs=[visit_log_to_out(r) for r in db.scalars(select(VisitLog).where(VisitLog.farm == (_farm_for_farmer(db, farmer_id).name if _farm_for_farmer(db, farmer_id) else "")).order_by(VisitLog.id.desc())).all()],
     )
 
 
@@ -423,6 +443,59 @@ def complete_priority_visit(db: Session, external_id: str) -> PriorityVisitOut |
     db.commit()
     db.refresh(row)
     return priority_to_out(row)
+
+
+def record_visit_outcome(db: Session, visit_id: str, officer_id: str, body: VisitOutcomeRequest) -> VisitLogOut | None:
+    visit = db.scalar(select(ScheduledVisit).where(ScheduledVisit.external_id == visit_id))
+    if visit is None:
+        return None
+    officer = db.get(Officer, officer_id)
+    if officer is not None and not brgy_match(officer.brgy, visit.brgy):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="This visit is outside your assigned barangay.")
+    if body.visited and not body.officer_comment.strip():
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Please describe the work completed during the visit.")
+    if not body.visited and not body.not_visited_reason.strip():
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Please provide the reason the visit was not completed.")
+    row = db.scalar(select(VisitLog).where(VisitLog.scheduled_visit_id == visit_id))
+    if row is None:
+        row = VisitLog(
+            scheduled_visit_id=visit_id, farm=visit.farm, brgy=visit.brgy, officer_id=officer_id,
+            officer_name=officer.name if officer else visit.scheduled_by, visited=body.visited,
+            officer_comment=body.officer_comment.strip(), not_visited_reason=body.not_visited_reason.strip(),
+            recorded_at=datetime.now(ZoneInfo("Asia/Manila")).strftime("%b %d, %Y %I:%M %p PHT"),
+        )
+        db.add(row)
+    else:
+        row.visited = body.visited
+        row.officer_comment = body.officer_comment.strip()
+        row.not_visited_reason = body.not_visited_reason.strip()
+        row.recorded_at = datetime.now(ZoneInfo("Asia/Manila")).strftime("%b %d, %Y %I:%M %p PHT")
+    db.commit(); db.refresh(row)
+    return visit_log_to_out(row)
+
+
+def add_farmer_visit_feedback(db: Session, visit_id: str, farmer_id: str, body: FarmerVisitFeedbackRequest) -> VisitLogOut | None:
+    row = db.scalar(select(VisitLog).where(VisitLog.scheduled_visit_id == visit_id))
+    if row is None:
+        return None
+    farm = _farm_for_farmer(db, farmer_id)
+    if farm is None or farm.name != row.farm:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only review visits for your own farm.")
+    row.farmer_confirmed = body.farmer_confirmed
+    row.farmer_rating = body.rating if body.farmer_confirmed else None
+    row.farmer_comment = body.comment.strip()
+    row.farmer_report = body.report.strip()
+    db.commit(); db.refresh(row)
+    return visit_log_to_out(row)
+
+
+def add_admin_visit_feedback(db: Session, visit_id: str, feedback: str) -> VisitLogOut | None:
+    row = db.scalar(select(VisitLog).where(VisitLog.scheduled_visit_id == visit_id))
+    if row is None:
+        return None
+    row.admin_feedback = feedback.strip()
+    db.commit(); db.refresh(row)
+    return visit_log_to_out(row)
 
 
 def assign_officer(db: Session, emp_id: str, body: OfficerAssignRequest) -> OfficerOut | None:
