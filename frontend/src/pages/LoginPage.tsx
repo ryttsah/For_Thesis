@@ -32,9 +32,9 @@ export default function LoginPage() {
   const subtitle = farmerRegisterMode ? "Farmer registration" : "Sign in to continue";
 
   return (
-    <div className="min-h-full bg-[#f6faf7] px-5 py-8 lg:py-14">
-      <div className="mx-auto w-full max-w-[1180px]">
-        <div className="mb-7 flex items-center gap-3 lg:ml-[11%]">
+    <div className="relative min-h-full overflow-hidden bg-[#f7fbf8] px-5 py-8 lg:py-14">
+      <div className="relative mx-auto w-full max-w-[1180px]">
+        <div className="mb-7 flex items-center gap-3 lg:ml-[12%]">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-pca-border bg-white shadow-sm">
             <IconLeaf size={27} stroke={1.8} className="text-pca-green" />
           </div>
@@ -44,19 +44,20 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-pca-border bg-white shadow-[0_24px_65px_rgba(22,101,52,0.10)] lg:grid lg:grid-cols-[45%_55%]">
+        <div className="overflow-hidden rounded-2xl border border-pca-border bg-white shadow-[0_24px_65px_rgba(22,101,52,0.10)] lg:grid lg:grid-cols-[50%_50%]">
           <section className="relative hidden min-h-[590px] overflow-hidden lg:block">
             <img src="/images/dwarf-coconut-tree.png" alt="Dwarf coconut tree" className="absolute inset-0 h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-white/55" />
-            <div className="relative z-10 flex h-full max-w-[320px] flex-col justify-between p-10">
-              <div className="pt-20">
-                <h2 className="text-4xl font-bold leading-tight text-pca-green">Smarter Coconut Farming with Data</h2>
-                <p className="mt-4 text-base leading-relaxed text-pca-muted">Capture coconut leaf conditions, receive AI-assisted results, and keep farm records connected with PCA.</p>
+            <div className="absolute inset-0 bg-white/20" />
+            <div className="absolute -right-44 -top-12 h-[390px] w-[530px] rounded-bl-[58%] bg-white/88" />
+            <div className="relative z-10 flex h-full flex-col justify-between p-10">
+              <div className="ml-auto mt-14 w-[235px]">
+                <h2 className="text-3xl font-bold leading-[1.02] text-pca-green">Smarter<br />Coconut Farming<br />with Data</h2>
+                <p className="mt-4 text-sm leading-snug text-pca-muted/75">Real-time insights, healthier palms, and a more sustainable tomorrow.</p>
               </div>
-              <div>
+              <div className="ml-auto w-[235px] rounded-lg bg-white/50 p-3 backdrop-blur-[1px]">
                 <p className="text-xs font-bold uppercase tracking-wide text-pca-green">Secure access</p>
-                <p className="mt-2 text-xs leading-relaxed text-pca-muted">Coconut monitoring, field visits, and officer feedback in one system.</p>
-                <p className="mt-6 text-xs text-pca-muted">© 2026 CocoAnalytica</p>
+                <p className="mt-2 text-xs leading-relaxed text-pca-muted/75">Protecting coconut farm records through reliable monitoring and AI-assisted analysis.</p>
+                <p className="mt-5 text-xs text-pca-muted/65">Version 1.0 · © 2026 CocoAnalytica</p>
               </div>
             </div>
           </section>

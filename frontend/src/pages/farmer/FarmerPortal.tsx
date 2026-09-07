@@ -103,6 +103,7 @@ export default function FarmerPortal() {
   const [seenFarmerNotificationIds, setSeenFarmerNotificationIds] = useState<Set<string>>(() => new Set());
   const [selectedHistory, setSelectedHistory] = useState<FarmerSubmission | null>(null);
   const [selectedImage, setSelectedImage] = useState<PerImagePredictResult | null>(null);
+  const [invalidPalmPhotos, setInvalidPalmPhotos] = useState<PerImagePredictResult[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
   const previewUrlsRef = useRef<string[]>([]);
   const farmerSeenKey = `pca_seen_farmer_notifications_${user?.id ?? "guest"}`;
@@ -139,6 +140,7 @@ export default function FarmerPortal() {
     setDetectedPest("healthy");
     setFeedback(null);
     setFeedbackMsg("");
+    setInvalidPalmPhotos([]);
     setIsSubmittingResult(false);
     setAnalyzing(false);
     if (fileRef.current) fileRef.current.value = "";
@@ -221,6 +223,13 @@ export default function FarmerPortal() {
 
         const apiResult = await predictLeafImages(batch);
         if (apiResult.success) {
+          const invalidPhotos = apiResult.aggregated.perImage.filter((item) => !item.result.isPalm);
+          if (invalidPhotos.length) {
+            setInvalidPalmPhotos(invalidPhotos);
+            setAnalyzing(false);
+            setStep(4);
+            return;
+          }
           applyAggregatedResult(apiResult.aggregated);
           setAnalyzing(false);
           setStep(3);
@@ -528,9 +537,6 @@ export default function FarmerPortal() {
             <div className="mt-4 rounded-xl border border-pca-green-soft bg-pca-green-light px-4 py-3.5 text-[14px] text-pca-green">
               <span className="font-bold">{lang === "hil" ? "Imo Umahan:" : "Your Farm:"}</span> {farmerFarmLine}
             </div>
-            <p className="mt-3 text-xs font-medium text-pca-muted">
-              {lang === "hil" ? "Pahanumdom: Ang isa ka litrato katumbas sang isa ka lubi nga puno." : "Note: One photo/picture represents one coconut palm tree."}
-            </p>
           </div>
 
           <div className="f-card !mb-0">
@@ -643,6 +649,16 @@ export default function FarmerPortal() {
 
             <div className="f-card !mb-0">
               <h2 className="text-xl font-bold mb-4">{lang === "hil" ? "I-upload ang Litrato" : "Upload Photos"}</h2>
+              <div className="mb-4 space-y-2" role="note">
+                <div className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 px-3.5 py-3 text-sm font-semibold leading-snug text-red-700">
+                  <IconAlertCircle size={19} className="mt-0.5 shrink-0" />
+                  <span>{lang === "hil" ? "Pahanumdom: Ang isa ka litrato katumbas sang isa ka lubi nga puno." : "Reminder: One photo/picture represents one coconut palm tree."}</span>
+                </div>
+                <div className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 px-3.5 py-3 text-sm font-semibold leading-snug text-red-700">
+                  <IconAlertCircle size={19} className="mt-0.5 shrink-0" />
+                  <span>{lang === "hil" ? "Tubtob 10 lang ka litrato kada analysis. Gamita ang pinakaklaro nga litrato." : "You can upload up to 10 photos per analysis. Use the clearest photos."}</span>
+                </div>
+              </div>
               <button type="button" disabled={preparingUploads} onClick={() => fileRef.current?.click()} className={`mb-4 w-full rounded-2xl border-2 border-dashed px-6 py-12 transition-all disabled:cursor-wait disabled:opacity-70 ${previews.length ? "border-pca-green bg-pca-green-light" : "border-pca-border hover:bg-pca-bg"}`}>
                 {preparingUploads ? (
                   <LoadingRing size="h-10 w-10" />
@@ -889,6 +905,25 @@ export default function FarmerPortal() {
                 </div>
               </div>
             </div>
+          </div>
+        )}
+
+        {step === 4 && (
+          <div className="f-card animate-fade-in mx-auto max-w-3xl">
+            <div className="mx-auto max-w-xl text-center">
+              <IconAlertCircle size={52} className="mx-auto text-pca-red" />
+              <h2 className="mt-4 text-2xl font-black">{lang === "hil" ? "May litrato nga indi makumpirma nga lubi" : "Some photos could not be confirmed as coconut palms"}</h2>
+              <p className="mt-3 text-sm font-medium leading-relaxed text-pca-muted">{lang === "hil" ? "Tan-awa ang mga litrato sa idalom kag mag-upload sang klaro nga litrato sang dahon ukon puno sang lubi antes magpadayon." : "Review the photos below and upload clear photos of a coconut leaf or palm before continuing."}</p>
+            </div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              {invalidPalmPhotos.map((photo) => (
+                <button key={`${photo.index}-${photo.fileName}`} type="button" onClick={() => setSelectedImage(photo)} className="flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 p-3 text-left hover:border-pca-red">
+                  <img src={photo.previewUrl} alt="Photo needing a clearer coconut palm view" className="h-16 w-16 rounded-lg object-cover" />
+                  <span className="min-w-0"><span className="block truncate text-sm font-bold">{photo.fileName}</span><span className="mt-1 block text-xs font-medium text-pca-red">{lang === "hil" ? "Wala makumpirma" : "Not confirmed"}</span></span>
+                </button>
+              ))}
+            </div>
+            <button type="button" onClick={() => { setInvalidPalmPhotos([]); setStep(1); }} className="mx-auto mt-6 flex items-center gap-2 rounded-xl bg-pca-green px-5 py-3 text-sm font-bold text-white"><IconArrowLeft size={18} />{lang === "hil" ? "Balik sa upload" : "Back to upload"}</button>
           </div>
         )}
       </div>

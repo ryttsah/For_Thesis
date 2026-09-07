@@ -30,8 +30,10 @@ tmp/
 # Training datasets and notebooks are local-only for deployment.
 # Keep only the trained model outputs required by the backend Docker image.
 Thesis AI Model/*
+!Thesis AI Model/README.md
 !Thesis AI Model/model_outputs/
 !Thesis AI Model/model_outputs/**
+backend/Thesis AI Model/
 
 # Editor and OS files
 .idea/

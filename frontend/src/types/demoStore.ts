@@ -84,10 +84,8 @@ export interface PendingRegistration {
   regPurposeOtherText: string;
 }
 
-export interface ApprovedFarmer {
+export interface ApprovedFarmer extends PendingRegistration {
   name: string;
-  farmerId: string;
-  brgy: string;
   approvedDate: string;
   approvedBy: string;
 }

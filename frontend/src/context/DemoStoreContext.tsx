@@ -168,9 +168,8 @@ export function DemoStoreProvider({ children }: { children: ReactNode }) {
       if (!reg) return p;
       setApproved((a) => [
         {
+          ...reg,
           name: [reg.firstName, reg.middleInitial, reg.lastName].filter(Boolean).join(" "),
-          farmerId: reg.farmerId,
-          brgy: reg.brgy,
           approvedDate: new Date().toLocaleDateString("en-PH", {
             month: "short",
             day: "numeric",

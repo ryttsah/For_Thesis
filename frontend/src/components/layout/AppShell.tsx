@@ -17,7 +17,7 @@ export default function AppShell({
   portalLabel,
   navGroups,
   pageTitles,
-  subtitle = "Negros Occidental — May 2026",
+  subtitle = "",
   getNavBadge,
 }: AppShellProps) {
   const { user, logout } = useAuth();
@@ -119,7 +119,7 @@ export default function AppShell({
             </button>
             <div>
               <h2 className="text-[17px] font-bold">{pageTitle}</h2>
-              <span className="hidden text-xs text-pca-muted sm:inline">{subtitle}</span>
+              {subtitle && <span className="hidden text-xs text-pca-muted sm:inline">{subtitle}</span>}
             </div>
           </div>
           <div className="flex items-center gap-2.5">

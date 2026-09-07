@@ -10,6 +10,7 @@ class PredictResponse(BaseModel):
     thresholded_labels: list[str]
     top_guesses: list[str]
     message: str | None = None
+    is_palm: bool = Field(default=True, description="Whether the system could confirm a coconut palm/leaf image")
 
 
 class PredictBatchItem(BaseModel):

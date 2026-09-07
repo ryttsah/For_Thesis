@@ -37,6 +37,7 @@ export default function AdminApprovals() {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [credentialNote, setCredentialNote] = useState<string | null>(null);
+  const [selectedApproved, setSelectedApproved] = useState<typeof approvedFarmers[number] | null>(null);
 
   const refreshFromApi = useCallback(async () => {
     const data = await fetchAdminRegistrations();
@@ -236,7 +237,7 @@ export default function AdminApprovals() {
             </thead>
             <tbody>
               {approvedFarmers.map((a) => (
-                <tr key={a.farmerId} className="border-b border-pca-border hover:bg-pca-bg">
+                <tr key={a.farmerId} onClick={() => setSelectedApproved(a)} className="cursor-pointer border-b border-pca-border hover:bg-pca-bg">
                   <td className="px-4 py-3.5">{a.name}</td>
                   <td className="px-4 py-3.5 font-mono text-xs">{a.farmerId}</td>
                   <td className="px-4 py-3.5">{a.brgy}</td>
@@ -248,6 +249,33 @@ export default function AdminApprovals() {
           </table>
         </div>
       </Card>
+
+      {selectedApproved && (
+        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/45 p-4" role="dialog" aria-modal="true" aria-label="Approved farmer registration details">
+          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
+            <div className="mb-4 flex items-start justify-between gap-4">
+              <div><p className="text-xs font-bold uppercase tracking-wider text-pca-muted">Approved registration</p><h2 className="mt-1 text-xl font-bold">{selectedApproved.name}</h2></div>
+              <button type="button" onClick={() => setSelectedApproved(null)} className="rounded-lg border border-pca-border px-3 py-2 text-sm font-semibold text-pca-muted hover:bg-pca-bg">Close</button>
+            </div>
+            <DetailRow label="Farmer ID" value={selectedApproved.farmerId} />
+            <DetailRow label="First name" value={selectedApproved.firstName} />
+            <DetailRow label="Middle initial" value={selectedApproved.middleInitial || "—"} />
+            <DetailRow label="Last name" value={selectedApproved.lastName} />
+            <DetailRow label="Date applied" value={selectedApproved.applied} />
+            <DetailRow label="Farm address" value={selectedApproved.farmAddress} />
+            <DetailRow label="Barangay" value={selectedApproved.brgy} />
+            <DetailRow label="City / Municipality" value={selectedApproved.municipality} />
+            <DetailRow label="Province" value={selectedApproved.province} />
+            <DetailRow label="Farm area" value={formatAreaForAdmin(selectedApproved.areaHectares)} />
+            <DetailRow label="Farm status" value={selectedApproved.farmStatus} />
+            <DetailRow label="Contact number" value={selectedApproved.phone} />
+            <DetailRow label="Alternative contact" value={selectedApproved.altPhone || "—"} />
+            <DetailRow label="Purpose" value={selectedApproved.regPurposeType === "other" ? selectedApproved.regPurposeOtherText || "Other" : "Registration only"} />
+            <DetailRow label="Approved date" value={selectedApproved.approvedDate} />
+            <DetailRow label="Approved by" value={selectedApproved.approvedBy} />
+          </div>
+        </div>
+      )}
 
       <Card>
         <CardHead title="Rejected applications audit" icon={<IconFileX size={16} />} />

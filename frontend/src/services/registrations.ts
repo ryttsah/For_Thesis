@@ -129,13 +129,11 @@ export async function fetchAdminRegistrations(): Promise<{
     }
 
     const pending = (await pendingRes.json()) as ApiPending[];
-    const approved = (await approvedRes.json()) as {
+    const approved = (await approvedRes.json()) as (ApiPending & {
       name: string;
-      farmer_id: string;
-      brgy: string;
       approved_date: string;
       approved_by: string;
-    }[];
+    })[];
     const rejected = (await rejectedRes.json()) as {
       farmer_id: string;
       reason: string;
@@ -145,9 +143,8 @@ export async function fetchAdminRegistrations(): Promise<{
     return {
       pending: pending.map(mapPending),
       approved: approved.map((a) => ({
+        ...mapPending(a),
         name: a.name,
-        farmerId: a.farmer_id,
-        brgy: a.brgy,
         approvedDate: a.approved_date,
         approvedBy: a.approved_by,
       })),

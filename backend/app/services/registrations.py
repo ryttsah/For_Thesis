@@ -82,9 +82,8 @@ def list_approved(db: Session) -> list[ApprovedFarmerResponse]:
     ).all()
     return [
         ApprovedFarmerResponse(
+            **to_registration_response(row).model_dump(),
             name=full_name(row),
-            farmer_id=row.farmer_id,
-            brgy=row.brgy,
             approved_date=format_display_date(row.approved_at or row.applied_at),
             approved_by=row.approved_by or "PCA Administrator",
         )

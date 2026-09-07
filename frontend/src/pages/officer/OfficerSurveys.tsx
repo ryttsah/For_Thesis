@@ -8,6 +8,7 @@ import { Card, CardHead, GhostButton, Pagination } from "../../components/ui/Car
 import StatusBadge from "../../components/ui/StatusBadge";
 import type { FarmStatus, SurveyRow } from "../../types/demoStore";
 import { displayBrgyLabel, normalizeBrgyLabel } from "../../utils/pcaFormat";
+import { useTablePagination } from "../../hooks/useTablePagination";
 
 function sectorCode(sector: string) {
   return sector.trim().match(/^([A-D])/i)?.[1]?.toUpperCase() ?? sector.trim().toUpperCase();
@@ -57,6 +58,7 @@ export default function OfficerSurveys() {
       return matchesText && matchesStatus && matchesSector && matchesBrgy && matchesMonth;
     });
   }, [scoped, query, statusFilter, sectorFilter, brgyFilter, monthFilter]);
+  const { page, setPage, pageRows, pageSize } = useTablePagination(filtered);
 
   return (
     <div className="animate-fade-in">
@@ -143,7 +145,7 @@ export default function OfficerSurveys() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((s) => (
+              {pageRows.map((s) => (
                 <tr
                   key={s.id ?? s.date + s.farm}
                   onClick={() => setSelectedSurvey(s)}
@@ -166,8 +168,8 @@ export default function OfficerSurveys() {
         </div>
       </Card>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="text-[13px] text-pca-muted">Showing {filtered.length} of {scoped.length} survey records</span>
-        <Pagination />
+        <span className="text-[13px] text-pca-muted">Showing {filtered.length ? (page - 1) * pageSize + 1 : 0}–{Math.min(page * pageSize, filtered.length)} of {filtered.length} survey records</span>
+        <Pagination page={page} totalItems={filtered.length} pageSize={pageSize} onPageChange={setPage} />
       </div>
       <AnalysisDetailsModal
         open={Boolean(selectedSurvey)}

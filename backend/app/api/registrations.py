@@ -80,9 +80,8 @@ def approve_registration(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Pending registration not found") from None
 
     return ApprovedFarmerResponse(
+        **reg_service.to_registration_response(row).model_dump(),
         name=reg_service.full_name(row),
-        farmer_id=row.farmer_id,
-        brgy=row.brgy,
         approved_date=reg_service.format_display_date(row.approved_at or row.applied_at),
         approved_by=row.approved_by or "PCA Administrator",
         initial_password=initial_password,

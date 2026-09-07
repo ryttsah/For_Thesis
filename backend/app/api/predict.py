@@ -36,6 +36,7 @@ def _response_from_result(result) -> PredictResponse:
         thresholded_labels=result.thresholded_labels,
         top_guesses=result.top_guesses,
         message=result.message,
+        is_palm=result.is_palm,
     )
 
 

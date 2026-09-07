@@ -51,10 +51,8 @@ class RegistrationCreateResponse(BaseModel):
     message: str
 
 
-class ApprovedFarmerResponse(BaseModel):
+class ApprovedFarmerResponse(RegistrationResponse):
     name: str
-    farmer_id: str
-    brgy: str
     approved_date: str
     approved_by: str
     initial_password: str | None = None

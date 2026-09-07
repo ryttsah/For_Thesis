@@ -2,6 +2,8 @@ import { IconFilter, IconSearch } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
 import type { FarmStatus } from "../../types/demoStore";
 import { normalizeBrgyLabel } from "../../utils/pcaFormat";
+import { useTablePagination } from "../../hooks/useTablePagination";
+import { Pagination } from "./Card";
 
 export interface FarmRowLike {
   farmerId?: string | null;
@@ -50,6 +52,7 @@ export default function FarmTableToolbar({ rows, children, brgyOptions }: FarmTa
       );
     });
   }, [rows, query, brgyFilter, statusFilter]);
+  const { page, setPage, pageRows, pageSize } = useTablePagination(filtered);
 
   return (
     <>
@@ -109,10 +112,11 @@ export default function FarmTableToolbar({ rows, children, brgyOptions }: FarmTa
           </div>
         </div>
       )}
-      {children(filtered)}
-      <p className="mt-3 text-[13px] text-pca-muted">
-        Showing {filtered.length} of {rows.length} farm{rows.length === 1 ? "" : "s"}
-      </p>
+      {children(pageRows)}
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-3 text-[13px] text-pca-muted">
+        <p>Showing {filtered.length ? (page - 1) * pageSize + 1 : 0}–{Math.min(page * pageSize, filtered.length)} of {filtered.length} farm{filtered.length === 1 ? "" : "s"}</p>
+        <Pagination page={page} totalItems={filtered.length} pageSize={pageSize} onPageChange={setPage} />
+      </div>
     </>
   );
 }

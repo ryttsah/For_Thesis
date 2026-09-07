@@ -52,6 +52,7 @@ class PredictionResult:
     thresholded_labels: list[str]
     top_guesses: list[str]
     message: str | None = None
+    is_palm: bool = True
 
 
 _model: Any = None
@@ -189,7 +190,7 @@ def predict_image_bytes(
 
     message = None
     if uncertain:
-        message = "Low confidence across all categories. Flagged for expert review."
+        message = "This photo could not be confirmed as a clear coconut palm or leaf. Upload a clear coconut palm photo."
 
     return PredictionResult(
         pest=pest,
@@ -200,6 +201,7 @@ def predict_image_bytes(
         thresholded_labels=[] if uncertain else selected_labels,
         top_guesses=top_guesses,
         message=message,
+        is_palm=not uncertain,
     )
 
 

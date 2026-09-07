@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import FarmTableToolbar from "../../components/ui/FarmTableToolbar";
 import { useDemoStore } from "../../context/DemoStoreContext";
-import { Card, CardHead, GhostButton, Pagination } from "../../components/ui/Card";
+import { Card, CardHead, GhostButton } from "../../components/ui/Card";
 import StatusBadge from "../../components/ui/StatusBadge";
 import type { FarmStatus } from "../../types/demoStore";
 import { brgyMatches } from "../../hooks/useBarangayOptions";
@@ -113,7 +113,6 @@ export default function AdminFarms() {
         <span className="text-[13px] text-pca-muted">
           {activeFilter ? `Filtered view (${tableRows.length} farms)` : `All farms in database (${tableRows.length})`}
         </span>
-        <Pagination />
       </div>
       {!activeFilter && (
         <p className="mt-3 text-xs text-pca-muted">

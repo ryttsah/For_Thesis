@@ -10,6 +10,7 @@ export interface PredictResult {
   thresholdedLabels: string[];
   topGuesses: string[];
   message?: string;
+  isPalm: boolean;
 }
 
 export interface PerImagePredictResult {
@@ -247,6 +248,7 @@ export async function predictLeafImage(
       thresholded_labels: string[];
       top_guesses: string[];
       message?: string;
+      is_palm?: boolean;
     };
 
     return {
@@ -260,6 +262,7 @@ export async function predictLeafImage(
         thresholdedLabels: data.thresholded_labels,
         topGuesses: data.top_guesses,
         message: data.message,
+        isPalm: data.is_palm ?? true,
       },
     };
   } catch (error) {
@@ -320,6 +323,7 @@ async function predictLeafImagesBatch(
           thresholded_labels: string[];
           top_guesses: string[];
           message?: string;
+          is_palm?: boolean;
         };
       }[];
     };
@@ -337,6 +341,7 @@ async function predictLeafImagesBatch(
         thresholdedLabels: row.result.thresholded_labels,
         topGuesses: row.result.top_guesses,
         message: row.result.message,
+        isPalm: row.result.is_palm ?? true,
       },
     }));
 

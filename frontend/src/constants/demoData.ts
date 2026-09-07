@@ -241,9 +241,9 @@ export const INITIAL_PENDING: PendingRegistration[] = [
 ];
 
 export const INITIAL_APPROVED: ApprovedFarmer[] = [
-  { name: "Elena Ramos", farmerId: "FARMER-042", brgy: "Brgy. Mandalagan", approvedDate: "May 5, 2026", approvedBy: "PCA Administrator" },
-  { name: "Paolo Mendoza", farmerId: "FARMER-043", brgy: "Brgy. Conception", approvedDate: "May 6, 2026", approvedBy: "PCA Administrator" },
-  { name: "Sofia Cruz", farmerId: "FARMER-044", brgy: "Brgy. Granada", approvedDate: "May 6, 2026", approvedBy: "PCA Administrator" },
+  { id: "approved-42", name: "Elena Ramos", farmerId: "FARMER-042", applied: "May 4, 2026", firstName: "Elena", middleInitial: "", lastName: "Ramos", farmAddress: "Purok 4", brgy: "Brgy. Mandalagan", municipality: "Bacolod City (Capital)", province: "Negros Occidental", areaHectares: 1.4, areaInputUnit: "ha", areaInputValue: 1.4, farmStatus: "Bearing", phone: "09175550420", altPhone: "", regPurposeType: "registration_only", regPurposeOtherText: "", approvedDate: "May 5, 2026", approvedBy: "PCA Administrator" },
+  { id: "approved-43", name: "Paolo Mendoza", farmerId: "FARMER-043", applied: "May 5, 2026", firstName: "Paolo", middleInitial: "", lastName: "Mendoza", farmAddress: "Sitio Riverside", brgy: "Brgy. Conception", municipality: "Talisay City", province: "Negros Occidental", areaHectares: 0.8, areaInputUnit: "ha", areaInputValue: 0.8, farmStatus: "Bearing", phone: "09175550430", altPhone: "", regPurposeType: "registration_only", regPurposeOtherText: "", approvedDate: "May 6, 2026", approvedBy: "PCA Administrator" },
+  { id: "approved-44", name: "Sofia Cruz", farmerId: "FARMER-044", applied: "May 5, 2026", firstName: "Sofia", middleInitial: "", lastName: "Cruz", farmAddress: "Hda. San Jose", brgy: "Brgy. Granada", municipality: "Bago City", province: "Negros Occidental", areaHectares: 2.2, areaInputUnit: "ha", areaInputValue: 2.2, farmStatus: "Non-bearing", phone: "09175550440", altPhone: "", regPurposeType: "registration_only", regPurposeOtherText: "", approvedDate: "May 6, 2026", approvedBy: "PCA Administrator" },
 ];
 
 export const INITIAL_VISITS: ScheduledVisit[] = [

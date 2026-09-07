@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import FarmTableToolbar from "../../components/ui/FarmTableToolbar";
 import { useDemoStore } from "../../context/DemoStoreContext";
 import { filterByBrgy, useOfficerScope } from "../../hooks/useOfficerScope";
-import { Card, CardHead, Pagination } from "../../components/ui/Card";
+import { Card, CardHead } from "../../components/ui/Card";
 import StatusBadge from "../../components/ui/StatusBadge";
 import type { FarmStatus } from "../../types/demoStore";
 import { displayBrgyLabel } from "../../utils/pcaFormat";
@@ -72,7 +72,6 @@ export default function OfficerFarms() {
             ? `Farms in ${displayBrgyLabel(assignedBrgy)} (${tableRows.length})`
             : `All farms (${tableRows.length}) — assign a brgy. to scope your list`}
         </span>
-        <Pagination />
       </div>
     </div>
   );
