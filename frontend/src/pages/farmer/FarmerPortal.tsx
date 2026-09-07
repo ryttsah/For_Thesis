@@ -46,57 +46,6 @@ const MAX_FARMER_ANALYSIS_PHOTOS = 10;
 
 const SECTOR_ICONS = { A: IconArrowUp, B: IconArrowDown, C: IconArrowRight, D: IconArrowLeft };
 
-const EXTRA_RECOMMENDATIONS: Record<PestType, Record<Lang, string[]>> = {
-  healthy: {
-    hil: [
-      "Padayon nga limpyohan ang palibot sang puno para malikawan ang puluy-an sang peste.",
-      "Tandaan ang petsa sang sunod nga pag-abono kag regular nga pagtan-aw sang bag-o nga dahon.",
-      "Kung may bag-o nga marka ukon pagdilaw, kuhaan dayon sang klaro nga litrato.",
-    ],
-    en: [
-      "Keep the area around the palm clean to reduce possible pest shelter.",
-      "Record the next fertilizer schedule and keep checking new leaves.",
-      "If new marks or yellowing appear, capture a clear photo right away.",
-    ],
-  },
-  yellowing: {
-    hil: [
-      "Tan-awa kung naga-ipon ang tubig sa palibot sang gamot pagkatapos sang ulan.",
-      "Ibulag sa rekord ang mga puno nga nagadilaw para mabalikan sang opisyal.",
-      "Likawan anay ang sobra nga pagbutang sang abono tubtob may rekomendasyon sang PCA.",
-    ],
-    en: [
-      "Check if water collects near the roots after rain.",
-      "Mark the yellowing palms in your record so the officer can inspect them.",
-      "Avoid over-fertilizing until PCA gives a specific recommendation.",
-    ],
-  },
-  "scale insect": {
-    hil: [
-      "Likawan nga magkuha sang dahon halin sa apektado nga puno pakadto sa iban nga parte sang uma.",
-      "Tan-awa ang likod sang dahon kung may nagdamo nga puti ukon brown nga tuldok.",
-      "Mag-coordinate sa PCA antes mag-spray para husto ang klase kag kadamuon sang gamiton.",
-    ],
-    en: [
-      "Avoid moving fronds from affected palms to other parts of the farm.",
-      "Inspect the underside of leaves for spreading white or brown scale spots.",
-      "Coordinate with PCA before spraying so the treatment and dosage are correct.",
-    ],
-  },
-  "rhino beetle": {
-    hil: [
-      "Pangitaa kag kuhaa ang posible nga breeding site pareho sang nagakadunot nga puno ukon compost pile.",
-      "Tan-awa ang spear leaf kag bag-o nga dahon kada pila ka adlaw para sa V-shaped damage.",
-      "Kung madamo na ang apektado nga puno, ipa-priority visit ini sa PCA opisyal.",
-    ],
-    en: [
-      "Find and remove possible breeding sites such as decaying trunks or compost piles.",
-      "Check the spear leaf and new fronds every few days for V-shaped damage.",
-      "If several palms are affected, request a priority visit from the PCA officer.",
-    ],
-  },
-};
-
 function LoadingRing({ size = "h-16 w-16" }: { size?: string }) {
   return (
     <span
@@ -232,7 +181,6 @@ export default function FarmerPortal() {
   );
   const visibleFarmerNotifications = farmerNotificationsExpanded ? farmerNotifications : farmerNotifications.slice(0, 2);
   const rec = RECOMMENDATIONS[detectedPest][lang];
-  const extraRecommendations = EXTRA_RECOMMENDATIONS[detectedPest][lang];
   const cardClass =
     detectedPest === "healthy" ? "healthy" : detectedPest === "yellowing" ? "warning" : "danger";
 
@@ -425,7 +373,7 @@ export default function FarmerPortal() {
         imageUrl: thumbnails[row.index] || row.previewUrl,
       };
     });
-    const recommendationText = [rec.rec, ...extraRecommendations].join(" ");
+    const recommendationText = rec.rec;
     const details = {
       confidencePct: confidencePct ?? 0,
       imageCount: photosAnalyzed || previews.length || 1,
@@ -524,7 +472,7 @@ export default function FarmerPortal() {
               <IconLeaf size={24} className="text-pca-green" />
             </div>
             <div>
-              <div className="text-[17px] font-bold tracking-tight">PCA Negros Occidental</div>
+              <div className="text-[17px] font-bold tracking-tight">CocoAnalytics</div>
               <div className="text-xs font-medium text-pca-muted">{t.portal}</div>
             </div>
           </div>
@@ -960,6 +908,7 @@ export default function FarmerPortal() {
             : null
         }
         onClose={() => setSelectedHistory(null)}
+        lang={lang}
       />
       <RecommendationPlanModal
         open={recommendationsOpen}

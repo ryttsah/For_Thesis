@@ -37,7 +37,7 @@ app = FastAPI(
     title=settings.app_name,
     debug=settings.debug,
     version="0.1.0",
-    description="PCA Negros Occidental thesis API — Phase 2.",
+    description="CocoAnalytics thesis API — Phase 2.",
     lifespan=lifespan,
 )
 

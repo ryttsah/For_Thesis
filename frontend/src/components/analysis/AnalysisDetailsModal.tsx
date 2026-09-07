@@ -1,5 +1,8 @@
 import { IconPhoto, IconX } from "@tabler/icons-react";
+import { useState } from "react";
+import RecommendationPlanModal from "./RecommendationPlanModal";
 import type { AnalysisDetails } from "../../types/demoStore";
+import type { PestType } from "../../types/demoStore";
 
 export interface AnalysisModalRecord {
   title: string;
@@ -15,6 +18,7 @@ interface Props {
   open: boolean;
   record: AnalysisModalRecord | null;
   onClose: () => void;
+  lang?: "hil" | "en";
 }
 
 function hasDetails(details?: AnalysisDetails) {
@@ -28,13 +32,29 @@ function hasDetails(details?: AnalysisDetails) {
   );
 }
 
-export default function AnalysisDetailsModal({ open, record, onClose }: Props) {
+function inferPestType(record: AnalysisModalRecord, details?: AnalysisDetails): PestType {
+  const text = [details?.majority, details?.recommendationTitle, record.result, record.title].filter(Boolean).join(" ").toLowerCase();
+  if (text.includes("scale") || text.includes("cocolisap") || text.includes("lisap")) return "scale insect";
+  if (text.includes("rhino") || text.includes("beetle") || text.includes("bagangan")) return "rhino beetle";
+  if (text.includes("yellow") || text.includes("nagadilaw") || text.includes("pagdilaw")) return "yellowing";
+  return "healthy";
+}
+
+export default function AnalysisDetailsModal({ open, record, onClose, lang = "en" }: Props) {
+  const [selectedPhoto, setSelectedPhoto] = useState<{ src: string; label: string; fileName: string } | null>(null);
+  const [recommendationsOpen, setRecommendationsOpen] = useState(false);
   if (!open || !record) return null;
   const details = record.details;
+  const pestType = inferPestType(record, details);
   const confidence =
     typeof details?.confidencePct === "number" && details.confidencePct > 0
       ? `${details.confidencePct.toFixed(details.confidencePct % 1 === 0 ? 0 : 1)}%`
       : "—";
+  const summaryRecommendation = details?.recommendationText
+    ?.split(/(?<=\.)\s+/)
+    .slice(0, 2)
+    .join(" ")
+    .trim();
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4" role="dialog" aria-modal="true">
@@ -81,18 +101,29 @@ export default function AnalysisDetailsModal({ open, record, onClose }: Props) {
           </div>
 
           {details?.recommendationText && (
-            <div className="mt-4 rounded-xl border border-pca-green-soft bg-pca-green-light p-4">
-              <div className="text-xs font-black uppercase tracking-widest text-pca-muted">
-                {details.recommendationHeading || "Recommendation"}
-              </div>
+            <button
+              type="button"
+              onClick={() => setRecommendationsOpen(true)}
+              className="mt-4 block w-full rounded-xl border border-pca-green-soft bg-pca-green-light p-5 text-left transition hover:border-pca-green hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-pca-green/25"
+            >
               {details.recommendationTitle && (
-                <h4 className="mt-1 break-words text-lg font-black text-pca-green">{details.recommendationTitle}</h4>
+                <h4 className="break-words text-xl font-black text-pca-green">{details.recommendationTitle}</h4>
               )}
               {details.recommendationDescription && (
-                <p className="mt-2 text-sm font-medium leading-relaxed text-pca-text">{details.recommendationDescription}</p>
+                <p className="mt-3 text-sm font-medium leading-relaxed text-pca-text">{details.recommendationDescription}</p>
               )}
-              <p className="mt-3 text-sm font-bold leading-relaxed text-pca-text">{details.recommendationText}</p>
-            </div>
+              <div className="mt-5 rounded-2xl bg-white/90 p-5 shadow-sm">
+                <div className="mb-2 text-xs font-black uppercase tracking-widest text-pca-muted">
+                  {details.recommendationHeading || "Recommendation"}
+                </div>
+                <p className="text-sm font-bold leading-relaxed text-pca-text">
+                  {summaryRecommendation || details.recommendationText}
+                </p>
+              </div>
+              <p className="mt-3 text-xs font-black uppercase tracking-widest text-pca-green">
+                {lang === "hil" ? "Tapiki ukon i-click para makita ang detalyado nga rekomendasyon" : "Tap or click here to view the detailed recommendations"}
+              </p>
+            </button>
           )}
 
           {details?.breakdown?.length ? (
@@ -121,7 +152,23 @@ export default function AnalysisDetailsModal({ open, record, onClose }: Props) {
                 {details.perPhoto.map((photo, index) => (
                   <div key={`${photo.fileName}-${index}`} className="flex items-center gap-3 rounded-xl border border-pca-border p-3">
                     {photo.imageUrl ? (
-                      <img src={photo.imageUrl} alt="" className="h-14 w-14 shrink-0 rounded-lg object-cover" />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSelectedPhoto({
+                            src: photo.imageUrl ?? "",
+                            label: photo.label,
+                            fileName: photo.fileName,
+                          })
+                        }
+                        className="group relative h-14 w-14 shrink-0 overflow-hidden rounded-lg"
+                        aria-label={`View ${photo.fileName}`}
+                      >
+                        <img src={photo.imageUrl} alt="" className="h-full w-full object-cover" />
+                        <span className="absolute inset-0 hidden items-center justify-center bg-black/35 text-white group-hover:flex">
+                          <IconPhoto size={20} />
+                        </span>
+                      </button>
                     ) : (
                       <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-pca-bg text-pca-green">
                         <IconPhoto size={20} />
@@ -145,6 +192,28 @@ export default function AnalysisDetailsModal({ open, record, onClose }: Props) {
           )}
         </div>
       </div>
+      {selectedPhoto && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/75 p-4" role="dialog" aria-modal="true">
+          <div className="w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl">
+            <div className="flex items-center justify-between gap-4 border-b border-pca-border px-4 py-3">
+              <div className="min-w-0">
+                <div className="truncate text-sm font-bold text-pca-text">{selectedPhoto.fileName}</div>
+                <div className="truncate text-xs font-semibold text-pca-muted">{selectedPhoto.label}</div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedPhoto(null)}
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-pca-border text-pca-muted hover:bg-pca-bg hover:text-pca-text"
+                aria-label="Close photo preview"
+              >
+                <IconX size={18} />
+              </button>
+            </div>
+            <img src={selectedPhoto.src} alt="" className="max-h-[75vh] w-full bg-black object-contain" />
+          </div>
+        </div>
+      )}
+      <RecommendationPlanModal open={recommendationsOpen} pest={pestType} lang={lang} onClose={() => setRecommendationsOpen(false)} />
     </div>
   );
 }

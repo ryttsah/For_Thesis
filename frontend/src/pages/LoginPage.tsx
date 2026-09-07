@@ -42,7 +42,7 @@ export default function LoginPage() {
             <IconLeaf size={32} stroke={1.5} className="text-pca-green" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-pca-text md:text-3xl">PCA Negros Occidental</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-pca-text md:text-3xl">CocoAnalytics</h1>
             <p className="mt-1.5 text-[15px] font-medium text-pca-muted">{subtitle}</p>
           </div>
         </div>
@@ -84,7 +84,7 @@ export default function LoginPage() {
                 <div className="h-px bg-pca-border w-12" />
                 <div className="text-xs text-pca-muted font-medium">
                   Version 0.1.0-beta <br/>
-                  © 2024 PCA Negros Occidental
+                  © 2024 CocoAnalytics
                 </div>
               </div>
             </div>
@@ -129,7 +129,7 @@ export default function LoginPage() {
 
         {/* Footer info */}
         <p className="mt-8 text-center text-xs font-medium text-pca-muted/70 md:text-left">
-          Philippine Coconut Authority · Negros Occidental Regional Office
+          CocoAnalytics · Coconut Farm Monitoring System
         </p>
       </div>
     </div>

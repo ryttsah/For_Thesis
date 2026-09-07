@@ -73,7 +73,7 @@ def _report_footer(canvas, doc) -> None:
     canvas.saveState()
     canvas.setFont("Helvetica", 8)
     canvas.setFillColor(colors.HexColor("#6b7280"))
-    canvas.drawString(inch * 0.65, 0.45 * inch, "PCA Negros Occidental - Coconut Leaf Condition Monitoring System")
+    canvas.drawString(inch * 0.65, 0.45 * inch, "CocoAnalytics - Coconut Leaf Condition Monitoring System")
     canvas.drawRightString(A4[0] - inch * 0.65, 0.45 * inch, f"Page {doc.page}")
     canvas.restoreState()
 

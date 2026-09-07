@@ -46,7 +46,7 @@ export default function AppShell({
         <div className="flex items-center gap-3 border-b border-pca-border px-[18px] py-4">
           <IconLeaf size={24} className="text-pca-green" stroke={2} />
           <div>
-            <div className="text-sm font-bold">PCA Negros Occ.</div>
+            <div className="text-sm font-bold">CocoAnalytics</div>
             <span className="block text-[11px] text-pca-muted">{portalLabel}</span>
           </div>
         </div>
