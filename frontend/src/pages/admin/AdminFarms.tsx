@@ -134,7 +134,7 @@ export default function AdminFarms() {
             </div>
             <dl className="mt-5 grid gap-x-6 gap-y-4 sm:grid-cols-2">
               {[
-                ["Farmer ID", selectedFarm.farmerId ?? "—"], ["Farmer name", selectedFarm.owner], ["Phone", selectedFarm.phone ?? "—"], ["Farm area / palms", `${selectedFarm.trees} estimated palms`], ["Sector", selectedFarm.sector], ["Barangay", displayBrgyLabel(selectedFarm.brgy)], ["Farm status", selectedFarm.status], ["Latest survey", selectedFarm.lastSurvey],
+                ["Farmer ID", selectedFarm.farmerId ?? "—"], ["Farmer name", selectedFarm.owner], ["Phone", selectedFarm.phone ?? "—"], ["Password", "Securely stored. Use a credential reset to change it."], ["Farm area / palms", `${selectedFarm.trees} estimated palms`], ["Sector", selectedFarm.sector], ["Barangay", displayBrgyLabel(selectedFarm.brgy)], ["Farm status", selectedFarm.status], ["Latest survey", selectedFarm.lastSurvey],
               ].map(([label, value]) => <div key={label}><dt className="text-xs font-bold uppercase tracking-wide text-pca-muted">{label}</dt><dd className="mt-1 break-words text-sm font-semibold text-pca-text">{value}</dd></div>)}
             </dl>
           </div>

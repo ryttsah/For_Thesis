@@ -74,6 +74,7 @@ class VisitLogOut(BaseModel):
     farmer_comment: str = ""
     farmer_report: str = ""
     admin_feedback: str = ""
+    admin_rating: int | None = None
 
 
 class BookedSlotOut(BaseModel):
@@ -191,6 +192,7 @@ class FarmerVisitFeedbackRequest(BaseModel):
 
 class AdminVisitFeedbackRequest(BaseModel):
     feedback: str = Field(min_length=1, max_length=2000)
+    rating: int = Field(ge=1, le=5)
 
 
 class OfficerAssignRequest(BaseModel):

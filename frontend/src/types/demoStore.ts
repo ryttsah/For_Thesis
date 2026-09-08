@@ -180,4 +180,5 @@ export interface VisitLog {
   farmerComment: string;
   farmerReport: string;
   adminFeedback: string;
+  adminRating: number | null;
 }

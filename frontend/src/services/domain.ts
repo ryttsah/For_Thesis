@@ -120,7 +120,7 @@ type ApiVisitLog = {
   id: string; visit_id: string; farm: string; brgy: string; officer_id: string; officer_name: string;
   visited: boolean; officer_comment: string; not_visited_reason: string; recorded_at: string;
   farmer_confirmed: boolean | null; farmer_rating: number | null; farmer_comment: string;
-  farmer_report: string; admin_feedback: string;
+  farmer_report: string; admin_feedback: string; admin_rating: number | null;
 };
 
 export interface FarmerProfile {
@@ -268,7 +268,7 @@ function mapVisitLog(v: ApiVisitLog): VisitLog {
     officerName: v.officer_name, visited: v.visited, officerComment: v.officer_comment,
     notVisitedReason: v.not_visited_reason, recordedAt: v.recorded_at, farmerConfirmed: v.farmer_confirmed,
     farmerRating: v.farmer_rating, farmerComment: v.farmer_comment, farmerReport: v.farmer_report,
-    adminFeedback: v.admin_feedback };
+    adminFeedback: v.admin_feedback, adminRating: v.admin_rating };
 }
 
 export interface OfficerDomainData {
@@ -552,10 +552,10 @@ export async function submitFarmerVisitFeedbackApi(visitId: string, payload: { f
   } catch { return { ok: false, message: "Could not reach the server." }; }
 }
 
-export async function submitAdminVisitFeedbackApi(visitId: string, feedback: string): Promise<{ ok: boolean; message?: string }> {
+export async function submitAdminVisitFeedbackApi(visitId: string, payload: { feedback: string; rating: number }): Promise<{ ok: boolean; message?: string }> {
   if (!isApiEnabled()) return { ok: false, message: "API not configured." };
   try {
-    const response = await fetch(`${getApiBase()}/visits/${visitId}/admin-feedback`, { method: "POST", headers: { ...getAuthHeaders(), "Content-Type": "application/json" }, body: JSON.stringify({ feedback }) });
+    const response = await fetch(`${getApiBase()}/visits/${visitId}/admin-feedback`, { method: "POST", headers: { ...getAuthHeaders(), "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     return response.ok ? { ok: true } : { ok: false, message: await parseErrorMessage(response, "Could not save admin feedback.") };
   } catch { return { ok: false, message: "Could not reach the server." }; }
 }

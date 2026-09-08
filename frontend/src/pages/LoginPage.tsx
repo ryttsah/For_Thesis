@@ -93,6 +93,7 @@ export default function LoginPage() {
                     lead="Sign in to your officer account to manage farm records and monitoring."
                     idLabel="Employee ID"
                     idPlaceholder="PCA-XXXX-XXXX"
+                    footer={null}
                   />
                 </div>
               )}
@@ -114,6 +115,7 @@ export default function LoginPage() {
                     lead="Authorized personnel only. Access system configuration and analytics."
                     idLabel="Administrator ID"
                     idPlaceholder="PCA-ADMIN-XXX"
+                    footer={null}
                   />
                 </div>
               )}

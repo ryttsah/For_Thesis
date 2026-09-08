@@ -134,7 +134,7 @@ def admin_visit_feedback(
     db: Annotated[Session, Depends(get_db)],
     _role: Annotated[str, Depends(require_role("admin"))],
 ) -> VisitLogOut:
-    result = domain_service.add_admin_visit_feedback(db, visit_id, body.feedback)
+    result = domain_service.add_admin_visit_feedback(db, visit_id, body.feedback, body.rating)
     if result is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Visit log not found")
     return result

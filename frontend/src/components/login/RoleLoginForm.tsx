@@ -25,6 +25,7 @@ interface RoleLoginFormProps {
   idLabel: string;
   idPlaceholder: string;
   headerIcon?: ReactNode;
+  footer?: ReactNode;
 }
 
 export default function RoleLoginForm({
@@ -34,6 +35,7 @@ export default function RoleLoginForm({
   idLabel,
   idPlaceholder,
   headerIcon,
+  footer,
 }: RoleLoginFormProps) {
   const { establishSession } = useAuth();
   const navigate = useNavigate();
@@ -191,6 +193,7 @@ export default function RoleLoginForm({
       )}
 
       <LoginHelp role={role as LoginTab} />
+      <div className="min-h-[58px] pt-5">{footer}</div>
     </div>
   );
 }

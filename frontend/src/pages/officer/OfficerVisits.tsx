@@ -54,6 +54,7 @@ export default function OfficerVisits() {
   const scopedFlags = useMemo(
     () => filterByBrgy(priorityVisits.filter((v) => !v.completed), assignedBrgy)
       .filter((visit) => {
+        if (visit.desc.startsWith("Administrator performance feedback:")) return true;
         const details = surveyForPriority(visit.farm)?.details;
         return Boolean(details && (details.perPhoto?.length || details.breakdown?.length));
       }),

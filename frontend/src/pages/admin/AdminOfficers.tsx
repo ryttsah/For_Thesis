@@ -218,14 +218,14 @@ export default function AdminOfficers() {
             onClick={() => void handleAssign(selectedEmp, resolveBrgy())}
             className="h-[42px] rounded-[10px] bg-pca-green px-4 text-sm font-semibold text-white"
           >
-            Assign/Reassign
+            Assign/Reassign Officer
           </button>
           <button
             type="button"
             onClick={() => void handleAssign(selectedEmp, "__UNASSIGN__")}
             className="h-[42px] rounded-[10px] border border-pca-border px-4 text-sm font-semibold"
           >
-            Unassign selected
+            Unassign Officer
           </button>
         </div>
         {assignToast && (

@@ -59,7 +59,7 @@ function LoadingRing({ size = "h-16 w-16" }: { size?: string }) {
 export default function FarmerPortal() {
   const { user, logout, isAuthLoading } = useAuth();
   const navigate = useNavigate();
-  const { farmerNotifications, farmerSubmissions, visitLogs, addFarmerSubmission, syncFarmerDomain } = useDemoStore();
+  const { farmerNotifications, farmerSubmissions, visitLogs, scheduledVisits, addFarmerSubmission, syncFarmerDomain } = useDemoStore();
 
   const [farmerProfile, setFarmerProfile] = useState<FarmerProfile | null>(null);
   const [feedbackLogId, setFeedbackLogId] = useState<string | null>(null);
@@ -455,6 +455,10 @@ export default function FarmerPortal() {
     ? `${farmerProfile.farm} — ${farmerProfile.sector}, ${farmerProfile.brgy}, ${farmerProfile.municipality}`
     : `${user?.id ?? "Farmer account"} — ${lang === "hil" ? "ginakuha ang detalye sang umahan" : "loading farm details"}`;
   const farmerVisitLogs = farmerProfile ? visitLogs.filter((log) => log.farm === farmerProfile.farm) : [];
+  const farmerDueVisits = farmerProfile
+    ? scheduledVisits.filter((visit) => visit.farm === farmerProfile.farm && visit.date <= new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Manila" }))
+    : [];
+  const farmerUnansweredVisits = farmerDueVisits.filter((visit) => !farmerVisitLogs.some((log) => log.visitId === visit.id));
 
   async function saveVisitFeedback() {
     if (!feedbackLogId || visitConfirmed === null) { setVisitFeedbackError("Please confirm whether the officer completed the visit."); return; }
@@ -622,7 +626,7 @@ export default function FarmerPortal() {
 
         {step === 1 && (
           <div className="animate-fade-in grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div className="f-card !mb-0">
+            <div className="f-card !mb-0 md:h-full md:min-h-[680px]">
               <h2 className="text-xl font-bold mb-4">{FARMER_I18N.selectSector[lang]}</h2>
               <div className="grid grid-cols-2 gap-3">
                 {(["A", "B", "C", "D"] as const).map((code) => {
@@ -638,7 +642,7 @@ export default function FarmerPortal() {
               </div>
             </div>
 
-            <div className="f-card !mb-0">
+            <div className="f-card !mb-0 md:h-full md:min-h-[680px]">
               <h2 className="text-xl font-bold mb-4">{lang === "hil" ? "I-upload ang Litrato" : "Upload Photos"}</h2>
               <div className="mb-4 space-y-2" role="note">
                 <div className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 px-3.5 py-3 text-sm font-semibold leading-snug text-red-700">
@@ -900,6 +904,15 @@ export default function FarmerPortal() {
         )}
 
       </div>
+      {farmerUnansweredVisits.length > 0 && (
+        <section className="mx-auto mb-4 max-w-[1000px] px-4 lg:px-8">
+          <div className="f-card !mb-0">
+            <h3 className="flex items-center gap-2 text-base font-bold"><IconCheck size={18} className="text-pca-green" />{lang === "hil" ? "Kumpirmasyon sang Pagbisita" : "Scheduled Visit Confirmation"}</h3>
+            <p className="mt-2 text-[13px] text-pca-muted">{lang === "hil" ? "Natabo na ang petsa sang pagbisita. Pabutyaga ang PCA kon nakabisita ang opisyal." : "The scheduled visit date has arrived. Let PCA know whether the officer visited your farm."}</p>
+            <div className="mt-4 space-y-3">{farmerUnansweredVisits.map((visit) => <div key={visit.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-pca-border p-4"><div><p className="font-semibold">{visit.scheduledBy}</p><p className="mt-1 text-xs text-pca-muted">{visit.date} · {visit.slot === "AM" ? "8:00 AM - 11:30 AM" : "1:00 PM - 4:30 PM"}</p></div><button type="button" onClick={() => { setFeedbackLogId(visit.id); setVisitConfirmed(null); setVisitRating(0); setVisitComment(""); setVisitReport(""); setVisitFeedbackError(""); }} className="rounded-lg border border-pca-green px-3 py-2 text-sm font-bold text-pca-green hover:bg-pca-green-light">Confirm visit</button></div>)}</div>
+          </div>
+        </section>
+      )}
       {farmerVisitLogs.length > 0 && (
         <section className="mx-auto mb-8 max-w-[1000px] px-4 lg:px-8">
           <div className="f-card !mb-0">

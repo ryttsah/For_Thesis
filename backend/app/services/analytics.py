@@ -9,7 +9,7 @@ from typing import Literal
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.models.domain import Farm, FarmerSubmission, Survey, ValidationQueueItem
+from app.models.domain import Farm, FarmerSubmission, Survey, ValidationQueueItem, VisitLog
 from app.models.farmer_registration import FarmerRegistration
 from app.services.brgy import brgy_match
 
@@ -323,6 +323,22 @@ def portal_notifications(
                         "is_new": True,
                     },
                 )
+
+        feedback_logs = db.scalars(
+            select(VisitLog)
+            .where(VisitLog.officer_id == user_id, VisitLog.admin_feedback != "")
+            .order_by(VisitLog.id.desc()),
+        ).all()
+        for log in feedback_logs:
+            items.append(
+                {
+                    "id": f"officer-admin-feedback-{log.id}",
+                    "title": "New administrator performance feedback",
+                    "body": f"{log.farm}: {log.admin_rating or '—'}/5 stars. {log.admin_feedback}",
+                    "href": "/officer/visits",
+                    "is_new": True,
+                },
+            )
 
     if not items:
         items.append(

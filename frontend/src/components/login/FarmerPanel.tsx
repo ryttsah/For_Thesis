@@ -40,17 +40,19 @@ export default function FarmerPanel({
             lead="Upload photos from your farm and see AI-assisted health notes from PCA."
             idLabel="Farmer ID"
             idPlaceholder="e.g. FARMER-001"
+            footer={
+              <p className="text-center text-[13px] text-pca-muted">
+                First time here?{" "}
+                <button
+                  type="button"
+                  onClick={onEnterRegister}
+                  className="ml-1 font-semibold text-pca-green hover:underline"
+                >
+                  Register as a farmer
+                </button>
+              </p>
+            }
           />
-          <p className="-mt-2 px-8 pb-8 text-center text-[13px] text-pca-muted">
-            First time here?{" "}
-            <button
-              type="button"
-              onClick={onEnterRegister}
-              className="ml-1 font-semibold text-pca-green hover:underline"
-            >
-              Register as a farmer
-            </button>
-          </p>
         </>
       ) : (
         <FarmerRegistrationForm onBackToSignIn={onExitRegister} />

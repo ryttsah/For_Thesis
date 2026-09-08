@@ -283,7 +283,7 @@ def visit_log_to_out(row: VisitLog) -> VisitLogOut:
         officer_comment=row.officer_comment, not_visited_reason=row.not_visited_reason,
         recorded_at=row.recorded_at, farmer_confirmed=row.farmer_confirmed,
         farmer_rating=row.farmer_rating, farmer_comment=row.farmer_comment,
-        farmer_report=row.farmer_report, admin_feedback=row.admin_feedback,
+        farmer_report=row.farmer_report, admin_feedback=row.admin_feedback, admin_rating=row.admin_rating,
     )
 
 
@@ -476,11 +476,21 @@ def record_visit_outcome(db: Session, visit_id: str, officer_id: str, body: Visi
 
 def add_farmer_visit_feedback(db: Session, visit_id: str, farmer_id: str, body: FarmerVisitFeedbackRequest) -> VisitLogOut | None:
     row = db.scalar(select(VisitLog).where(VisitLog.scheduled_visit_id == visit_id))
-    if row is None:
+    visit = db.scalar(select(ScheduledVisit).where(ScheduledVisit.external_id == visit_id))
+    if visit is None:
         return None
     farm = _farm_for_farmer(db, farmer_id)
-    if farm is None or farm.name != row.farm:
+    if farm is None or farm.name != visit.farm:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You can only review visits for your own farm.")
+    if row is None:
+        officer = db.scalar(select(Officer).where(Officer.brgy == visit.brgy))
+        row = VisitLog(
+            scheduled_visit_id=visit_id, farm=visit.farm, brgy=visit.brgy,
+            officer_id=officer.emp_id if officer else "", officer_name=officer.name if officer else visit.scheduled_by,
+            visited=False, officer_comment="", not_visited_reason="Awaiting officer visit outcome.",
+            recorded_at=datetime.now(ZoneInfo("Asia/Manila")).strftime("%b %d, %Y %I:%M %p PHT"),
+        )
+        db.add(row)
     row.farmer_confirmed = body.farmer_confirmed
     row.farmer_rating = body.rating if body.farmer_confirmed else None
     row.farmer_comment = body.comment.strip()
@@ -489,11 +499,19 @@ def add_farmer_visit_feedback(db: Session, visit_id: str, farmer_id: str, body: 
     return visit_log_to_out(row)
 
 
-def add_admin_visit_feedback(db: Session, visit_id: str, feedback: str) -> VisitLogOut | None:
+def add_admin_visit_feedback(db: Session, visit_id: str, feedback: str, rating: int) -> VisitLogOut | None:
     row = db.scalar(select(VisitLog).where(VisitLog.scheduled_visit_id == visit_id))
     if row is None:
         return None
     row.admin_feedback = feedback.strip()
+    row.admin_rating = rating
+    follow_up_id = f"pv-feedback-{row.id}"
+    if db.scalar(select(PriorityVisit).where(PriorityVisit.external_id == follow_up_id)) is None:
+        db.add(PriorityVisit(
+            external_id=follow_up_id, farm=row.farm,
+            description=f"Administrator performance feedback: {row.admin_feedback}",
+            level="medium", due_label="Review admin feedback", assigned=row.officer_name, brgy=row.brgy, completed=False,
+        ))
     db.commit(); db.refresh(row)
     return visit_log_to_out(row)
 

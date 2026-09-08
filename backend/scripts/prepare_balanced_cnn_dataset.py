@@ -1,7 +1,7 @@
 """Create a quality-screened, balanced training set from the supplied labeled images.
 
 Usage (run from the repository root):
-  python backend/scripts/prepare_balanced_cnn_dataset.py --source C:/Users/ahwri/Downloads/Dataset
+  python backend/scripts/prepare_balanced_cnn_dataset.py --source "Thesis AI Model/source_dataset"
 
 The command keeps the same number of sharp, readable images per condition. It writes
 only a local training folder, which is intentionally excluded from source control.
@@ -17,10 +17,10 @@ from pathlib import Path
 from PIL import Image, ImageFilter, ImageStat
 
 LABELS = {
-    "HEALTHY 3": "Healthy",
-    "YELLOWING 4": "Yellowing",
-    "CSI 2": "Coconut_Scale_Insect",
-    "RHINOCEROS 1": "Rhinoceros_Beetle",
+    "Healthy": "Healthy",
+    "Yellowing": "Yellowing",
+    "Coconut_Scale_Insect": "Coconut_Scale_Insect",
+    "Rhinoceros_Beetle": "Rhinoceros_Beetle",
 }
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 
@@ -42,9 +42,9 @@ def quality_score(path: Path) -> float | None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--source", type=Path, required=True)
+    parser.add_argument("--source", type=Path, default=Path("Thesis AI Model/source_dataset"))
     parser.add_argument("--output", type=Path, default=Path("Thesis AI Model/curated_dataset"))
-    parser.add_argument("--per-class", type=int, default=54)
+    parser.add_argument("--per-class", type=int, default=238)
     args = parser.parse_args()
 
     chosen: dict[str, list[Path]] = {}
