@@ -7,7 +7,6 @@ import {
   IconBell,
   IconCamera,
   IconChartBar,
-  IconChevronDown,
   IconCheck,
   IconCircleCheck,
   IconHistory,
@@ -20,7 +19,7 @@ import {
   IconThumbUp,
   IconX,
 } from "@tabler/icons-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AnalysisDetailsModal, { type AnalysisModalRecord } from "../../components/analysis/AnalysisDetailsModal";
 import RecommendationPlanModal from "../../components/analysis/RecommendationPlanModal";
@@ -98,14 +97,11 @@ export default function FarmerPortal() {
   const [isSubmittingResult, setIsSubmittingResult] = useState(false);
   const [provincialStats, setProvincialStats] = useState<ProvincialStats | null>(null);
   const [sectorRows, setSectorRows] = useState<FarmerSectorRow[]>([]);
-  const [farmerNotificationsExpanded, setFarmerNotificationsExpanded] = useState(false);
   const [recommendationsOpen, setRecommendationsOpen] = useState(false);
-  const [seenFarmerNotificationIds, setSeenFarmerNotificationIds] = useState<Set<string>>(() => new Set());
   const [selectedHistory, setSelectedHistory] = useState<FarmerSubmission | null>(null);
   const [selectedImage, setSelectedImage] = useState<PerImagePredictResult | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const previewUrlsRef = useRef<string[]>([]);
-  const farmerSeenKey = `pca_seen_farmer_notifications_${user?.id ?? "guest"}`;
 
   useEffect(() => {
     if (!isApiEnabled() || isAuthLoading || !hasAuthToken()) return;
@@ -156,37 +152,6 @@ export default function FarmerPortal() {
     setAnalyzeError(aggregated.uncertain && aggregated.message ? aggregated.message : null);
   }
 
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(farmerSeenKey);
-      setSeenFarmerNotificationIds(new Set(raw ? (JSON.parse(raw) as string[]) : []));
-    } catch {
-      setSeenFarmerNotificationIds(new Set());
-    }
-  }, [farmerSeenKey]);
-
-  useEffect(() => {
-    if (!farmerNotificationsExpanded) return;
-    setSeenFarmerNotificationIds((current) => {
-      const next = new Set(current);
-      let changed = false;
-      for (const item of farmerNotifications) {
-        if (item.isNew && !next.has(item.id)) {
-          next.add(item.id);
-          changed = true;
-        }
-      }
-      if (!changed) return current;
-      localStorage.setItem(farmerSeenKey, JSON.stringify([...next]));
-      return next;
-    });
-  }, [farmerNotificationsExpanded, farmerNotifications, farmerSeenKey]);
-
-  const newCount = useMemo(
-    () => farmerNotifications.filter((n) => n.isNew && !seenFarmerNotificationIds.has(n.id)).length,
-    [farmerNotifications, seenFarmerNotificationIds],
-  );
-  const visibleFarmerNotifications = farmerNotificationsExpanded ? farmerNotifications : farmerNotifications.slice(0, 2);
   const rec = RECOMMENDATIONS[detectedPest][lang];
   const cardClass =
     detectedPest === "healthy" ? "healthy" : detectedPest === "yellowing" ? "warning" : "danger";
@@ -459,6 +424,7 @@ export default function FarmerPortal() {
     ? scheduledVisits.filter((visit) => visit.farm === farmerProfile.farm && visit.date <= new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Manila" }))
     : [];
   const farmerUnansweredVisits = farmerDueVisits.filter((visit) => !farmerVisitLogs.some((log) => log.visitId === visit.id));
+  const farmerPendingFeedbackLogs = farmerVisitLogs.filter((log) => log.farmerConfirmed === null);
 
   async function saveVisitFeedback() {
     if (!feedbackLogId || visitConfirmed === null) { setVisitFeedbackError("Please confirm whether the officer completed the visit."); return; }
@@ -526,59 +492,39 @@ export default function FarmerPortal() {
         </header>
 
         {/* Top Info Grid */}
-        <div className="mb-8 grid grid-cols-1 items-start gap-4 md:grid-cols-2">
-          <div className="space-y-4">
-            <div className="f-card !mb-0 flex min-h-[180px] flex-col justify-center">
+        <div className="mb-8 grid grid-cols-1 items-stretch gap-4 md:grid-cols-2">
+          <div className="grid min-h-[520px] grid-rows-[180px_minmax(0,1fr)] gap-4">
+            <div className="f-card !mb-0 flex min-h-0 flex-col justify-center">
               <h2 className="text-xl font-bold">{t.welcome}</h2>
               <div className="mt-4 rounded-xl border border-pca-green-soft bg-pca-green-light px-4 py-3.5 text-[14px] text-pca-green">
                 <span className="font-bold">{lang === "hil" ? "Imo Umahan:" : "Your Farm:"}</span> {farmerFarmLine}
               </div>
             </div>
-            {(farmerUnansweredVisits.length > 0 || farmerVisitLogs.length > 0) && (
-              <div className="f-card !mb-0">
+            <div className="f-card !mb-0 flex min-h-0 flex-col overflow-hidden">
                 <h3 className="flex items-center gap-2 text-base font-bold"><IconCheck size={18} className="text-pca-green" />{lang === "hil" ? "Feedback sa Pagbisita sang Opisyal" : "Officer Visit Feedback"}</h3>
                 <p className="mt-2 text-[13px] text-pca-muted">{lang === "hil" ? "Kumpirmaha kon nakabisita ang opisyal kag ihatag ang imo pagtilaw ukon report." : "Confirm whether the officer completed the visit, rate the service, or report a concern."}</p>
-                <div className="mt-4 space-y-3">
+                <div className="mt-4 min-h-0 flex-1 space-y-3 overflow-y-auto pr-1">
                   {farmerUnansweredVisits.map((visit) => <div key={visit.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-pca-border p-4"><div><p className="font-semibold">{visit.scheduledBy}</p><p className="mt-1 text-xs text-pca-muted">{visit.date} · {visit.slot === "AM" ? "8:00 AM - 11:30 AM" : "1:00 PM - 4:30 PM"}</p></div><button type="button" onClick={() => { setFeedbackLogId(visit.id); setVisitConfirmed(null); setVisitRating(0); setVisitComment(""); setVisitReport(""); setVisitFeedbackError(""); }} className="rounded-lg border border-pca-green px-3 py-2 text-sm font-bold text-pca-green hover:bg-pca-green-light">Confirm visit</button></div>)}
-                  {farmerVisitLogs.map((log) => <div key={log.id} className="rounded-xl border border-pca-border p-4"><div className="flex flex-wrap items-start justify-between gap-2"><div><p className="font-semibold">{log.officerName}</p><p className="text-xs text-pca-muted">{log.recordedAt}</p></div><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${log.visited ? "bg-pca-green-light text-pca-green" : "bg-pca-red-light text-pca-red"}`}>{log.visited ? "Visit recorded" : "Visit not completed"}</span></div><p className="mt-3 text-sm">{log.visited ? log.officerComment : log.notVisitedReason}</p>{log.farmerConfirmed !== null ? <p className="mt-3 text-xs font-semibold text-pca-green">Your feedback was submitted{log.farmerRating ? ` · ${log.farmerRating}/5 stars` : ""}.</p> : <button type="button" onClick={() => { setFeedbackLogId(log.visitId); setVisitConfirmed(null); setVisitRating(0); setVisitComment(""); setVisitReport(""); setVisitFeedbackError(""); }} className="mt-3 text-sm font-bold text-pca-green hover:underline">Confirm and rate this visit</button>}</div>)}
+                  {farmerPendingFeedbackLogs.map((log) => <div key={log.id} className="rounded-xl border border-pca-border p-4"><div className="flex flex-wrap items-start justify-between gap-2"><div><p className="font-semibold">{log.officerName}</p><p className="text-xs text-pca-muted">{log.recordedAt}</p></div><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${log.visited ? "bg-pca-green-light text-pca-green" : "bg-pca-red-light text-pca-red"}`}>{log.visited ? "Visit recorded" : "Visit not completed"}</span></div><p className="mt-3 text-sm">{log.visited ? log.officerComment : log.notVisitedReason}</p><button type="button" onClick={() => { setFeedbackLogId(log.visitId); setVisitConfirmed(null); setVisitRating(0); setVisitComment(""); setVisitReport(""); setVisitFeedbackError(""); }} className="mt-3 text-sm font-bold text-pca-green hover:underline">Confirm and rate this visit</button></div>)}
+                  {farmerUnansweredVisits.length === 0 && farmerPendingFeedbackLogs.length === 0 && <p className="rounded-xl border border-dashed border-pca-border bg-pca-bg p-5 text-center text-sm text-pca-muted">{lang === "hil" ? "Wala pa sang opisyal nga kinahanglan mo hatagan sang feedback." : "There is no officer to give feedback to yet."}</p>}
                 </div>
               </div>
-            )}
           </div>
 
-          <div className="f-card !mb-0 flex max-h-[420px] flex-col overflow-hidden">
-            <div className="mb-3 flex items-center justify-between gap-3">
+          <div className="f-card !mb-0 flex min-h-[520px] max-h-[520px] flex-col overflow-hidden">
+            <div className="mb-3 flex items-center gap-3">
               <h3 className="flex min-w-0 items-center gap-2 text-[15px] font-bold">
                 <IconBell size={18} className="shrink-0 text-orange-600" />
                 <span className="truncate">{FARMER_I18N.notifications[lang]}</span>
-                {newCount > 0 && (
-                  <span className="shrink-0 rounded-full bg-pca-red-light px-2 py-0.5 text-[11px] font-bold text-pca-red">
-                    {newCount} new
-                  </span>
-                )}
               </h3>
-              {farmerNotifications.length > 2 && (
-                <button
-                  type="button"
-                  onClick={() => setFarmerNotificationsExpanded((v) => !v)}
-                  className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-pca-border text-pca-muted transition-all hover:bg-pca-bg hover:text-pca-text"
-                  aria-label={farmerNotificationsExpanded ? "Collapse notifications" : "Expand notifications"}
-                  aria-expanded={farmerNotificationsExpanded}
-                >
-                  <IconChevronDown
-                    size={18}
-                    className={`transition-transform ${farmerNotificationsExpanded ? "rotate-180" : ""}`}
-                  />
-                </button>
-              )}
             </div>
             <div className="min-h-0 space-y-2 overflow-y-auto pr-1">
-              {visibleFarmerNotifications.map((n) => (
+              {farmerNotifications.map((n) => (
                 <div key={n.id} className="flex items-center gap-3 rounded-xl border border-pca-bg bg-pca-bg/50 p-3">
                   <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: n.dot }} />
                   <div className="min-w-0 flex-1">
                     <div className="truncate text-xs font-bold">{n.dateLine}</div>
-                    <div className={farmerNotificationsExpanded ? "text-[11px] leading-relaxed text-pca-muted" : "truncate text-[11px] text-pca-muted"}>
+                    <div className="text-[11px] leading-relaxed text-pca-muted">
                       {n.body}
                     </div>
                   </div>

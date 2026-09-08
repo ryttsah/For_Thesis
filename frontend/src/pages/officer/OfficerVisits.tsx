@@ -22,6 +22,10 @@ const TAG_STYLES = {
   medium: "bg-amber-500 text-white",
 };
 
+function ReviewStars({ rating, size = 18 }: { rating: number; size?: number }) {
+  return <span className="inline-flex gap-0.5 text-amber-500">{[1, 2, 3, 4, 5].map((star) => <IconStar key={star} size={size} fill={star <= Math.round(rating) ? "currentColor" : "none"} className={star <= Math.round(rating) ? "" : "text-slate-200"} />)}</span>;
+}
+
 function formatVisitLine(date: string, slot: string) {
   const dateText = new Date(date + "T12:00:00").toLocaleDateString("en-PH", {
     weekday: "short",
@@ -77,6 +81,10 @@ export default function OfficerVisits() {
     () => visitLogs.filter((log) => log.officerId === officerId && (log.farmerConfirmed !== null || log.adminFeedback.trim().length > 0)),
     [visitLogs, officerId],
   );
+  const farmerRatings = officerFeedback.filter((log) => log.farmerRating !== null);
+  const averageRating = farmerRatings.length ? farmerRatings.reduce((sum, log) => sum + (log.farmerRating ?? 0), 0) / farmerRatings.length : 0;
+  const ratingCounts = [5, 4, 3, 2, 1].map((star) => farmerRatings.filter((log) => log.farmerRating === star).length);
+  const highestRatingCount = Math.max(...ratingCounts, 1);
 
   function openSchedule() {
     if (!assignedBrgy) {
@@ -195,20 +203,11 @@ export default function OfficerVisits() {
 
       <Card className="mt-4">
         <CardHead
-          title="Feedback and Service Reviews"
+          title="Ratings and Reviews"
           icon={<IconMessageStar size={16} />}
-          action={<span className="rounded-full bg-pca-bg px-2.5 py-0.5 text-[11px] font-semibold text-pca-muted">{officerFeedback.length} review{officerFeedback.length === 1 ? "" : "s"}</span>}
+          action={<span className="text-xs font-semibold text-pca-muted">Verified farmer feedback</span>}
         />
-        <p className="mb-4 text-xs leading-relaxed text-pca-muted">Farmer confirmations, service ratings, reported concerns, and administrator performance feedback for your recorded visits.</p>
-        <div className="flex flex-col gap-3">
-          {officerFeedback.length === 0 ? <p className="rounded-xl border border-dashed border-pca-border bg-pca-bg p-6 text-center text-sm text-pca-muted">No feedback has been submitted for your visits yet.</p> : officerFeedback.map((log) => (
-            <article key={log.id} className="rounded-xl border border-pca-border p-4">
-              <div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="font-semibold text-pca-text">{log.farm}</h3><p className="mt-1 text-xs text-pca-muted">{log.recordedAt}</p></div>{log.farmerRating && <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700"><IconStar size={14} fill="currentColor" /> {log.farmerRating}/5 farmer rating</span>}</div>
-              {log.farmerConfirmed !== null && <div className="mt-3 rounded-lg bg-pca-green-light p-3 text-sm text-pca-text"><strong>{log.farmerConfirmed ? "Farmer confirmed the visit." : "Farmer reported the visit was not completed."}</strong>{log.farmerComment && <p className="mt-1">{log.farmerComment}</p>}{log.farmerReport && <p className="mt-2 text-pca-red"><strong>Reported concern:</strong> {log.farmerReport}</p>}</div>}
-              {log.adminFeedback && <div className="mt-3 rounded-lg bg-blue-50 p-3 text-sm text-blue-950"><strong>Administrator feedback{log.adminRating ? ` · ${log.adminRating}/5 stars` : ""}:</strong><p className="mt-1">{log.adminFeedback}</p></div>}
-            </article>
-          ))}
-        </div>
+        {farmerRatings.length === 0 ? <p className="rounded-xl border border-dashed border-pca-border bg-pca-bg p-6 text-center text-sm text-pca-muted">No farmer ratings or comments have been submitted for your visits yet.</p> : <><div className="grid gap-6 lg:grid-cols-[150px_1fr] lg:items-center"><div><div className="text-6xl font-medium text-pca-text">{averageRating.toFixed(1)}</div><div className="mt-2"><ReviewStars rating={averageRating} size={21} /></div><p className="mt-3 text-sm text-pca-muted">{farmerRatings.length} farmer review{farmerRatings.length === 1 ? "" : "s"}</p></div><div className="space-y-2">{[5, 4, 3, 2, 1].map((star, index) => <div key={star} className="flex items-center gap-3"><span className="w-3 text-sm text-pca-muted">{star}</span><div className="h-3 flex-1 overflow-hidden rounded-full bg-slate-200"><div className="h-full rounded-full bg-emerald-600" style={{ width: `${(ratingCounts[index] / highestRatingCount) * 100}%` }} /></div><span className="w-7 text-right text-xs text-pca-muted">{ratingCounts[index]}</span></div>)}</div></div><div className="mt-7 space-y-5">{farmerRatings.map((log) => <article key={log.id} className="border-t border-pca-border pt-5"><div className="flex flex-wrap items-start justify-between gap-3"><div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-full bg-pca-green text-sm font-bold text-white">F</span><div><p className="font-semibold text-pca-text">Farmer review · {log.farm}</p><p className="mt-1 text-xs text-pca-muted">{log.recordedAt}</p></div></div><ReviewStars rating={log.farmerRating ?? 0} size={17} /></div><p className="mt-3 text-sm leading-relaxed text-pca-text">{log.farmerComment || "The farmer confirmed the visit without a written comment."}</p>{log.farmerReport && <p className="mt-2 text-sm text-pca-red"><strong>Reported concern:</strong> {log.farmerReport}</p>}</article>)}</div></>}
       </Card>
 
       <ScheduleVisitModal open={scheduleOpen} onClose={() => setScheduleOpen(false)} />
