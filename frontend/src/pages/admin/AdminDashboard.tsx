@@ -28,7 +28,7 @@ export default function AdminDashboard() {
     acc[f.brgy] = (acc[f.brgy] ?? 0) + 1;
     return acc;
   }, {});
-  const latestBarangays = Object.entries(brgyGroups).slice(0, 5);
+  const latestBarangays = Object.entries(brgyGroups).slice(0, 3);
   const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Manila" });
   const upcomingVisits = scheduledVisits.filter((visit) => visit.date > today);
   const daysUntil = (date: string) => Math.max(0, Math.ceil((new Date(`${date}T12:00:00`).getTime() - new Date(`${today}T12:00:00`).getTime()) / 86_400_000));
@@ -41,8 +41,8 @@ export default function AdminDashboard() {
         <MetricCard icon={<IconAlertTriangle size={20} />} tone="red" value={highRisk} label="High-Risk Farms" />
       </div>
 
-      <div className="mb-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <Card className="flex min-h-[500px] flex-col">
+      <div className="mb-4 grid grid-cols-1 gap-4 lg:grid-cols-[2fr_1fr]">
+        <Card>
           <CardHead title="Condition Trend — Last 6 Months" icon={<IconChartBar size={16} />} />
           {trend && trend.labels.length > 0 ? (
             <>
@@ -53,7 +53,7 @@ export default function AdminDashboard() {
                 yellowing={trend.yellowing}
                 scale={trend.scale}
                 beetle={trend.beetle}
-                height={340}
+                height={220}
               />
             </>
           ) : (
@@ -66,7 +66,7 @@ export default function AdminDashboard() {
             />
           )}
         </Card>
-        <Card className="flex min-h-[500px] flex-col">
+        <Card>
           <CardHead title="Barangay Overview" icon={<IconMapPin size={16} />} action={<Link to="/admin/farms" className="text-xs font-bold text-pca-green hover:underline">All Farms</Link>} />
           <div className="flex flex-col gap-2">
             {Object.keys(brgyGroups).length === 0 ? (
