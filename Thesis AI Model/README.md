@@ -42,11 +42,11 @@ The current model should be rebuilt with the supplied field-photo folders before
 next deployment. Run `backend/scripts/prepare_balanced_cnn_dataset.py` first; it
 creates `curated_dataset` with exactly 54 images for each of Healthy, Yellowing,
 Coconut Scale Insect, and Rhinoceros Beetle. Then run
-`backend/scripts/train_balanced_cnn.py` in the project Docker image. It replaces the
+`backend/scripts/train_balanced_cnn.py` using the dedicated local TensorFlow environment. It replaces the
 model output and label configuration used by the API.
 
-The supplied data does not include a labeled non-palm class. The portal therefore
-stops conservatively when no condition can be confirmed and identifies the affected
-photos. For a trained non-palm detector, add a separate labeled `Non_Palm` collection
-(people, buildings, other crops, tools, animals, blank images, and other unrelated
-photos) before retraining.
+The supplied data does not include a labeled non-palm class. The portal can only stop
+for an unclear or very low-confidence photo; it cannot yet reliably identify every
+non-palm object. For a trained non-palm detector, add a separate labeled `Non_Palm`
+collection (people, buildings, other crops, tools, animals, blank images, and other
+unrelated photos) before retraining.

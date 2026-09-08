@@ -6,12 +6,12 @@
     "Rhinoceros_Beetle"
   ],
   "thresholds": {
-    "Healthy": 0.46635258197784424,
-    "Yellowing": 0.800000011920929,
-    "Coconut_Scale_Insect": 0.800000011920929,
-    "Rhinoceros_Beetle": 0.800000011920929
+    "Healthy": 0.5,
+    "Yellowing": 0.5,
+    "Coconut_Scale_Insect": 0.5,
+    "Rhinoceros_Beetle": 0.5
   },
-  "uncertain_threshold": 0.4,
+  "uncertain_threshold": 0.35,
   "image_size": [
     224,
     224

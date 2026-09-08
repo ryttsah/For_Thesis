@@ -1,9 +1,7 @@
 """Train a balanced coconut condition classifier from curated_dataset.
 
-Run inside the Docker image so TensorFlow is available:
-  docker build -t cocoanalytica-trainer .
-  docker run --rm -v "${PWD}:/workspace" -w /workspace cocoanalytica-trainer \
-    python backend/scripts/train_balanced_cnn.py
+Run after installing TensorFlow in a dedicated local environment:
+  backend/.cnn-venv/Scripts/python.exe backend/scripts/train_balanced_cnn.py
 
 The script writes a model and label configuration that the FastAPI predictor loads.
 """
@@ -46,7 +44,9 @@ def main() -> None:
         batch_size=BATCH_SIZE,
     )
     train = tf.keras.utils.image_dataset_from_directory(subset="training", shuffle=True, **common)
-    valid = tf.keras.utils.image_dataset_from_directory(subset="validation", shuffle=False, **common)
+    # Use the same seed and shuffle behavior as training so both subsets are a
+    # true complementary split, rather than two differently ordered selections.
+    valid = tf.keras.utils.image_dataset_from_directory(subset="validation", shuffle=True, **common)
 
     autotune = tf.data.AUTOTUNE
     train = train.prefetch(autotune)
@@ -104,7 +104,10 @@ def main() -> None:
             {
                 "class_names": CLASS_NAMES,
                 "thresholds": {name: 0.5 for name in CLASS_NAMES},
-                "uncertain_threshold": 0.6,
+                # Scores under 35% are too ambiguous to accept. A modest cutoff
+                # avoids rejecting real field photos where lighting lowers the
+                # model's confidence.
+                "uncertain_threshold": 0.35,
                 "image_size": list(IMAGE_SIZE),
             },
             indent=2,

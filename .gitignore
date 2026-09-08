@@ -9,6 +9,7 @@ frontend/dist/
 .api-venv/
 backend/.venv/
 backend/.api-venv/
+backend/.cnn-venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
