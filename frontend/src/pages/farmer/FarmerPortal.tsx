@@ -588,10 +588,10 @@ export default function FarmerPortal() {
         </div>
 
         {step === 1 && (
-          <div className="animate-fade-in grid grid-cols-1 gap-6 md:auto-rows-fr md:grid-cols-2">
-            <div className="f-card !mb-0 min-h-[680px] md:h-[760px]">
+          <div className="animate-fade-in grid grid-cols-1 items-stretch gap-6 md:grid-cols-2">
+            <div className="f-card !mb-0 flex min-h-[620px] flex-col">
               <h2 className="text-xl font-bold mb-4">{FARMER_I18N.selectSector[lang]}</h2>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid flex-1 grid-cols-2 gap-3">
                 {(["A", "B", "C", "D"] as const).map((code) => {
                   const Icon = SECTOR_ICONS[code];
                   return (
@@ -605,7 +605,7 @@ export default function FarmerPortal() {
               </div>
             </div>
 
-            <div className="f-card !mb-0 min-h-[680px] md:h-[760px]">
+            <div className="f-card !mb-0 min-h-[620px]">
               <h2 className="text-xl font-bold mb-4">{lang === "hil" ? "I-upload ang Litrato" : "Upload Photos"}</h2>
               <div className="mb-4 space-y-2" role="note">
                 <div className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 px-3.5 py-3 text-sm font-semibold leading-snug text-red-700">
