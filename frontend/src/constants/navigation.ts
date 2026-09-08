@@ -68,6 +68,7 @@ export const ADMIN_NAV: { label: string; items: NavItem[] }[] = [
         path: "/admin/approvals",
       },
       { id: "admin-officers", label: "Officer Management", icon: IconUsers, path: "/admin/officers" },
+      { id: "admin-visit-logs", label: "Officer Visit Logs", icon: IconChecklist, path: "/admin/visit-logs" },
       { id: "admin-farms", label: "All Farms", icon: IconPlant2, path: "/admin/farms" },
       {
         id: "admin-surveys",
@@ -101,6 +102,7 @@ export const ADMIN_PAGE_TITLES: Record<string, string> = {
   "/admin": "Dashboard",
   "/admin/approvals": "Farmer Approvals",
   "/admin/officers": "Officer Management",
+  "/admin/visit-logs": "Officer Visit Logs",
   "/admin/farms": "All Farms",
   "/admin/surveys": "All Surveys",
   "/admin/analytics": "Analytics",

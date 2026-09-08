@@ -527,14 +527,26 @@ export default function FarmerPortal() {
 
         {/* Top Info Grid */}
         <div className="mb-8 grid grid-cols-1 items-start gap-4 md:grid-cols-2">
-          <div className="f-card !mb-0 flex min-h-[180px] flex-col justify-center">
-            <h2 className="text-xl font-bold">{t.welcome}</h2>
-            <div className="mt-4 rounded-xl border border-pca-green-soft bg-pca-green-light px-4 py-3.5 text-[14px] text-pca-green">
-              <span className="font-bold">{lang === "hil" ? "Imo Umahan:" : "Your Farm:"}</span> {farmerFarmLine}
+          <div className="space-y-4">
+            <div className="f-card !mb-0 flex min-h-[180px] flex-col justify-center">
+              <h2 className="text-xl font-bold">{t.welcome}</h2>
+              <div className="mt-4 rounded-xl border border-pca-green-soft bg-pca-green-light px-4 py-3.5 text-[14px] text-pca-green">
+                <span className="font-bold">{lang === "hil" ? "Imo Umahan:" : "Your Farm:"}</span> {farmerFarmLine}
+              </div>
             </div>
+            {(farmerUnansweredVisits.length > 0 || farmerVisitLogs.length > 0) && (
+              <div className="f-card !mb-0">
+                <h3 className="flex items-center gap-2 text-base font-bold"><IconCheck size={18} className="text-pca-green" />{lang === "hil" ? "Feedback sa Pagbisita sang Opisyal" : "Officer Visit Feedback"}</h3>
+                <p className="mt-2 text-[13px] text-pca-muted">{lang === "hil" ? "Kumpirmaha kon nakabisita ang opisyal kag ihatag ang imo pagtilaw ukon report." : "Confirm whether the officer completed the visit, rate the service, or report a concern."}</p>
+                <div className="mt-4 space-y-3">
+                  {farmerUnansweredVisits.map((visit) => <div key={visit.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-pca-border p-4"><div><p className="font-semibold">{visit.scheduledBy}</p><p className="mt-1 text-xs text-pca-muted">{visit.date} · {visit.slot === "AM" ? "8:00 AM - 11:30 AM" : "1:00 PM - 4:30 PM"}</p></div><button type="button" onClick={() => { setFeedbackLogId(visit.id); setVisitConfirmed(null); setVisitRating(0); setVisitComment(""); setVisitReport(""); setVisitFeedbackError(""); }} className="rounded-lg border border-pca-green px-3 py-2 text-sm font-bold text-pca-green hover:bg-pca-green-light">Confirm visit</button></div>)}
+                  {farmerVisitLogs.map((log) => <div key={log.id} className="rounded-xl border border-pca-border p-4"><div className="flex flex-wrap items-start justify-between gap-2"><div><p className="font-semibold">{log.officerName}</p><p className="text-xs text-pca-muted">{log.recordedAt}</p></div><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${log.visited ? "bg-pca-green-light text-pca-green" : "bg-pca-red-light text-pca-red"}`}>{log.visited ? "Visit recorded" : "Visit not completed"}</span></div><p className="mt-3 text-sm">{log.visited ? log.officerComment : log.notVisitedReason}</p>{log.farmerConfirmed !== null ? <p className="mt-3 text-xs font-semibold text-pca-green">Your feedback was submitted{log.farmerRating ? ` · ${log.farmerRating}/5 stars` : ""}.</p> : <button type="button" onClick={() => { setFeedbackLogId(log.visitId); setVisitConfirmed(null); setVisitRating(0); setVisitComment(""); setVisitReport(""); setVisitFeedbackError(""); }} className="mt-3 text-sm font-bold text-pca-green hover:underline">Confirm and rate this visit</button>}</div>)}
+                </div>
+              </div>
+            )}
           </div>
 
-          <div className="f-card !mb-0">
+          <div className="f-card !mb-0 flex max-h-[420px] flex-col overflow-hidden">
             <div className="mb-3 flex items-center justify-between gap-3">
               <h3 className="flex min-w-0 items-center gap-2 text-[15px] font-bold">
                 <IconBell size={18} className="shrink-0 text-orange-600" />
@@ -560,7 +572,7 @@ export default function FarmerPortal() {
                 </button>
               )}
             </div>
-            <div className="space-y-2">
+            <div className="min-h-0 space-y-2 overflow-y-auto pr-1">
               {visibleFarmerNotifications.map((n) => (
                 <div key={n.id} className="flex items-center gap-3 rounded-xl border border-pca-bg bg-pca-bg/50 p-3">
                   <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: n.dot }} />
@@ -625,8 +637,8 @@ export default function FarmerPortal() {
         </div>
 
         {step === 1 && (
-          <div className="animate-fade-in grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div className="f-card !mb-0 md:h-full md:min-h-[680px]">
+          <div className="animate-fade-in grid grid-cols-1 gap-6 md:auto-rows-fr md:grid-cols-2">
+            <div className="f-card !mb-0 min-h-[680px]">
               <h2 className="text-xl font-bold mb-4">{FARMER_I18N.selectSector[lang]}</h2>
               <div className="grid grid-cols-2 gap-3">
                 {(["A", "B", "C", "D"] as const).map((code) => {
@@ -642,7 +654,7 @@ export default function FarmerPortal() {
               </div>
             </div>
 
-            <div className="f-card !mb-0 md:h-full md:min-h-[680px]">
+            <div className="f-card !mb-0 min-h-[680px]">
               <h2 className="text-xl font-bold mb-4">{lang === "hil" ? "I-upload ang Litrato" : "Upload Photos"}</h2>
               <div className="mb-4 space-y-2" role="note">
                 <div className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 px-3.5 py-3 text-sm font-semibold leading-snug text-red-700">
@@ -904,24 +916,6 @@ export default function FarmerPortal() {
         )}
 
       </div>
-      {farmerUnansweredVisits.length > 0 && (
-        <section className="mx-auto mb-4 max-w-[1000px] px-4 lg:px-8">
-          <div className="f-card !mb-0">
-            <h3 className="flex items-center gap-2 text-base font-bold"><IconCheck size={18} className="text-pca-green" />{lang === "hil" ? "Kumpirmasyon sang Pagbisita" : "Scheduled Visit Confirmation"}</h3>
-            <p className="mt-2 text-[13px] text-pca-muted">{lang === "hil" ? "Natabo na ang petsa sang pagbisita. Pabutyaga ang PCA kon nakabisita ang opisyal." : "The scheduled visit date has arrived. Let PCA know whether the officer visited your farm."}</p>
-            <div className="mt-4 space-y-3">{farmerUnansweredVisits.map((visit) => <div key={visit.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-pca-border p-4"><div><p className="font-semibold">{visit.scheduledBy}</p><p className="mt-1 text-xs text-pca-muted">{visit.date} · {visit.slot === "AM" ? "8:00 AM - 11:30 AM" : "1:00 PM - 4:30 PM"}</p></div><button type="button" onClick={() => { setFeedbackLogId(visit.id); setVisitConfirmed(null); setVisitRating(0); setVisitComment(""); setVisitReport(""); setVisitFeedbackError(""); }} className="rounded-lg border border-pca-green px-3 py-2 text-sm font-bold text-pca-green hover:bg-pca-green-light">Confirm visit</button></div>)}</div>
-          </div>
-        </section>
-      )}
-      {farmerVisitLogs.length > 0 && (
-        <section className="mx-auto mb-8 max-w-[1000px] px-4 lg:px-8">
-          <div className="f-card !mb-0">
-            <h3 className="flex items-center gap-2 text-base font-bold"><IconCheck size={18} className="text-pca-green" />{lang === "hil" ? "Feedback sa Pagbisita sang Opisyal" : "Officer Visit Feedback"}</h3>
-            <p className="mt-2 text-[13px] text-pca-muted">{lang === "hil" ? "Kumpirmaha kon nakabisita ang opisyal kag ihatag ang imo pagtilaw ukon report." : "Confirm whether the officer completed the visit, rate the service, or report a concern."}</p>
-            <div className="mt-4 space-y-3">{farmerVisitLogs.map((log) => <div key={log.id} className="rounded-xl border border-pca-border p-4"><div className="flex flex-wrap items-start justify-between gap-2"><div><p className="font-semibold">{log.officerName}</p><p className="text-xs text-pca-muted">{log.recordedAt}</p></div><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${log.visited ? "bg-pca-green-light text-pca-green" : "bg-pca-red-light text-pca-red"}`}>{log.visited ? "Visit recorded" : "Visit not completed"}</span></div><p className="mt-3 text-sm">{log.visited ? log.officerComment : log.notVisitedReason}</p>{log.farmerConfirmed !== null ? <p className="mt-3 text-xs font-semibold text-pca-green">Your feedback was submitted{log.farmerRating ? ` · ${log.farmerRating}/5 stars` : ""}.</p> : <button type="button" onClick={() => { setFeedbackLogId(log.visitId); setVisitConfirmed(null); setVisitRating(0); setVisitComment(""); setVisitReport(""); setVisitFeedbackError(""); }} className="mt-3 text-sm font-bold text-pca-green hover:underline">Confirm and rate this visit</button>}</div>)}</div>
-          </div>
-        </section>
-      )}
       {selectedImage && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" role="dialog" aria-modal="true">
           <div className="w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl">

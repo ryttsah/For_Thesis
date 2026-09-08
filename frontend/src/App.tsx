@@ -10,6 +10,7 @@ import AdminFarms from "./pages/admin/AdminFarms";
 import AdminOfficers from "./pages/admin/AdminOfficers";
 import AdminReports from "./pages/admin/AdminReports";
 import AdminSurveys from "./pages/admin/AdminSurveys";
+import AdminVisitLogs from "./pages/admin/AdminVisitLogs";
 import FarmerPortal from "./pages/farmer/FarmerPortal";
 import OfficerAnalytics from "./pages/officer/OfficerAnalytics";
 import OfficerDashboard from "./pages/officer/OfficerDashboard";
@@ -48,6 +49,7 @@ export default function App() {
           <Route index element={<AdminDashboard />} />
           <Route path="approvals" element={<AdminApprovals />} />
           <Route path="officers" element={<AdminOfficers />} />
+          <Route path="visit-logs" element={<AdminVisitLogs />} />
           <Route path="farms" element={<AdminFarms />} />
           <Route path="surveys" element={<AdminSurveys />} />
           <Route path="analytics" element={<AdminAnalytics />} />

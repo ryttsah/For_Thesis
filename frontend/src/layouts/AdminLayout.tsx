@@ -9,7 +9,12 @@ import { fetchAdminRegistrations } from "../services/registrations";
 
 export default function AdminLayout() {
   const { isAuthLoading } = useAuth();
-  const { pendingCount, syncRegistrationData, syncAdminDomain } = useDemoStore();
+  const { pendingCount, visitLogs, syncRegistrationData, syncAdminDomain } = useDemoStore();
+  const visitLogsReadyForReview = visitLogs.filter((log) => {
+    const officerHasResponded = log.officerComment.trim().length > 0
+      || (log.notVisitedReason.trim().length > 0 && log.notVisitedReason !== "Awaiting officer visit outcome.");
+    return officerHasResponded && log.farmerConfirmed !== null && !log.adminFeedback.trim();
+  }).length;
 
   useEffect(() => {
     if (!isApiEnabled() || isAuthLoading || !hasAuthToken()) return;
@@ -26,7 +31,11 @@ export default function AdminLayout() {
       portalLabel="Admin Portal"
       navGroups={ADMIN_NAV}
       pageTitles={ADMIN_PAGE_TITLES}
-      getNavBadge={(id) => (id === "admin-approvals" ? pendingCount : undefined)}
+      getNavBadge={(id) => {
+        if (id === "admin-approvals") return pendingCount;
+        if (id === "admin-visit-logs") return visitLogsReadyForReview || undefined;
+        return undefined;
+      }}
     />
   );
 }

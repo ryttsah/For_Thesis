@@ -1,4 +1,4 @@
-import { IconAlertCircle, IconCalendar, IconCalendarEvent, IconCheck, IconEye, IconFlag, IconFlag2, IconPlus } from "@tabler/icons-react";
+import { IconAlertCircle, IconCalendar, IconCalendarEvent, IconCheck, IconEye, IconFlag, IconFlag2, IconMessageStar, IconPlus, IconStar } from "@tabler/icons-react";
 import { useEffect, useMemo, useState } from "react";
 import AnalysisDetailsModal, { type AnalysisModalRecord } from "../../components/analysis/AnalysisDetailsModal";
 import ScheduleVisitModal from "../../components/modals/ScheduleVisitModal";
@@ -35,7 +35,7 @@ function formatVisitLine(date: string, slot: string) {
 
 export default function OfficerVisits() {
   const { priorityVisits, scheduledVisits, surveys, visitLogs, completePriorityVisit, syncOfficerDomain } = useDemoStore();
-  const { assignedBrgy } = useOfficerScope();
+  const { assignedBrgy, officerId } = useOfficerScope();
   const [scheduleOpen, setScheduleOpen] = useState(false);
   const [selectedPriorityId, setSelectedPriorityId] = useState<string | null>(null);
   const [outcomeVisitId, setOutcomeVisitId] = useState<string | null>(null);
@@ -73,6 +73,10 @@ export default function OfficerVisits() {
     ? surveys.find((s) => s.farm === selectedPriorityFarm || Boolean(selectedPriority?.farm.includes(s.farm)))
     : null;
   const outcomeVisit = scopedVisits.find((visit) => visit.id === outcomeVisitId) ?? null;
+  const officerFeedback = useMemo(
+    () => visitLogs.filter((log) => log.officerId === officerId && (log.farmerConfirmed !== null || log.adminFeedback.trim().length > 0)),
+    [visitLogs, officerId],
+  );
 
   function openSchedule() {
     if (!assignedBrgy) {
@@ -186,6 +190,24 @@ export default function OfficerVisits() {
           {scopedVisits.length === 0 && (
             <p className="py-6 text-center text-sm text-pca-muted">No scheduled visits in this barangay yet.</p>
           )}
+        </div>
+      </Card>
+
+      <Card className="mt-4">
+        <CardHead
+          title="Feedback and Service Reviews"
+          icon={<IconMessageStar size={16} />}
+          action={<span className="rounded-full bg-pca-bg px-2.5 py-0.5 text-[11px] font-semibold text-pca-muted">{officerFeedback.length} review{officerFeedback.length === 1 ? "" : "s"}</span>}
+        />
+        <p className="mb-4 text-xs leading-relaxed text-pca-muted">Farmer confirmations, service ratings, reported concerns, and administrator performance feedback for your recorded visits.</p>
+        <div className="flex flex-col gap-3">
+          {officerFeedback.length === 0 ? <p className="rounded-xl border border-dashed border-pca-border bg-pca-bg p-6 text-center text-sm text-pca-muted">No feedback has been submitted for your visits yet.</p> : officerFeedback.map((log) => (
+            <article key={log.id} className="rounded-xl border border-pca-border p-4">
+              <div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="font-semibold text-pca-text">{log.farm}</h3><p className="mt-1 text-xs text-pca-muted">{log.recordedAt}</p></div>{log.farmerRating && <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700"><IconStar size={14} fill="currentColor" /> {log.farmerRating}/5 farmer rating</span>}</div>
+              {log.farmerConfirmed !== null && <div className="mt-3 rounded-lg bg-pca-green-light p-3 text-sm text-pca-text"><strong>{log.farmerConfirmed ? "Farmer confirmed the visit." : "Farmer reported the visit was not completed."}</strong>{log.farmerComment && <p className="mt-1">{log.farmerComment}</p>}{log.farmerReport && <p className="mt-2 text-pca-red"><strong>Reported concern:</strong> {log.farmerReport}</p>}</div>}
+              {log.adminFeedback && <div className="mt-3 rounded-lg bg-blue-50 p-3 text-sm text-blue-950"><strong>Administrator feedback{log.adminRating ? ` · ${log.adminRating}/5 stars` : ""}:</strong><p className="mt-1">{log.adminFeedback}</p></div>}
+            </article>
+          ))}
         </div>
       </Card>
 
