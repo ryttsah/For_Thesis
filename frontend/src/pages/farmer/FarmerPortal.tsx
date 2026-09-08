@@ -103,7 +103,6 @@ export default function FarmerPortal() {
   const [seenFarmerNotificationIds, setSeenFarmerNotificationIds] = useState<Set<string>>(() => new Set());
   const [selectedHistory, setSelectedHistory] = useState<FarmerSubmission | null>(null);
   const [selectedImage, setSelectedImage] = useState<PerImagePredictResult | null>(null);
-  const [invalidPalmPhotos, setInvalidPalmPhotos] = useState<PerImagePredictResult[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
   const previewUrlsRef = useRef<string[]>([]);
   const farmerSeenKey = `pca_seen_farmer_notifications_${user?.id ?? "guest"}`;
@@ -140,7 +139,6 @@ export default function FarmerPortal() {
     setDetectedPest("healthy");
     setFeedback(null);
     setFeedbackMsg("");
-    setInvalidPalmPhotos([]);
     setIsSubmittingResult(false);
     setAnalyzing(false);
     if (fileRef.current) fileRef.current.value = "";
@@ -223,13 +221,6 @@ export default function FarmerPortal() {
 
         const apiResult = await predictLeafImages(batch);
         if (apiResult.success) {
-          const invalidPhotos = apiResult.aggregated.perImage.filter((item) => !item.result.isPalm);
-          if (invalidPhotos.length) {
-            setInvalidPalmPhotos(invalidPhotos);
-            setAnalyzing(false);
-            setStep(4);
-            return;
-          }
           applyAggregatedResult(apiResult.aggregated);
           setAnalyzing(false);
           setStep(3);
@@ -637,7 +628,7 @@ export default function FarmerPortal() {
                 {(["A", "B", "C", "D"] as const).map((code) => {
                   const Icon = SECTOR_ICONS[code];
                   return (
-                    <button key={code} type="button" onClick={() => setSector(code)} className={`flex flex-col items-center gap-2 rounded-2xl border-2 p-4 transition-all ${sector === code ? "border-pca-green bg-pca-green-light shadow-sm" : "border-pca-border hover:bg-pca-bg"}`}>
+                    <button key={code} type="button" onClick={() => setSector(code)} className={`flex min-h-[132px] flex-col items-center justify-center gap-2 rounded-2xl border-2 p-4 transition-all ${sector === code ? "border-pca-green bg-pca-green-light shadow-sm" : "border-pca-border hover:bg-pca-bg"}`}>
                       <Icon size={24} className="text-pca-green" />
                       <span className="text-[14px] font-bold">Sector {code}</span>
                       <small className="text-[11px] font-medium text-pca-muted">{t.sectors[code]}</small>
@@ -908,24 +899,6 @@ export default function FarmerPortal() {
           </div>
         )}
 
-        {step === 4 && (
-          <div className="f-card animate-fade-in mx-auto max-w-3xl">
-            <div className="mx-auto max-w-xl text-center">
-              <IconAlertCircle size={52} className="mx-auto text-pca-red" />
-              <h2 className="mt-4 text-2xl font-black">{lang === "hil" ? "May litrato nga indi makumpirma nga lubi" : "Some photos could not be confirmed as coconut palms"}</h2>
-              <p className="mt-3 text-sm font-medium leading-relaxed text-pca-muted">{lang === "hil" ? "Tan-awa ang mga litrato sa idalom kag mag-upload sang klaro nga litrato sang dahon ukon puno sang lubi antes magpadayon." : "Review the photos below and upload clear photos of a coconut leaf or palm before continuing."}</p>
-            </div>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              {invalidPalmPhotos.map((photo) => (
-                <button key={`${photo.index}-${photo.fileName}`} type="button" onClick={() => setSelectedImage(photo)} className="flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 p-3 text-left hover:border-pca-red">
-                  <img src={photo.previewUrl} alt="Photo needing a clearer coconut palm view" className="h-16 w-16 rounded-lg object-cover" />
-                  <span className="min-w-0"><span className="block truncate text-sm font-bold">{photo.fileName}</span><span className="mt-1 block text-xs font-medium text-pca-red">{lang === "hil" ? "Wala makumpirma" : "Not confirmed"}</span></span>
-                </button>
-              ))}
-            </div>
-            <button type="button" onClick={() => { setInvalidPalmPhotos([]); setStep(1); }} className="mx-auto mt-6 flex items-center gap-2 rounded-xl bg-pca-green px-5 py-3 text-sm font-bold text-white"><IconArrowLeft size={18} />{lang === "hil" ? "Balik sa upload" : "Back to upload"}</button>
-          </div>
-        )}
       </div>
       {farmerVisitLogs.length > 0 && (
         <section className="mx-auto mb-8 max-w-[1000px] px-4 lg:px-8">

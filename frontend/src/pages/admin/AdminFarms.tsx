@@ -1,5 +1,5 @@
 import { IconPlant2 } from "@tabler/icons-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import FarmTableToolbar from "../../components/ui/FarmTableToolbar";
 import { useDemoStore } from "../../context/DemoStoreContext";
@@ -11,6 +11,7 @@ import { displayBrgyLabel } from "../../utils/pcaFormat";
 
 export default function AdminFarms() {
   const { farms, adminFarmFilter, setAdminFarmFilter } = useDemoStore();
+  const [selectedFarmId, setSelectedFarmId] = useState<string | null>(null);
   const [params] = useSearchParams();
   const brgyFromUrl = params.get("brgy");
   const activeFilter = brgyFromUrl ?? adminFarmFilter;
@@ -38,6 +39,7 @@ export default function AdminFarms() {
       })),
     [baseRows],
   );
+  const selectedFarm = baseRows.find((farm) => (farm.farmerId ?? farm.name) === selectedFarmId) ?? null;
 
   return (
     <div className="animate-fade-in">
@@ -88,7 +90,7 @@ export default function AdminFarms() {
                   </thead>
                   <tbody>
                     {filtered.map((f) => (
-                      <tr key={f.name} className="border-b border-pca-border hover:bg-pca-bg">
+                      <tr key={f.farmerId ?? f.name} onClick={() => setSelectedFarmId(f.farmerId ?? f.name)} className="cursor-pointer border-b border-pca-border hover:bg-pca-bg focus-within:bg-pca-bg">
                         <td className="px-4 py-3.5 font-mono text-xs font-semibold">{f.farmerId ?? "—"}</td>
                         <td className="px-4 py-3.5 font-semibold">{f.name}</td>
                         <td className="px-4 py-3.5">{f.owner}</td>
@@ -122,6 +124,21 @@ export default function AdminFarms() {
           </Link>{" "}
           overview.
         </p>
+      )}
+      {selectedFarm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4" role="dialog" aria-modal="true" aria-label="Farm registration details">
+          <div className="w-full max-w-2xl rounded-xl bg-white p-6 shadow-2xl">
+            <div className="flex items-start justify-between gap-4 border-b border-pca-border pb-4">
+              <div><p className="text-xs font-bold uppercase tracking-wide text-pca-muted">Farm and farmer details</p><h2 className="mt-1 text-xl font-bold text-pca-text">{selectedFarm.name}</h2></div>
+              <button type="button" onClick={() => setSelectedFarmId(null)} className="h-9 w-9 rounded-lg border border-pca-border text-xl text-pca-muted hover:bg-pca-bg" aria-label="Close farm details">×</button>
+            </div>
+            <dl className="mt-5 grid gap-x-6 gap-y-4 sm:grid-cols-2">
+              {[
+                ["Farmer ID", selectedFarm.farmerId ?? "—"], ["Farmer name", selectedFarm.owner], ["Phone", selectedFarm.phone ?? "—"], ["Farm area / palms", `${selectedFarm.trees} estimated palms`], ["Sector", selectedFarm.sector], ["Barangay", displayBrgyLabel(selectedFarm.brgy)], ["Farm status", selectedFarm.status], ["Latest survey", selectedFarm.lastSurvey],
+              ].map(([label, value]) => <div key={label}><dt className="text-xs font-bold uppercase tracking-wide text-pca-muted">{label}</dt><dd className="mt-1 break-words text-sm font-semibold text-pca-text">{value}</dd></div>)}
+            </dl>
+          </div>
+        </div>
       )}
     </div>
   );

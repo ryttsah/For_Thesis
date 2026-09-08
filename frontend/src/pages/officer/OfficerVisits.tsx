@@ -47,9 +47,17 @@ export default function OfficerVisits() {
     });
   }, [syncOfficerDomain]);
 
+  const surveyForPriority = (farm: string) => {
+    const farmName = farm.replace(/\s+-\s+Sector\s+[A-D].*$/i, "").trim();
+    return surveys.find((survey) => survey.farm === farmName || farm.includes(survey.farm));
+  };
   const scopedFlags = useMemo(
-    () => filterByBrgy(priorityVisits.filter((v) => !v.completed), assignedBrgy),
-    [priorityVisits, assignedBrgy],
+    () => filterByBrgy(priorityVisits.filter((v) => !v.completed), assignedBrgy)
+      .filter((visit) => {
+        const details = surveyForPriority(visit.farm)?.details;
+        return Boolean(details && (details.perPhoto?.length || details.breakdown?.length));
+      }),
+    [priorityVisits, assignedBrgy, surveys],
   );
   const scopedVisits = useMemo(
     () => filterByBrgy(scheduledVisits, assignedBrgy),

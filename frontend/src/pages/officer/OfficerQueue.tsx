@@ -12,9 +12,21 @@ export default function OfficerQueue() {
   const { assignedBrgy } = useOfficerScope();
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
+  const surveyForQueue = (itemId: string) => surveys.find((survey) => survey.id === itemId);
+  const hasCompleteDetails = (itemId: string) => {
+    const details = surveyForQueue(itemId)?.details;
+    return Boolean(details && (details.perPhoto?.length || details.breakdown?.length));
+  };
+  const queueTimestamp = (itemId: string) => {
+    const date = surveyForQueue(itemId)?.date?.split(" - ")[0] ?? "";
+    const value = Date.parse(date);
+    return Number.isNaN(value) ? 0 : value;
+  };
   const scoped = useMemo(
-    () => filterByBrgy(queue, assignedBrgy).sort((a, b) => b.id.localeCompare(a.id, undefined, { numeric: true })),
-    [queue, assignedBrgy],
+    () => filterByBrgy(queue, assignedBrgy)
+      .filter((item) => hasCompleteDetails(item.id))
+      .sort((a, b) => queueTimestamp(b.id) - queueTimestamp(a.id) || b.id.localeCompare(a.id, undefined, { numeric: true })),
+    [queue, assignedBrgy, surveys],
   );
   const scopedPendingCount = scoped.filter((q) => !q.validated).length;
   const selectedQueue = scoped.find((q) => q.id === selectedId) ?? null;

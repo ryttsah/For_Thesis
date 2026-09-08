@@ -155,28 +155,23 @@ export default function AdminOfficers() {
                     </span>
                   </td>
                   <td className="px-4 py-3.5">{o.lastActive}</td>
-                  <td className="whitespace-nowrap px-4 py-3.5">
+                  <td className="px-4 py-3.5">
+                    <div className="flex min-w-[150px] flex-wrap gap-2">
                     <button
                       type="button"
                       onClick={() => setEditOfficer(o)}
-                      className="mr-2 inline-flex items-center gap-1 text-xs font-semibold text-pca-muted hover:text-pca-text hover:underline"
+                      className="inline-flex items-center gap-1 rounded-lg border border-pca-border px-2.5 py-1.5 text-xs font-semibold text-pca-muted hover:bg-pca-bg hover:text-pca-text"
                     >
                       <IconPencil size={12} /> Edit
                     </button>
                     <button
                       type="button"
-                      onClick={() => void handleAssign(o.empId, "__UNASSIGN__")}
-                      className="mr-2 text-xs font-semibold text-pca-green hover:underline"
-                    >
-                      Unassign
-                    </button>
-                    <button
-                      type="button"
                       onClick={() => void handleRemove(o.empId, o.name)}
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-pca-red hover:underline"
+                      className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-2.5 py-1.5 text-xs font-semibold text-pca-red hover:bg-pca-red-light"
                     >
                       <IconTrash size={12} /> Remove
                     </button>
+                    </div>
                   </td>
                 </tr>
               ))}

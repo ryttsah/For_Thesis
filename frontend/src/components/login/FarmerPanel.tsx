@@ -1,4 +1,4 @@
-import { IconArrowLeft, IconPlant2 } from "@tabler/icons-react";
+import { IconArrowLeft } from "@tabler/icons-react";
 import FarmerRegistrationForm from "./FarmerRegistrationForm";
 import RoleLoginForm from "./RoleLoginForm";
 
@@ -40,11 +40,6 @@ export default function FarmerPanel({
             lead="Upload photos from your farm and see AI-assisted health notes from PCA."
             idLabel="Farmer ID"
             idPlaceholder="e.g. FARMER-001"
-            headerIcon={
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-pca-green-light text-pca-green">
-                <IconPlant2 size={24} stroke={2} />
-              </div>
-            }
           />
           <p className="-mt-2 px-8 pb-8 text-center text-[13px] text-pca-muted">
             First time here?{" "}

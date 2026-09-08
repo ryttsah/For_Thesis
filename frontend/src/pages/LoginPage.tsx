@@ -46,18 +46,18 @@ export default function LoginPage() {
 
         <div className="overflow-hidden rounded-2xl border border-pca-border bg-white shadow-[0_24px_65px_rgba(22,101,52,0.10)] lg:grid lg:grid-cols-[50%_50%]">
           <section className="relative hidden min-h-[590px] overflow-hidden lg:block">
-            <img src="/images/dwarf-coconut-tree.png" alt="Dwarf coconut tree" className="absolute inset-0 h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-white/20" />
-            <div className="absolute -right-44 -top-12 h-[390px] w-[530px] rounded-bl-[58%] bg-white/88" />
+            <img src="/images/login-coconut-palm.jpg" alt="Coconut palm" className="absolute inset-0 h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-white/15" />
+            <div className="absolute -right-36 -top-10 h-[420px] w-[560px] rounded-bl-[62%] bg-white/90" />
             <div className="relative z-10 flex h-full flex-col justify-between p-10">
-              <div className="ml-auto mt-14 w-[235px]">
+              <div className="ml-auto mt-16 w-[250px] text-center">
                 <h2 className="text-3xl font-bold leading-[1.02] text-pca-green">Smarter<br />Coconut Farming<br />with Data</h2>
-                <p className="mt-4 text-sm leading-snug text-pca-muted/75">Real-time insights, healthier palms, and a more sustainable tomorrow.</p>
+                <p className="mt-4 text-sm leading-snug text-pca-muted">Real-time insights, healthier palms, and a more sustainable tomorrow.</p>
               </div>
-              <div className="ml-auto w-[235px] rounded-lg bg-white/50 p-3 backdrop-blur-[1px]">
+              <div className="ml-auto w-[250px] rounded-lg bg-white/65 p-3 backdrop-blur-[1px]">
                 <p className="text-xs font-bold uppercase tracking-wide text-pca-green">Secure access</p>
-                <p className="mt-2 text-xs leading-relaxed text-pca-muted/75">Protecting coconut farm records through reliable monitoring and AI-assisted analysis.</p>
-                <p className="mt-5 text-xs text-pca-muted/65">Version 1.0 · © 2026 CocoAnalytica</p>
+                <p className="mt-2 text-xs leading-relaxed text-pca-muted">Protecting coconut farm records through reliable monitoring and AI-assisted analysis.</p>
+                <p className="mt-5 text-xs text-pca-muted">Version 1.0 · © 2026 CocoAnalytica</p>
               </div>
             </div>
           </section>

@@ -42,6 +42,7 @@ export default function AdminDashboard() {
     acc[f.brgy] = (acc[f.brgy] ?? 0) + 1;
     return acc;
   }, {});
+  const latestBarangays = Object.entries(brgyGroups).slice(0, 5);
 
   return (
     <div className="animate-fade-in">
@@ -52,7 +53,7 @@ export default function AdminDashboard() {
         <MetricCard icon={<IconAlertTriangle size={20} />} tone="red" value={highRisk} label="High-Risk Farms" />
       </div>
 
-      <div className="mb-4 grid grid-cols-1 gap-4 lg:grid-cols-[2fr_1fr]">
+      <div className="mb-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Card>
           <CardHead title="Condition Trend — Last 6 Months" icon={<IconChartBar size={16} />} />
           {trend && trend.labels.length > 0 ? (
@@ -78,14 +79,14 @@ export default function AdminDashboard() {
           )}
         </Card>
         <Card>
-          <CardHead title="Barangay Overview" icon={<IconMapPin size={16} />} />
+          <CardHead title="Barangay Overview" icon={<IconMapPin size={16} />} action={<Link to="/admin/farms" className="text-xs font-bold text-pca-green hover:underline">All Farms</Link>} />
           <div className="flex flex-col gap-2">
             {Object.keys(brgyGroups).length === 0 ? (
               <p className="py-6 text-center text-sm text-pca-muted">
                 No farms by barangay yet. Approve farmer registrations to add farms.
               </p>
             ) : (
-              Object.entries(brgyGroups).map(([name, count]) => (
+              latestBarangays.map(([name, count]) => (
                 <Link key={name} to={`/admin/farms?brgy=${encodeURIComponent(name)}`} className="flex items-center gap-3 rounded-xl border border-pca-border p-3.5 hover:bg-pca-bg">
                   <span className="h-2.5 w-2.5 rounded-full bg-pca-green" />
                   <div className="flex-1">
