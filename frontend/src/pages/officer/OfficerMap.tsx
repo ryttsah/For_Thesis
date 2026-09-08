@@ -1,4 +1,4 @@
-import { IconFileText, IconMap2, IconUpload } from "@tabler/icons-react";
+import { IconFileText, IconMap2 } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
 import { useDemoStore } from "../../context/DemoStoreContext";
 import { filterByBrgy, useOfficerScope } from "../../hooks/useOfficerScope";
@@ -202,22 +202,6 @@ export default function OfficerMap() {
                 );
               })}
             </ul>
-            <div>
-              <div className="mb-2 flex items-center justify-between">
-                <span className="font-semibold">Photos</span>
-                <label className="flex cursor-pointer items-center gap-1 rounded-lg border border-pca-green px-2.5 py-1 text-xs font-semibold text-pca-green">
-                  <IconUpload size={14} /> Add Photos
-                  <input
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    className="hidden"
-                    onChange={() => alert("Field photo upload — coming soon")}
-                  />
-                </label>
-              </div>
-              <p className="text-xs text-pca-muted">Upload links to surveys when that feature is added.</p>
-            </div>
           </div>
         )}
       </Card>

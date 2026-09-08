@@ -19,7 +19,7 @@ import {
   IconThumbUp,
   IconX,
 } from "@tabler/icons-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AnalysisDetailsModal, { type AnalysisModalRecord } from "../../components/analysis/AnalysisDetailsModal";
 import RecommendationPlanModal from "../../components/analysis/RecommendationPlanModal";
@@ -100,6 +100,8 @@ export default function FarmerPortal() {
   const [recommendationsOpen, setRecommendationsOpen] = useState(false);
   const [selectedHistory, setSelectedHistory] = useState<FarmerSubmission | null>(null);
   const [selectedImage, setSelectedImage] = useState<PerImagePredictResult | null>(null);
+  const [selectedNotificationId, setSelectedNotificationId] = useState<string | null>(null);
+  const [seenNotificationIds, setSeenNotificationIds] = useState<Set<string>>(() => new Set());
   const fileRef = useRef<HTMLInputElement>(null);
   const previewUrlsRef = useRef<string[]>([]);
 
@@ -425,6 +427,8 @@ export default function FarmerPortal() {
     : [];
   const farmerUnansweredVisits = farmerDueVisits.filter((visit) => !farmerVisitLogs.some((log) => log.visitId === visit.id));
   const farmerPendingFeedbackLogs = farmerVisitLogs.filter((log) => log.farmerConfirmed === null);
+  const unreadNotificationCount = useMemo(() => farmerNotifications.filter((item) => item.isNew && !seenNotificationIds.has(item.id)).length, [farmerNotifications, seenNotificationIds]);
+  const selectedNotification = farmerNotifications.find((item) => item.id === selectedNotificationId) ?? null;
 
   async function saveVisitFeedback() {
     if (!feedbackLogId || visitConfirmed === null) { setVisitFeedbackError("Please confirm whether the officer completed the visit."); return; }
@@ -516,11 +520,12 @@ export default function FarmerPortal() {
               <h3 className="flex min-w-0 items-center gap-2 text-[15px] font-bold">
                 <IconBell size={18} className="shrink-0 text-orange-600" />
                 <span className="truncate">{FARMER_I18N.notifications[lang]}</span>
+                {unreadNotificationCount > 0 && <span className="rounded-full bg-pca-red-light px-2 py-0.5 text-[11px] font-bold text-pca-red">{unreadNotificationCount} new</span>}
               </h3>
             </div>
             <div className="min-h-0 space-y-2 overflow-y-auto pr-1">
               {farmerNotifications.map((n) => (
-                <div key={n.id} className="flex items-center gap-3 rounded-xl border border-pca-bg bg-pca-bg/50 p-3">
+                <button key={n.id} type="button" onClick={() => { setSeenNotificationIds((current) => new Set([...current, n.id])); setSelectedNotificationId(n.id); }} className="flex w-full items-center gap-3 rounded-xl border border-pca-bg bg-pca-bg/50 p-3 text-left hover:bg-pca-green-light">
                   <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: n.dot }} />
                   <div className="min-w-0 flex-1">
                     <div className="truncate text-xs font-bold">{n.dateLine}</div>
@@ -528,7 +533,7 @@ export default function FarmerPortal() {
                       {n.body}
                     </div>
                   </div>
-                </div>
+                </button>
               ))}
               {farmerNotifications.length === 0 && (
                 <p className="rounded-xl bg-pca-bg/50 p-3 text-sm text-pca-muted">
@@ -883,6 +888,7 @@ export default function FarmerPortal() {
           </div>
         </div>
       )}
+      {selectedNotification && <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/45 p-4" role="dialog" aria-modal="true"><div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl"><div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-wide text-pca-muted">Notification</p><h2 className="mt-1 text-lg font-bold">{selectedNotification.dateLine}</h2></div><button type="button" onClick={() => setSelectedNotificationId(null)} className="rounded-lg border border-pca-border p-2"><IconX size={20} /></button></div><p className="mt-5 whitespace-pre-wrap text-sm leading-relaxed text-pca-text">{selectedNotification.body}</p></div></div>}
       <AnalysisDetailsModal
         open={Boolean(selectedHistory)}
         record={

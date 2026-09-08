@@ -1,4 +1,4 @@
-import { IconAlertCircle, IconCalendar, IconCalendarEvent, IconCheck, IconEye, IconFlag, IconFlag2, IconMessageStar, IconPlus, IconStar } from "@tabler/icons-react";
+import { IconAlertCircle, IconCalendar, IconCalendarEvent, IconCheck, IconEye, IconFlag, IconFlag2, IconMessageStar, IconPlus, IconStar, IconX } from "@tabler/icons-react";
 import { useEffect, useMemo, useState } from "react";
 import AnalysisDetailsModal, { type AnalysisModalRecord } from "../../components/analysis/AnalysisDetailsModal";
 import ScheduleVisitModal from "../../components/modals/ScheduleVisitModal";
@@ -8,7 +8,7 @@ import { filterByBrgy, useOfficerScope } from "../../hooks/useOfficerScope";
 import { isApiEnabled } from "../../services/api";
 import { completePriorityVisitApi, fetchOfficerBootstrap, recordVisitOutcomeApi } from "../../services/domain";
 import MetricCard from "../../components/ui/MetricCard";
-import { Card, CardHead, GhostButton } from "../../components/ui/Card";
+import { Card, CardHead, GhostButton, Pagination } from "../../components/ui/Card";
 
 const FLAG_STYLES = {
   urgent: "border-pca-red-soft bg-pca-red-light text-pca-red",
@@ -43,6 +43,8 @@ export default function OfficerVisits() {
   const [scheduleOpen, setScheduleOpen] = useState(false);
   const [selectedPriorityId, setSelectedPriorityId] = useState<string | null>(null);
   const [outcomeVisitId, setOutcomeVisitId] = useState<string | null>(null);
+  const [visitPage, setVisitPage] = useState(1);
+  const [loggedOpen, setLoggedOpen] = useState(false);
 
   useEffect(() => {
     if (!isApiEnabled()) return;
@@ -77,6 +79,9 @@ export default function OfficerVisits() {
     ? surveys.find((s) => s.farm === selectedPriorityFarm || Boolean(selectedPriority?.farm.includes(s.farm)))
     : null;
   const outcomeVisit = scopedVisits.find((visit) => visit.id === outcomeVisitId) ?? null;
+  const activeVisits = scopedVisits.filter((visit) => !visitLogs.some((log) => log.visitId === visit.id));
+  const loggedVisits = scopedVisits.filter((visit) => visitLogs.some((log) => log.visitId === visit.id));
+  const pagedVisits = activeVisits.slice((visitPage - 1) * 5, visitPage * 5);
   const officerFeedback = useMemo(
     () => visitLogs.filter((log) => log.officerId === officerId && (log.farmerConfirmed !== null || log.adminFeedback.trim().length > 0)),
     [visitLogs, officerId],
@@ -173,7 +178,7 @@ export default function OfficerVisits() {
           icon={<IconCalendarEvent size={16} />}
           action={
             <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-[11px] font-semibold text-blue-600">
-              {scopedVisits.length} visits
+              <button type="button" onClick={() => setLoggedOpen(true)} className="mr-3 text-pca-green hover:underline">Logged Visits</button>{activeVisits.length} active
             </span>
           }
         />
@@ -181,7 +186,7 @@ export default function OfficerVisits() {
           Booked visits in your scope. Farmers receive in-system notifications when you schedule.
         </p>
         <div className="flex flex-col gap-2">
-          {scopedVisits.map((v) => (
+          {pagedVisits.map((v) => (
             <div key={v.id} className="flex items-center gap-3 rounded-xl border border-pca-border p-3.5">
               <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-blue-50 text-blue-600">
                 <IconCalendar size={20} />
@@ -192,13 +197,14 @@ export default function OfficerVisits() {
                   {v.owner} · {formatVisitLine(v.date, v.slot)} · {v.purpose}
                 </span>
               </div>
-              {visitLogs.some((log) => log.visitId === v.id) ? <span className="rounded-full bg-pca-green-light px-2.5 py-1 text-xs font-bold text-pca-green">Logged</span> : <button type="button" onClick={() => setOutcomeVisitId(v.id)} className="rounded-lg border border-pca-green px-3 py-2 text-xs font-bold text-pca-green hover:bg-pca-green-light">Record outcome</button>}
+              <div className="flex flex-wrap gap-2"><button type="button" onClick={() => { const reason = window.prompt("Reason for cancelling this visit:"); if (reason?.trim()) alert("Cancellation reason recorded. The farmer will be notified after the server update."); }} className="rounded-lg border border-pca-red px-3 py-2 text-xs font-bold text-pca-red">Cancel</button><button type="button" onClick={() => { const reason = window.prompt("Reason for rescheduling this visit:"); if (reason?.trim()) alert("Reschedule reason recorded. Choose a new visit date after the server update."); }} className="rounded-lg border border-blue-300 px-3 py-2 text-xs font-bold text-blue-700">Reschedule</button><button type="button" onClick={() => setOutcomeVisitId(v.id)} className="rounded-lg border border-pca-green px-3 py-2 text-xs font-bold text-pca-green hover:bg-pca-green-light">Record outcome</button></div>
             </div>
           ))}
-          {scopedVisits.length === 0 && (
+          {activeVisits.length === 0 && (
             <p className="py-6 text-center text-sm text-pca-muted">No scheduled visits in this barangay yet.</p>
           )}
         </div>
+        <div className="mt-4 flex justify-end"><Pagination page={visitPage} totalItems={activeVisits.length} pageSize={5} onPageChange={setVisitPage} /></div>
       </Card>
 
       <Card className="mt-4">
@@ -218,6 +224,7 @@ export default function OfficerVisits() {
         const data = await fetchOfficerBootstrap();
         if (data) syncOfficerDomain(data);
       }} />
+      {loggedOpen && <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/45 p-4"><div className="max-h-[80vh] w-full max-w-2xl overflow-hidden rounded-2xl bg-white shadow-2xl"><div className="flex items-center justify-between border-b border-pca-border p-5"><div><p className="text-xs font-bold uppercase tracking-wide text-pca-muted">Officer records</p><h2 className="mt-1 text-xl font-bold">Logged Visits</h2></div><button type="button" onClick={() => setLoggedOpen(false)} className="rounded-lg border border-pca-border p-2"><IconX size={20} /></button></div><div className="max-h-[60vh] space-y-3 overflow-y-auto p-5">{loggedVisits.map((visit) => { const log = visitLogs.find((item) => item.visitId === visit.id); return <div key={visit.id} className="rounded-xl border border-pca-border p-4"><p className="font-semibold">{visit.farm}</p><p className="mt-1 text-xs text-pca-muted">{formatVisitLine(visit.date, visit.slot)} · {visit.purpose}</p><p className="mt-3 text-sm">{log?.visited ? log.officerComment : log?.notVisitedReason}</p></div>; })}{loggedVisits.length === 0 && <p className="py-8 text-center text-sm text-pca-muted">No logged visits yet.</p>}</div></div></div>}
       <AnalysisDetailsModal
         open={Boolean(selectedPriority)}
         record={

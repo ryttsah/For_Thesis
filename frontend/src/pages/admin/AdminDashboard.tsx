@@ -6,7 +6,6 @@ import EmptyChartNote from "../../components/ui/EmptyChartNote";
 import { isApiEnabled } from "../../services/api";
 import { fetchConditionTrend, type ConditionTrendData } from "../../services/analytics";
 import { useDemoStore } from "../../context/DemoStoreContext";
-import { brgyMatches } from "../../hooks/useBarangayOptions";
 import { Card, CardHead } from "../../components/ui/Card";
 import MetricCard from "../../components/ui/MetricCard";
 
@@ -25,13 +24,14 @@ export default function AdminDashboard() {
   }, [farms.length, officers.length, pendingCount]);
 
   const highRisk = farms.filter((f) => f.status === "risk").length;
-  const farmsCoveredFor = (brgy: string) =>
-    brgy && brgy !== "Unassigned" ? farms.filter((farm) => brgyMatches(farm.brgy, brgy)).length : "—";
   const brgyGroups = farms.reduce<Record<string, number>>((acc, f) => {
     acc[f.brgy] = (acc[f.brgy] ?? 0) + 1;
     return acc;
   }, {});
   const latestBarangays = Object.entries(brgyGroups).slice(0, 5);
+  const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Manila" });
+  const upcomingVisits = scheduledVisits.filter((visit) => visit.date > today);
+  const daysUntil = (date: string) => Math.max(0, Math.ceil((new Date(`${date}T12:00:00`).getTime() - new Date(`${today}T12:00:00`).getTime()) / 86_400_000));
   return (
     <div className="animate-fade-in">
       <div className="mb-5 grid grid-cols-1 gap-3.5 sm:grid-cols-2 xl:grid-cols-4">
@@ -41,8 +41,8 @@ export default function AdminDashboard() {
         <MetricCard icon={<IconAlertTriangle size={20} />} tone="red" value={highRisk} label="High-Risk Farms" />
       </div>
 
-      <div className="mb-4 grid grid-cols-1 gap-4 lg:grid-cols-[2fr_1fr]">
-        <Card className="flex min-h-[440px] flex-col">
+      <div className="mb-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <Card className="flex min-h-[500px] flex-col">
           <CardHead title="Condition Trend — Last 6 Months" icon={<IconChartBar size={16} />} />
           {trend && trend.labels.length > 0 ? (
             <>
@@ -53,7 +53,7 @@ export default function AdminDashboard() {
                 yellowing={trend.yellowing}
                 scale={trend.scale}
                 beetle={trend.beetle}
-                height={280}
+                height={340}
               />
             </>
           ) : (
@@ -66,7 +66,7 @@ export default function AdminDashboard() {
             />
           )}
         </Card>
-        <Card className="flex min-h-[440px] flex-col">
+        <Card className="flex min-h-[500px] flex-col">
           <CardHead title="Barangay Overview" icon={<IconMapPin size={16} />} action={<Link to="/admin/farms" className="text-xs font-bold text-pca-green hover:underline">All Farms</Link>} />
           <div className="flex flex-col gap-2">
             {Object.keys(brgyGroups).length === 0 ? (
@@ -89,52 +89,21 @@ export default function AdminDashboard() {
       </div>
 
       <Card className="mb-4">
-        <CardHead title="Scheduled Visits Overview" icon={<IconCalendarStats size={16} />} action={<span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-[11px] font-semibold text-blue-600">{scheduledVisits.length} scheduled</span>} />
+        <CardHead title="Scheduled Visits Overview" icon={<IconCalendarStats size={16} />} action={<span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-[11px] font-semibold text-blue-600">{upcomingVisits.length} upcoming</span>} />
         <p className="mb-3 text-xs text-pca-muted">Read-only province-wide monitoring of officer-booked farm visits.</p>
         <div className="flex flex-col gap-2">
-          {scheduledVisits.map((v) => (
+          {upcomingVisits.map((v) => (
             <div key={v.id} className="flex items-center gap-3 rounded-xl border border-pca-border p-3.5">
               <div className="flex-1">
                 <div className="text-sm font-semibold">{v.farm}</div>
                 <span className="text-xs text-pca-muted">{v.brgy} · {formatVisitLine(v.date, v.slot)} · {v.scheduledBy}</span>
-              </div>
+              </div><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${daysUntil(v.date) <= 1 ? "bg-pca-red-light text-pca-red" : "bg-amber-50 text-amber-700"}`}>{daysUntil(v.date) === 1 ? "Tomorrow" : `${daysUntil(v.date)} days left`}</span>
             </div>
           ))}
+          {upcomingVisits.length === 0 && <p className="py-5 text-center text-sm text-pca-muted">No upcoming visits.</p>}
         </div>
       </Card>
 
-      <Card>
-        <CardHead title="Officer Assignment Summary" icon={<IconUsers size={16} />} />
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse text-[13px]">
-            <thead>
-              <tr className="border-b border-pca-border bg-pca-bg text-left text-xs font-semibold uppercase text-pca-muted">
-                {["Officer", "Assigned Barangay", "Farms Covered", "Last Active"].map((h) => (
-                  <th key={h} className="px-4 py-3">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {officers.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className="px-4 py-6 text-center text-sm text-pca-muted">
-                    No officers yet. Use Officers → Add Officer.
-                  </td>
-                </tr>
-              ) : (
-                officers.map((o) => (
-                  <tr key={o.empId} className="border-b border-pca-border hover:bg-pca-bg">
-                    <td className="px-4 py-3.5 font-semibold">{o.name}</td>
-                    <td className="px-4 py-3.5">{o.brgy}</td>
-                    <td className="px-4 py-3.5">{farmsCoveredFor(o.brgy)}</td>
-                    <td className="px-4 py-3.5">{o.lastActive}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </Card>
     </div>
   );
 }
