@@ -1,0 +1,42 @@
+{
+  "test_accuracy": 0.8035714285714286,
+  "split": "balanced_dataset/test (deterministic shuffled split)",
+  "classes": [
+    "Healthy",
+    "Yellowing",
+    "Coconut_Scale_Insect",
+    "Rhinoceros_Beetle"
+  ],
+  "confusion_matrix": [
+    [
+      8,
+      5,
+      1,
+      0
+    ],
+    [
+      1,
+      13,
+      0,
+      0
+    ],
+    [
+      1,
+      2,
+      10,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      14
+    ]
+  ],
+  "per_class_accuracy": {
+    "Healthy": 0.5714285714285714,
+    "Yellowing": 0.9285714285714286,
+    "Coconut_Scale_Insect": 0.7142857142857143,
+    "Rhinoceros_Beetle": 1.0
+  }
+}

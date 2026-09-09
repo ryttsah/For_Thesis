@@ -21,10 +21,11 @@ def main() -> None:
         image_path = (
             ROOT.parent
             / "Thesis AI Model"
-            / "Healthy_Leaves"
-            / "train"
-            / "1.jpg"
+            / "balanced_dataset"
+            / "test"
+            / "Healthy"
         )
+        image_path = next(image_path.iterdir(), image_path)
 
     if not image_path.is_file():
         print(f"Image not found: {image_path}")

@@ -16,7 +16,7 @@ import numpy as np
 import tensorflow as tf
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DATASET_DIR = PROJECT_ROOT / "Thesis AI Model" / "curated_dataset"
+DATASET_DIR = PROJECT_ROOT / "Thesis AI Model" / "balanced_dataset"
 OUTPUT_DIR = PROJECT_ROOT / "Thesis AI Model" / "model_outputs"
 CLASS_NAMES = ["Healthy", "Yellowing", "Coconut_Scale_Insect", "Rhinoceros_Beetle"]
 IMAGE_SIZE = (224, 224)
@@ -29,28 +29,25 @@ def main() -> None:
     random.seed(SEED)
     np.random.seed(SEED)
 
-    missing = [name for name in CLASS_NAMES if not (DATASET_DIR / name).is_dir()]
+    missing = [name for name in CLASS_NAMES if not (DATASET_DIR / "train" / name).is_dir()]
     if missing:
-        raise SystemExit(f"Missing curated class folders: {', '.join(missing)}")
+        raise SystemExit(f"Missing balanced training class folders: {', '.join(missing)}")
 
     common = dict(
-        directory=DATASET_DIR,
         labels="inferred",
         label_mode="int",
         class_names=CLASS_NAMES,
-        validation_split=0.2,
-        seed=SEED,
         image_size=IMAGE_SIZE,
         batch_size=BATCH_SIZE,
     )
-    train = tf.keras.utils.image_dataset_from_directory(subset="training", shuffle=True, **common)
-    # Use the same seed and shuffle behavior as training so both subsets are a
-    # true complementary split, rather than two differently ordered selections.
-    valid = tf.keras.utils.image_dataset_from_directory(subset="validation", shuffle=True, **common)
+    train = tf.keras.utils.image_dataset_from_directory(DATASET_DIR / "train", shuffle=True, seed=SEED, **common)
+    valid = tf.keras.utils.image_dataset_from_directory(DATASET_DIR / "validation", shuffle=False, **common)
+    test = tf.keras.utils.image_dataset_from_directory(DATASET_DIR / "test", shuffle=False, **common)
 
     autotune = tf.data.AUTOTUNE
     train = train.prefetch(autotune)
     valid = valid.prefetch(autotune)
+    test = test.prefetch(autotune)
 
     augmentation = tf.keras.Sequential(
         [
@@ -98,20 +95,35 @@ def main() -> None:
     model.fit(train, validation_data=valid, epochs=8, callbacks=callbacks)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    test_loss, test_accuracy = model.evaluate(test, verbose=0)
+    probabilities = model.predict(test, verbose=0)
+    predicted = np.argmax(probabilities, axis=1)
+    actual = np.concatenate([labels.numpy() for _, labels in test], axis=0)
+    confusion = np.zeros((len(CLASS_NAMES), len(CLASS_NAMES)), dtype=int)
+    for truth, guess in zip(actual, predicted):
+        confusion[int(truth), int(guess)] += 1
+    per_class_accuracy = {
+        name: float(confusion[index, index] / max(confusion[index].sum(), 1))
+        for index, name in enumerate(CLASS_NAMES)
+    }
+
     model.save(OUTPUT_DIR / "coconut_leaf_multilabel_cnn.keras")
     (OUTPUT_DIR / "label_config.json").write_text(
         json.dumps(
             {
                 "class_names": CLASS_NAMES,
+                # A four-way softmax has one mutually exclusive winning class.
+                # Scores under 50% remain too ambiguous to surface as a condition.
                 "thresholds": {name: 0.5 for name in CLASS_NAMES},
-                # Scores under 35% are too ambiguous to accept. A modest cutoff
-                # avoids rejecting real field photos where lighting lowers the
-                # model's confidence.
-                "uncertain_threshold": 0.35,
+                "uncertain_threshold": 0.5,
                 "image_size": list(IMAGE_SIZE),
             },
             indent=2,
         ),
+        encoding="utf-8",
+    )
+    (OUTPUT_DIR / "evaluation.json").write_text(
+        json.dumps({"test_loss": float(test_loss), "test_accuracy": float(test_accuracy), "classes": CLASS_NAMES, "confusion_matrix": confusion.tolist(), "per_class_accuracy": per_class_accuracy}, indent=2),
         encoding="utf-8",
     )
     print("Saved balanced model and label configuration to", OUTPUT_DIR)

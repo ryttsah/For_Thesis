@@ -26,13 +26,6 @@ LABEL_TO_PEST: dict[str, str] = {
     "Rhinoceros_Beetle": "rhino beetle",
 }
 
-PEST_PRIORITY = [
-    "Rhinoceros_Beetle",
-    "Coconut_Scale_Insect",
-    "Yellowing",
-    "Healthy",
-]
-
 
 @dataclass(frozen=True)
 class LabelConfig:
@@ -137,14 +130,9 @@ def _preprocess_image(image_bytes: bytes, image_size: tuple[int, int]) -> Any:
 
 
 def _select_primary_label(selected_labels: list[str], scores: np.ndarray, class_names: list[str]) -> str:
-    if not selected_labels:
-        top_index = int(np.argmax(scores))
-        return class_names[top_index]
-
-    for name in PEST_PRIORITY:
-        if name in selected_labels:
-            return name
-    return selected_labels[0]
+    """Choose the actual highest scoring class, never a hard-coded pest priority."""
+    candidates = selected_labels or class_names
+    return max(candidates, key=lambda name: float(scores[class_names.index(name)]))
 
 
 def predict_image_bytes(
@@ -190,7 +178,7 @@ def predict_image_bytes(
 
     message = None
     if uncertain:
-        message = "This photo could not be confirmed as a clear coconut palm or leaf. Upload a clear coconut palm photo."
+        message = "This photo could not be classified confidently. Upload a clearer coconut leaf photo."
 
     return PredictionResult(
         pest=pest,
@@ -201,7 +189,8 @@ def predict_image_bytes(
         thresholded_labels=[] if uncertain else selected_labels,
         top_guesses=top_guesses,
         message=message,
-        is_palm=not uncertain,
+        # Non-palm detection is intentionally disabled until its dataset is reviewed.
+        is_palm=True,
     )
 
 

@@ -1,6 +1,6 @@
 # Thesis AI Model — Coconut Leaf CNN
 
-Multi-label **EfficientNetB0** classifier for:
+Multi-label **EfficientNetB0** classifier for the four confirmed coconut conditions:
 
 - Healthy
 - Yellowing
@@ -17,13 +17,42 @@ Multi-label **EfficientNetB0** classifier for:
 
 Alternate checkpoints: `best_fine_tuned_model.keras`, `best_coconut_leaf_model.keras`.
 
-## Inference (same logic as notebook)
+## Inference
 
 1. Resize image to **224×224**
 2. Run sigmoid outputs for all four labels
 3. Apply thresholds from `label_config.json`
-4. Remove **Healthy** if any disease label is active
-5. Flag **uncertain** when max score &lt; 0.4 or no label passes threshold
+4. Select the condition with the actual highest model score. The system does not use a
+   hard-coded pest priority, so Rhino cannot win merely because it is present.
+5. Flag **uncertain** when max score is below the configured cutoff or no label passes.
+
+## Balanced Dataset and Retraining
+
+`backend/scripts/prepare_balanced_cnn_dataset.py` creates a deterministic dataset in
+`balanced_dataset/`. It removes exact duplicate files, quality-screens images, limits
+every class to the same count, and keeps separate train, validation, and test splits.
+
+Current prepared set: **98 images per class** (69 train, 15 validation, 14 test):
+
+- Healthy
+- Yellowing
+- Coconut Scale Insect
+- Rhinoceros Beetle
+
+`Non-palms/` is intentionally not read by the preparation or training scripts. It
+will only be introduced after the non-palm collection has been reviewed and expanded.
+`Rhinoceros_Beetle_excluded_actual_pest/` is also excluded because it is not a
+confirmed training label.
+
+To create a replacement model in a TensorFlow-enabled environment, run:
+
+```text
+backend/.cnn-venv/Scripts/python.exe backend/scripts/prepare_balanced_cnn_dataset.py
+backend/.cnn-venv/Scripts/python.exe backend/scripts/train_balanced_cnn.py
+```
+
+The training script evaluates the held-out test split and writes
+`model_outputs/evaluation.json` with its test accuracy and loss.
 
 ## Backend integration
 
@@ -35,18 +64,3 @@ ML_LABEL_CONFIG_PATH=Thesis AI Model/model_outputs/label_config.json
 ```
 
 Endpoint: `POST /predict` (multipart `file`, JWT required).
-
-## Balanced retraining
-
-The current model should be rebuilt with the supplied field-photo folders before the
-next deployment. Run `backend/scripts/prepare_balanced_cnn_dataset.py` first; it
-creates `curated_dataset` with exactly 54 images for each of Healthy, Yellowing,
-Coconut Scale Insect, and Rhinoceros Beetle. Then run
-`backend/scripts/train_balanced_cnn.py` using the dedicated local TensorFlow environment. It replaces the
-model output and label configuration used by the API.
-
-The supplied data does not include a labeled non-palm class. The portal can only stop
-for an unclear or very low-confidence photo; it cannot yet reliably identify every
-non-palm object. For a trained non-palm detector, add a separate labeled `Non_Palm`
-collection (people, buildings, other crops, tools, animals, blank images, and other
-unrelated photos) before retraining.

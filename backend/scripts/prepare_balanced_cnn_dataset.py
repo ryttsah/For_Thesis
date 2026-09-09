@@ -1,23 +1,24 @@
-"""Create a quality-screened, balanced training set from the supplied labeled images.
+"""Create a duplicate-free, class-balanced train/validation/test dataset.
 
-Usage (run from the repository root):
-  python backend/scripts/prepare_balanced_cnn_dataset.py --source "Thesis AI Model/source_dataset"
-
-The command keeps the same number of sharp, readable images per condition. It writes
-only a local training folder, which is intentionally excluded from source control.
+Only the four confirmed coconut-condition folders are considered. ``Non-palms`` is
+deliberately excluded until its dataset is reviewed and large enough to support a
+separate palm-presence model. ``Rhinoceros_Beetle_excluded_actual_pest`` is also
+never folded into the rhinoceros class because it is not a verified label.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import random
 import shutil
 from pathlib import Path
 
 from PIL import Image, ImageFilter, ImageStat
 
 LABELS = {
-    "Healthy": "Healthy",
+    "Healthy_Leaves": "Healthy",
     "Yellowing": "Yellowing",
     "Coconut_Scale_Insect": "Coconut_Scale_Insect",
     "Rhinoceros_Beetle": "Rhinoceros_Beetle",
@@ -42,38 +43,69 @@ def quality_score(path: Path) -> float | None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--source", type=Path, default=Path("Thesis AI Model/source_dataset"))
-    parser.add_argument("--output", type=Path, default=Path("Thesis AI Model/curated_dataset"))
-    parser.add_argument("--per-class", type=int, default=238)
+    parser.add_argument("--source", type=Path, default=Path("Thesis AI Model"))
+    parser.add_argument("--output", type=Path, default=Path("Thesis AI Model/balanced_dataset"))
+    parser.add_argument("--per-class", type=int, default=0, help="0 means use the smallest verified class.")
     args = parser.parse_args()
 
-    chosen: dict[str, list[Path]] = {}
+    candidates_by_label: dict[str, list[tuple[float, Path, str]]] = {}
     for source_name, label in LABELS.items():
-        candidates = []
+        candidates: list[tuple[float, Path, str]] = []
+        hashes: set[str] = set()
         for path in (args.source / source_name).rglob("*"):
             if path.suffix.lower() in IMAGE_EXTENSIONS:
                 score = quality_score(path)
                 if score is not None:
-                    candidates.append((score, path))
+                    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+                    if digest not in hashes:
+                        hashes.add(digest)
+                        candidates.append((score, path, digest))
         candidates.sort(key=lambda pair: (-pair[0], pair[1].name.lower()))
-        chosen[label] = [path for _, path in candidates[: args.per_class]]
-        if len(chosen[label]) < args.per_class:
-            raise SystemExit(f"{source_name} has only {len(chosen[label])} usable images; need {args.per_class}.")
+        candidates_by_label[label] = candidates
+
+    available = {label: len(items) for label, items in candidates_by_label.items()}
+    per_class = args.per_class or min(available.values())
+    if per_class < 10:
+        raise SystemExit(f"Not enough verified images to balance classes: {available}")
+    if any(count < per_class for count in available.values()):
+        raise SystemExit(f"Requested {per_class} per class, but only these verified counts are available: {available}")
 
     if args.output.exists():
         shutil.rmtree(args.output)
-    manifest: dict[str, list[str]] = {}
-    for label, paths in chosen.items():
-        target = args.output / label
-        target.mkdir(parents=True, exist_ok=True)
-        manifest[label] = []
-        for index, path in enumerate(paths, start=1):
-            destination = target / f"{index:03d}_{path.name.lower()}"
-            shutil.copy2(path, destination)
-            manifest[label].append(str(path))
+    manifest: dict[str, dict[str, list[str]]] = {}
+    split_names = ("train", "validation", "test")
+    for label, items in candidates_by_label.items():
+        # Keep the quality screen, then use a deterministic shuffle so each split
+        # contains a representative mix rather than the sharpest images in train
+        # and the weakest ones only in test.
+        selected = items[:per_class]
+        random.Random(20260909 + sum(ord(char) for char in label)).shuffle(selected)
+        train_end = round(per_class * 0.70)
+        validation_end = train_end + round(per_class * 0.15)
+        splits = {
+            "train": selected[:train_end],
+            "validation": selected[train_end:validation_end],
+            "test": selected[validation_end:],
+        }
+        manifest[label] = {}
+        for split in split_names:
+            target = args.output / split / label
+            target.mkdir(parents=True, exist_ok=True)
+            manifest[label][split] = []
+            for index, (_, path, digest) in enumerate(splits[split], start=1):
+                destination = target / f"{index:03d}_{digest[:12]}{path.suffix.lower()}"
+                shutil.copy2(path, destination)
+                manifest[label][split].append(str(path))
 
-    (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
-    print(json.dumps({label: len(paths) for label, paths in chosen.items()}, indent=2))
+    audit = {
+        "verified_classes": list(LABELS.values()),
+        "excluded_folders": ["Non-palms", "Rhinoceros_Beetle_excluded_actual_pest"],
+        "available_after_deduplication": available,
+        "selected_per_class": per_class,
+        "splits": manifest,
+    }
+    (args.output / "manifest.json").write_text(json.dumps(audit, indent=2), encoding="utf-8")
+    print(json.dumps({label: {split: len(paths) for split, paths in parts.items()} for label, parts in manifest.items()}, indent=2))
 
 
 if __name__ == "__main__":

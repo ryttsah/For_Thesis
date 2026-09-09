@@ -11,7 +11,7 @@
     "Coconut_Scale_Insect": 0.5,
     "Rhinoceros_Beetle": 0.5
   },
-  "uncertain_threshold": 0.35,
+  "uncertain_threshold": 0.5,
   "image_size": [
     224,
     224
