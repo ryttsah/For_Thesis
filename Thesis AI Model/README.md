@@ -13,9 +13,9 @@ Four-class **EfficientNetB0** classifier for the four confirmed coconut conditio
 |------|---------|
 | `model_outputs/coconut_leaf_multilabel_cnn.keras` | Final trained model (default for `/predict`) |
 | `model_outputs/label_config.json` | Class names, per-class thresholds, image size |
-| `model.ipynb` | Training notebook and `predict_image()` reference |
+| `model.ipynb` | Controlled experiment notebook for candidate models and metric comparison |
 
-Alternate checkpoints: `best_fine_tuned_model.keras`, `best_coconut_leaf_model.keras`.
+The only model used by the API is `model_outputs/coconut_leaf_multilabel_cnn.keras`.
 
 ## Inference
 
@@ -65,6 +65,18 @@ overall held-out accuracy and all four class F1 scores are at least **80%**.
 ```text
 backend/.cnn-venv/Scripts/python.exe backend/scripts/train_balanced_cnn.py --promote
 ```
+
+### Notebook experiments
+
+`model.ipynb` uses the same four-class **softmax** architecture, `224x224` input,
+balanced dataset, and 80% release gate as the API. It is intended for controlled
+experiments such as a stronger classification head, deeper fine-tuning, or focal-loss
+comparison. Every run saves a separate candidate and adds its overall and per-class F1
+metrics to `model_outputs/candidates/experiment_results.csv`.
+
+Open the notebook with the `backend/.cnn-venv` Python interpreter. Run the cells in
+order, compare candidates using the untouched test set, and leave
+`PROMOTE_CANDIDATE = False` until a candidate genuinely passes the quality gate.
 
 ## Backend integration
 
