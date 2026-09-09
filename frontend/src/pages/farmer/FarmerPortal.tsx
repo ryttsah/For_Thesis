@@ -422,6 +422,10 @@ export default function FarmerPortal() {
   const unreadNotificationCount = useMemo(() => farmerNotifications.filter((item) => item.isNew && !seenNotificationIds.has(item.id)).length, [farmerNotifications, seenNotificationIds]);
   const selectedNotification = farmerNotifications.find((item) => item.id === selectedNotificationId) ?? null;
 
+  function markAllFarmerNotificationsRead() {
+    setSeenNotificationIds(new Set(farmerNotifications.filter((item) => item.isNew).map((item) => item.id)));
+  }
+
   async function saveVisitFeedback() {
     if (!feedbackLogId || visitConfirmed === null) { setVisitFeedbackError("Please confirm whether the officer completed the visit."); return; }
     if (visitConfirmed && visitRating === 0) { setVisitFeedbackError("Please choose a rating from 1 to 5 stars."); return; }
@@ -508,12 +512,13 @@ export default function FarmerPortal() {
           </div>
 
           <div className="f-card !mb-0 flex min-h-[520px] max-h-[520px] flex-col overflow-hidden">
-            <div className="mb-3 flex items-center gap-3">
+            <div className="mb-3 flex items-center justify-between gap-3">
               <h3 className="flex min-w-0 items-center gap-2 text-[15px] font-bold">
                 <IconBell size={18} className="shrink-0 text-orange-600" />
                 <span className="truncate">{FARMER_I18N.notifications[lang]}</span>
                 {unreadNotificationCount > 0 && <span className="rounded-full bg-pca-red-light px-2 py-0.5 text-[11px] font-bold text-pca-red">{unreadNotificationCount} new</span>}
               </h3>
+              <button type="button" onClick={markAllFarmerNotificationsRead} className="shrink-0 text-[11px] font-bold text-blue-700 hover:underline">Mark all as read</button>
             </div>
             <div className="min-h-0 space-y-2 overflow-y-auto pr-1">
               {farmerNotifications.map((n) => (
