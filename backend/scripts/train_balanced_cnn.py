@@ -10,6 +10,9 @@ from __future__ import annotations
 
 import json
 import random
+import shutil
+from argparse import ArgumentParser
+from datetime import datetime
 from pathlib import Path
 
 import numpy as np
@@ -22,9 +25,18 @@ CLASS_NAMES = ["Healthy", "Yellowing", "Coconut_Scale_Insect", "Rhinoceros_Beetl
 IMAGE_SIZE = (224, 224)
 BATCH_SIZE = 16
 SEED = 20260907
+RELEASE_THRESHOLD = 0.80
 
 
 def main() -> None:
+    parser = ArgumentParser(description="Train a candidate model and optionally promote it after the quality gate.")
+    parser.add_argument(
+        "--promote",
+        action="store_true",
+        help="Replace the live model only when overall accuracy and each class F1 are at least 80%%.",
+    )
+    args = parser.parse_args()
+
     tf.keras.utils.set_random_seed(SEED)
     random.seed(SEED)
     np.random.seed(SEED)
@@ -117,36 +129,46 @@ def main() -> None:
             "support": int(confusion[index, :].sum()),
         }
 
-    model.save(OUTPUT_DIR / "coconut_leaf_multilabel_cnn.keras")
-    (OUTPUT_DIR / "label_config.json").write_text(
-        json.dumps(
-            {
-                "class_names": CLASS_NAMES,
-                # A four-way softmax has one mutually exclusive winning class.
-                # Scores under 50% remain too ambiguous to surface as a condition.
-                "thresholds": {name: 0.5 for name in CLASS_NAMES},
-                "uncertain_threshold": 0.5,
-                "image_size": list(IMAGE_SIZE),
-            },
-            indent=2,
-        ),
-        encoding="utf-8",
+    label_config = {
+        "class_names": CLASS_NAMES,
+        # A four-way softmax has one mutually exclusive winning class.
+        # Scores under 50% remain too ambiguous to surface as a condition.
+        "thresholds": {name: 0.5 for name in CLASS_NAMES},
+        "uncertain_threshold": 0.5,
+        "image_size": list(IMAGE_SIZE),
+    }
+    passed_gate = test_accuracy >= RELEASE_THRESHOLD and all(
+        metrics["f1_score"] >= RELEASE_THRESHOLD for metrics in per_class_metrics.values()
     )
-    (OUTPUT_DIR / "evaluation.json").write_text(
-        json.dumps(
-            {
-                "test_loss": float(test_loss),
-                "test_accuracy": float(test_accuracy),
-                "classes": CLASS_NAMES,
-                "confusion_matrix": confusion.tolist(),
-                "per_class_metrics": per_class_metrics,
-                "dataset_split": "balanced_dataset: source photos only; generated variants applied during training only",
-            },
-            indent=2,
-        ),
-        encoding="utf-8",
-    )
-    print("Saved balanced model and label configuration to", OUTPUT_DIR)
+    evaluation = {
+        "test_loss": float(test_loss),
+        "test_accuracy": float(test_accuracy),
+        "classes": CLASS_NAMES,
+        "confusion_matrix": confusion.tolist(),
+        "per_class_metrics": per_class_metrics,
+        "dataset_split": "balanced_dataset: source photos only; generated variants applied during training only",
+        "release_threshold": RELEASE_THRESHOLD,
+        "passed_release_gate": passed_gate,
+    }
+
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    candidate_dir = OUTPUT_DIR / "candidates" / datetime.now().strftime("%Y%m%d-%H%M%S")
+    candidate_dir.mkdir(parents=True, exist_ok=True)
+    candidate_model = candidate_dir / "coconut_leaf_model.keras"
+    model.save(candidate_model)
+    (candidate_dir / "label_config.json").write_text(json.dumps(label_config, indent=2), encoding="utf-8")
+    (candidate_dir / "evaluation.json").write_text(json.dumps(evaluation, indent=2), encoding="utf-8")
+
+    if args.promote and passed_gate:
+        shutil.copy2(candidate_model, OUTPUT_DIR / "coconut_leaf_multilabel_cnn.keras")
+        (OUTPUT_DIR / "label_config.json").write_text(json.dumps(label_config, indent=2), encoding="utf-8")
+        (OUTPUT_DIR / "evaluation.json").write_text(json.dumps(evaluation, indent=2), encoding="utf-8")
+        print("Candidate passed the 80% quality gate and is now the live model.")
+    elif args.promote:
+        print("Candidate did not pass the 80% quality gate. The live model was not changed.")
+    else:
+        print("Saved candidate model to", candidate_dir)
+        print("Run again with --promote only after it passes the 80% quality gate.")
 
 
 if __name__ == "__main__":

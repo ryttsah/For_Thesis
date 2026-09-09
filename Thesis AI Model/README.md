@@ -57,8 +57,14 @@ backend/.cnn-venv/Scripts/python.exe backend/scripts/prepare_balanced_cnn_datase
 backend/.cnn-venv/Scripts/python.exe backend/scripts/train_balanced_cnn.py
 ```
 
-The training script evaluates the held-out test split and writes
-`model_outputs/evaluation.json` with its test accuracy and loss.
+Training first saves a dated candidate in `model_outputs/candidates/` with its
+confusion matrix, per-class Precision, Recall, and F1. The candidate does not alter
+farmer results. To promote it, rerun with `--promote`; promotion is blocked unless
+overall held-out accuracy and all four class F1 scores are at least **80%**.
+
+```text
+backend/.cnn-venv/Scripts/python.exe backend/scripts/train_balanced_cnn.py --promote
+```
 
 ## Backend integration
 
