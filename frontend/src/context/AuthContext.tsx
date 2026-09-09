@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { hasAuthToken, isApiEnabled } from "../services/api";
+import { clearAuthToken, hasAuthToken, isApiEnabled } from "../services/api";
 import { fetchCurrentUser } from "../services/auth";
 import type { UserRole } from "../types/auth";
 
@@ -110,7 +110,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         sessionStorage.setItem(STORAGE_KEY, JSON.stringify(next));
         setUser(next);
       } else {
-        localStorage.removeItem("pca_access_token");
+        clearAuthToken();
         sessionStorage.removeItem(STORAGE_KEY);
         setUser(null);
       }
@@ -134,7 +134,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(() => {
     sessionStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem("pca_access_token");
+    clearAuthToken();
     setUser(null);
   }, []);
 

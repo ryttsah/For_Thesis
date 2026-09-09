@@ -1,5 +1,5 @@
 import type { LoginCredentials, UserRole } from "../types/auth";
-import { getApiBase, getAuthHeaders, isApiEnabled } from "./api";
+import { getApiBase, getAuthHeaders, isApiEnabled, storeAuthToken } from "./api";
 
 export interface AuthResult {
   success: boolean;
@@ -78,7 +78,7 @@ export async function login(credentials: LoginCredentials): Promise<AuthResult> 
         message: "Server did not return an access token. Check the backend is running.",
       };
     }
-    localStorage.setItem("pca_access_token", data.access_token);
+    storeAuthToken(data.access_token);
     return { success: true, role: data.role };
   } catch {
     return {

@@ -541,7 +541,11 @@ export async function recordVisitOutcomeApi(visitId: string, payload: { visited:
   if (!isApiEnabled()) return { ok: false, message: "API not configured." };
   try {
     const response = await fetch(`${getApiBase()}/visits/${visitId}/outcome`, { method: "POST", headers: { ...getAuthHeaders(), "Content-Type": "application/json" }, body: JSON.stringify({ visited: payload.visited, officer_comment: payload.officerComment, not_visited_reason: payload.notVisitedReason, evidence_image: payload.evidenceImage ?? "" }) });
-    return response.ok ? { ok: true } : { ok: false, message: await parseErrorMessage(response, "Could not save the visit log.") };
+    if (response.ok) return { ok: true };
+    if (response.status === 401 || response.status === 403) {
+      return { ok: false, message: "Your officer session is no longer authorized for this visit. Sign out, then sign in again as the assigned officer." };
+    }
+    return { ok: false, message: await parseErrorMessage(response, "Could not save the visit log.") };
   } catch { return { ok: false, message: "Could not reach the server." }; }
 }
 

@@ -1,4 +1,5 @@
 const API_OVERRIDE_KEY = "pca_api_base_override";
+const ACCESS_TOKEN_KEY = "pca_access_token";
 
 export function setApiBaseOverride(url: string | null): void {
   if (!url) {
@@ -68,13 +69,23 @@ export function isApiEnabled(): boolean {
 }
 
 export function hasAuthToken(): boolean {
-  return Boolean(localStorage.getItem("pca_access_token"));
+  // A farmer, officer, and administrator can be open in separate browser tabs.
+  // Session storage keeps those role-specific tokens from overwriting one another.
+  return Boolean(sessionStorage.getItem(ACCESS_TOKEN_KEY));
 }
 
 export function getAuthHeaders(): HeadersInit {
-  const token = localStorage.getItem("pca_access_token");
+  const token = sessionStorage.getItem(ACCESS_TOKEN_KEY);
   if (!token) return {};
   return { Authorization: `Bearer ${token}` };
+}
+
+export function storeAuthToken(token: string): void {
+  sessionStorage.setItem(ACCESS_TOKEN_KEY, token);
+}
+
+export function clearAuthToken(): void {
+  sessionStorage.removeItem(ACCESS_TOKEN_KEY);
 }
 
 export async function parseErrorMessage(response: Response, fallback: string): Promise<string> {
