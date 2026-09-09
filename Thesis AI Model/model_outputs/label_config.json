@@ -12,6 +12,8 @@
     "Rhinoceros_Beetle": 0.5
   },
   "uncertain_threshold": 0.5,
+  "min_top_two_margin": 0.1,
+  "temperature": 1.0,
   "image_size": [
     224,
     224

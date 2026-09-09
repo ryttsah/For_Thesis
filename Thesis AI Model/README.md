@@ -20,11 +20,13 @@ The only model used by the API is `model_outputs/coconut_leaf_multilabel_cnn.ker
 ## Inference
 
 1. Resize image to **224×224**
-2. Run softmax outputs for all four classes
-3. Apply the uncertainty cutoff from `label_config.json`
-4. Select the condition with the actual highest model score. The system does not use a
+2. Run the model on the original and horizontally flipped image, then average the scores
+3. Apply the validation-derived temperature calibration from `label_config.json`
+4. Apply the uncertainty cutoff and top-two score margin from `label_config.json`
+5. Select the condition with the actual highest model score. The system does not use a
    hard-coded pest priority, so Rhino cannot win merely because it is present.
-5. Flag **uncertain** when max score is below the configured cutoff or no label passes.
+6. Flag **uncertain** when the photo quality is poor, the max score is below the cutoff,
+   the top two classes are too close, or no label passes.
 
 ## Balanced Dataset and Retraining
 

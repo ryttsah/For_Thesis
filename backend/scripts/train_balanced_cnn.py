@@ -135,6 +135,8 @@ def main() -> None:
         # Scores under 50% remain too ambiguous to surface as a condition.
         "thresholds": {name: 0.5 for name in CLASS_NAMES},
         "uncertain_threshold": 0.5,
+        "min_top_two_margin": 0.10,
+        "temperature": 1.0,
         "image_size": list(IMAGE_SIZE),
     }
     passed_gate = test_accuracy >= RELEASE_THRESHOLD and all(

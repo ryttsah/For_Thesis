@@ -33,6 +33,8 @@ class LabelConfig:
     thresholds: dict[str, float]
     uncertain_threshold: float
     image_size: tuple[int, int]
+    temperature: float
+    min_top_two_margin: float
 
 
 @dataclass(frozen=True)
@@ -68,6 +70,8 @@ def load_label_config(config_path: Path) -> LabelConfig:
         thresholds={str(k): float(v) for k, v in raw["thresholds"].items()},
         uncertain_threshold=float(raw.get("uncertain_threshold", 0.4)),
         image_size=(int(size[0]), int(size[1])),
+        temperature=max(float(raw.get("temperature", 1.0)), 0.1),
+        min_top_two_margin=max(float(raw.get("min_top_two_margin", 0.0)), 0.0),
     )
 
 
@@ -129,6 +133,41 @@ def _preprocess_image(image_bytes: bytes, image_size: tuple[int, int]) -> Any:
     return batch
 
 
+def _image_quality_message(image_bytes: bytes) -> str | None:
+    """Reject only obviously unusable uploads before the CNN makes a guess."""
+    try:
+        from PIL import Image, ImageFilter, ImageStat
+
+        with Image.open(BytesIO(image_bytes)) as image:
+            if min(image.size) < 160:
+                return "The photo is too small. Upload a clearer coconut leaf photo."
+            gray = image.convert("L")
+            brightness = ImageStat.Stat(gray).mean[0]
+            if brightness < 18 or brightness > 245:
+                return "The photo is too dark or too bright. Upload a better-lit coconut leaf photo."
+            edge_variance = ImageStat.Stat(gray.filter(ImageFilter.FIND_EDGES)).var[0]
+            if edge_variance < 2.0:
+                return "The photo appears too blurry. Upload a sharper coconut leaf photo."
+    except Exception:
+        return None
+    return None
+
+
+def _softmax(values: np.ndarray) -> np.ndarray:
+    shifted = values - np.max(values)
+    exponentials = np.exp(shifted)
+    return exponentials / np.sum(exponentials)
+
+
+def _predict_with_test_time_augmentation(batch: Any) -> np.ndarray:
+    import tensorflow as tf
+
+    assert _model is not None
+    original = np.asarray(_model.predict(batch, verbose=0)[0], dtype=np.float32)
+    flipped = np.asarray(_model.predict(tf.image.flip_left_right(batch), verbose=0)[0], dtype=np.float32)
+    return (original + flipped) / 2.0
+
+
 def _select_primary_label(selected_labels: list[str], scores: np.ndarray, class_names: list[str]) -> str:
     """Choose the actual highest scoring class, never a hard-coded pest priority."""
     candidates = selected_labels or class_names
@@ -144,9 +183,12 @@ def predict_image_bytes(
     _ensure_loaded(model_path, config_path)
     assert _model is not None and _config is not None
 
+    quality_message = _image_quality_message(image_bytes)
     batch = _preprocess_image(image_bytes, _config.image_size)
-    scores = _model.predict(batch, verbose=0)[0]
-    scores = np.asarray(scores, dtype=np.float32)
+    raw_scores = _predict_with_test_time_augmentation(batch)
+    raw_scores = np.clip(raw_scores, 1e-7, 1.0)
+    logits = np.log(raw_scores)
+    scores = _softmax(logits / _config.temperature)
 
     predictions = {
         class_name: float(score)
@@ -164,7 +206,14 @@ def predict_image_bytes(
         selected_labels.remove("Healthy")
 
     confidence = float(np.max(scores))
-    uncertain = confidence < _config.uncertain_threshold or len(selected_labels) == 0
+    sorted_scores = np.sort(scores)
+    top_two_margin = float(sorted_scores[-1] - sorted_scores[-2]) if len(sorted_scores) > 1 else confidence
+    uncertain = (
+        quality_message is not None
+        or confidence < _config.uncertain_threshold
+        or top_two_margin < _config.min_top_two_margin
+        or len(selected_labels) == 0
+    )
 
     top_indices = np.argsort(scores)[-3:][::-1]
     top_guesses = [_config.class_names[index] for index in top_indices]
@@ -177,8 +226,10 @@ def predict_image_bytes(
     pest = LABEL_TO_PEST.get(primary_label, "healthy")
 
     message = None
-    if uncertain:
-        message = "This photo could not be classified confidently. Upload a clearer coconut leaf photo."
+    if quality_message:
+        message = quality_message
+    elif uncertain:
+        message = "This photo is uncertain between the top conditions. Upload a clearer coconut leaf photo or request PCA review."
 
     return PredictionResult(
         pest=pest,
