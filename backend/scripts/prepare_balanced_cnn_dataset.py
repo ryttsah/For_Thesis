@@ -1,4 +1,10 @@
-"""Create a duplicate-free, class-balanced train/validation/test dataset.
+"""Create a reviewed, duplicate-free, class-balanced CNN dataset.
+
+The current Thesis AI Model and the prior model's train/valid/test folders are
+treated as *candidate* material. They are merged before a fresh split is made so
+old test photos can never leak into the new test partition. Exact duplicates and
+pre-generated source variants are removed per label, then every selected source
+file is written to a manifest for manual traceability.
 
 Only the four confirmed coconut-condition folders are considered. ``Non-palms`` is
 deliberately excluded until its dataset is reviewed and large enough to support a
@@ -24,6 +30,12 @@ LABELS = {
     "Rhinoceros_Beetle": "Rhinoceros_Beetle",
 }
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
+SYNTHETIC_SOURCE_PREFIXES = ("f_aug_",)
+
+
+def is_generated_source(path: Path) -> bool:
+    """Do not re-use pre-generated variants as independent field observations."""
+    return path.name.lower().startswith(SYNTHETIC_SOURCE_PREFIXES)
 
 
 def quality_score(path: Path) -> float | None:
@@ -43,23 +55,39 @@ def quality_score(path: Path) -> float | None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--source", type=Path, default=Path("Thesis AI Model"))
+    parser.add_argument(
+        "--source",
+        type=Path,
+        action="append",
+        default=[],
+        help="Candidate model folder. May be given more than once.",
+    )
     parser.add_argument("--output", type=Path, default=Path("Thesis AI Model/balanced_dataset"))
     parser.add_argument("--per-class", type=int, default=0, help="0 means use the smallest verified class.")
     args = parser.parse_args()
+    sources = args.source or [Path("Thesis AI Model"), Path("Thesis AI Model.previous")]
+    missing_sources = [source for source in sources if not source.is_dir()]
+    if missing_sources:
+        raise SystemExit(f"Candidate source folder(s) not found: {', '.join(map(str, missing_sources))}")
 
     candidates_by_label: dict[str, list[tuple[float, Path, str]]] = {}
     for source_name, label in LABELS.items():
         candidates: list[tuple[float, Path, str]] = []
         hashes: set[str] = set()
-        for path in (args.source / source_name).rglob("*"):
-            if path.suffix.lower() in IMAGE_EXTENSIONS:
+        for source in sources:
+            for path in (source / source_name).rglob("*"):
+                if path.suffix.lower() not in IMAGE_EXTENSIONS:
+                    continue
+                if is_generated_source(path):
+                    continue
                 score = quality_score(path)
-                if score is not None:
-                    digest = hashlib.sha256(path.read_bytes()).hexdigest()
-                    if digest not in hashes:
-                        hashes.add(digest)
-                        candidates.append((score, path, digest))
+                if score is None:
+                    continue
+                digest = hashlib.sha256(path.read_bytes()).hexdigest()
+                if digest in hashes:
+                    continue
+                hashes.add(digest)
+                candidates.append((score, path, digest))
         candidates.sort(key=lambda pair: (-pair[0], pair[1].name.lower()))
         candidates_by_label[label] = candidates
 
@@ -99,7 +127,10 @@ def main() -> None:
 
     audit = {
         "verified_classes": list(LABELS.values()),
+        "candidate_sources": [str(source) for source in sources],
         "excluded_folders": ["Non-palms", "Rhinoceros_Beetle_excluded_actual_pest"],
+        "excluded_generated_source_prefixes": list(SYNTHETIC_SOURCE_PREFIXES),
+        "deduplication": {"exact_file_hash": True},
         "available_after_deduplication": available,
         "selected_per_class": per_class,
         "splits": manifest,

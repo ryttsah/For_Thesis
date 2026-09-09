@@ -1,4 +1,4 @@
-"""Train a balanced coconut condition classifier from curated_dataset.
+"""Train a balanced four-class coconut condition classifier.
 
 Run after installing TensorFlow in a dedicated local environment:
   backend/.cnn-venv/Scripts/python.exe backend/scripts/train_balanced_cnn.py
@@ -102,10 +102,20 @@ def main() -> None:
     confusion = np.zeros((len(CLASS_NAMES), len(CLASS_NAMES)), dtype=int)
     for truth, guess in zip(actual, predicted):
         confusion[int(truth), int(guess)] += 1
-    per_class_accuracy = {
-        name: float(confusion[index, index] / max(confusion[index].sum(), 1))
-        for index, name in enumerate(CLASS_NAMES)
-    }
+    per_class_metrics: dict[str, dict[str, float]] = {}
+    for index, name in enumerate(CLASS_NAMES):
+        true_positive = int(confusion[index, index])
+        false_positive = int(confusion[:, index].sum() - true_positive)
+        false_negative = int(confusion[index, :].sum() - true_positive)
+        precision = true_positive / max(true_positive + false_positive, 1)
+        recall = true_positive / max(true_positive + false_negative, 1)
+        f1_score = 2 * precision * recall / max(precision + recall, 1e-12)
+        per_class_metrics[name] = {
+            "precision": float(precision),
+            "recall": float(recall),
+            "f1_score": float(f1_score),
+            "support": int(confusion[index, :].sum()),
+        }
 
     model.save(OUTPUT_DIR / "coconut_leaf_multilabel_cnn.keras")
     (OUTPUT_DIR / "label_config.json").write_text(
@@ -123,7 +133,17 @@ def main() -> None:
         encoding="utf-8",
     )
     (OUTPUT_DIR / "evaluation.json").write_text(
-        json.dumps({"test_loss": float(test_loss), "test_accuracy": float(test_accuracy), "classes": CLASS_NAMES, "confusion_matrix": confusion.tolist(), "per_class_accuracy": per_class_accuracy}, indent=2),
+        json.dumps(
+            {
+                "test_loss": float(test_loss),
+                "test_accuracy": float(test_accuracy),
+                "classes": CLASS_NAMES,
+                "confusion_matrix": confusion.tolist(),
+                "per_class_metrics": per_class_metrics,
+                "dataset_split": "balanced_dataset: source photos only; generated variants applied during training only",
+            },
+            indent=2,
+        ),
         encoding="utf-8",
     )
     print("Saved balanced model and label configuration to", OUTPUT_DIR)

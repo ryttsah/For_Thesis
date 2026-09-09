@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     # When false, local SQLite init only creates tables + login users (no mock farms/queue).
     seed_demo_data: bool = False
 
-    # Thesis AI Model (EfficientNetB0 multi-label CNN)
+    # Thesis AI Model (EfficientNetB0 four-class CNN)
     ml_model_path: str | None = None
     ml_label_config_path: str | None = None
     ml_max_upload_bytes: int = 10 * 1024 * 1024

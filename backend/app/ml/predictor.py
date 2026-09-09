@@ -1,4 +1,4 @@
-"""Coconut leaf multi-label CNN inference (ported from Thesis AI Model/model.ipynb)."""
+"""Coconut leaf four-class CNN inference (ported from Thesis AI Model/model.ipynb)."""
 
 from __future__ import annotations
 

@@ -1,6 +1,6 @@
 # Thesis AI Model — Coconut Leaf CNN
 
-Multi-label **EfficientNetB0** classifier for the four confirmed coconut conditions:
+Four-class **EfficientNetB0** classifier for the four confirmed coconut conditions:
 
 - Healthy
 - Yellowing
@@ -20,8 +20,8 @@ Alternate checkpoints: `best_fine_tuned_model.keras`, `best_coconut_leaf_model.k
 ## Inference
 
 1. Resize image to **224×224**
-2. Run sigmoid outputs for all four labels
-3. Apply thresholds from `label_config.json`
+2. Run softmax outputs for all four classes
+3. Apply the uncertainty cutoff from `label_config.json`
 4. Select the condition with the actual highest model score. The system does not use a
    hard-coded pest priority, so Rhino cannot win merely because it is present.
 5. Flag **uncertain** when max score is below the configured cutoff or no label passes.
@@ -29,10 +29,15 @@ Alternate checkpoints: `best_fine_tuned_model.keras`, `best_coconut_leaf_model.k
 ## Balanced Dataset and Retraining
 
 `backend/scripts/prepare_balanced_cnn_dataset.py` creates a deterministic dataset in
-`balanced_dataset/`. It removes exact duplicate files, quality-screens images, limits
-every class to the same count, and keeps separate train, validation, and test splits.
+`balanced_dataset/`. By default it combines the current source folders with the
+legacy `Thesis AI Model.previous` train/valid/test folders, removes exact duplicate
+files and old `f_aug_` generated source variants, quality-screens images, limits every
+class to the same count, then creates fresh train, validation, and test splits. The
+manifest records the origin of every selected image.
 
-Current prepared set: **98 images per class** (69 train, 15 validation, 14 test):
+The selected count is determined by the smallest clean class. Training augmentation
+is applied only to the train split; validation and test photos remain real source
+images.
 
 - Healthy
 - Yellowing
@@ -42,7 +47,8 @@ Current prepared set: **98 images per class** (69 train, 15 validation, 14 test)
 `Non-palms/` is intentionally not read by the preparation or training scripts. It
 will only be introduced after the non-palm collection has been reviewed and expanded.
 `Rhinoceros_Beetle_excluded_actual_pest/` is also excluded because it is not a
-confirmed training label.
+confirmed training label. CSI candidates must visibly show scale clusters or white
+spots on the leaf; Rhino candidates must show characteristic fan-shaped leaflet cuts.
 
 To create a replacement model in a TensorFlow-enabled environment, run:
 
