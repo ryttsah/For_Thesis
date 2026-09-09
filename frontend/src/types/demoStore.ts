@@ -181,4 +181,5 @@ export interface VisitLog {
   farmerReport: string;
   adminFeedback: string;
   adminRating: number | null;
+  evidenceImage?: string;
 }

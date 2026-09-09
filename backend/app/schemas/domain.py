@@ -75,6 +75,7 @@ class VisitLogOut(BaseModel):
     farmer_report: str = ""
     admin_feedback: str = ""
     admin_rating: int | None = None
+    evidence_image: str = ""
 
 
 class BookedSlotOut(BaseModel):
@@ -181,6 +182,7 @@ class VisitOutcomeRequest(BaseModel):
     visited: bool
     officer_comment: str = Field(default="", max_length=2000)
     not_visited_reason: str = Field(default="", max_length=2000)
+    evidence_image: str = ""
 
 
 class FarmerVisitFeedbackRequest(BaseModel):
@@ -242,6 +244,7 @@ class PortalNotificationOut(BaseModel):
     body: str
     href: str = ""
     is_new: bool = True
+    date_line: str = ""
 
 
 class ConditionTrendOut(BaseModel):

@@ -36,6 +36,7 @@ def ensure_database_columns(engine: Engine) -> None:
             ("farmer_report", "TEXT NOT NULL DEFAULT ''"),
             ("admin_feedback", "TEXT NOT NULL DEFAULT ''"),
             ("admin_rating", "INTEGER"),
+            ("evidence_image", "TEXT NOT NULL DEFAULT ''"),
         ],
     }
 

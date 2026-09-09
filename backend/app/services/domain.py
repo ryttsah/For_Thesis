@@ -276,7 +276,7 @@ def submission_to_out(row: FarmerSubmission) -> FarmerSubmissionOut:
     )
 
 
-def visit_log_to_out(row: VisitLog) -> VisitLogOut:
+def visit_log_to_out(row: VisitLog, include_evidence: bool = False) -> VisitLogOut:
     return VisitLogOut(
         id=f"vl{row.id}", visit_id=row.scheduled_visit_id, farm=row.farm, brgy=row.brgy,
         officer_id=row.officer_id, officer_name=row.officer_name, visited=row.visited,
@@ -284,6 +284,7 @@ def visit_log_to_out(row: VisitLog) -> VisitLogOut:
         recorded_at=row.recorded_at, farmer_confirmed=row.farmer_confirmed,
         farmer_rating=row.farmer_rating, farmer_comment=row.farmer_comment,
         farmer_report=row.farmer_report, admin_feedback=row.admin_feedback, admin_rating=row.admin_rating,
+        evidence_image=row.evidence_image if include_evidence else "",
     )
 
 
@@ -330,7 +331,7 @@ def admin_bootstrap(db: Session) -> AdminBootstrap:
             visit_to_out(r)
             for r in db.scalars(select(ScheduledVisit).order_by(ScheduledVisit.visit_date.desc())).all()
         ],
-        visit_logs=[visit_log_to_out(r) for r in db.scalars(select(VisitLog).order_by(VisitLog.id.desc())).all()],
+        visit_logs=[visit_log_to_out(r, include_evidence=True) for r in db.scalars(select(VisitLog).order_by(VisitLog.id.desc())).all()],
     )
 
 
@@ -462,6 +463,7 @@ def record_visit_outcome(db: Session, visit_id: str, officer_id: str, body: Visi
             scheduled_visit_id=visit_id, farm=visit.farm, brgy=visit.brgy, officer_id=officer_id,
             officer_name=officer.name if officer else visit.scheduled_by, visited=body.visited,
             officer_comment=body.officer_comment.strip(), not_visited_reason=body.not_visited_reason.strip(),
+            evidence_image=body.evidence_image if body.visited else "",
             recorded_at=datetime.now(ZoneInfo("Asia/Manila")).strftime("%b %d, %Y %I:%M %p PHT"),
         )
         db.add(row)
@@ -469,6 +471,7 @@ def record_visit_outcome(db: Session, visit_id: str, officer_id: str, body: Visi
         row.visited = body.visited
         row.officer_comment = body.officer_comment.strip()
         row.not_visited_reason = body.not_visited_reason.strip()
+        row.evidence_image = body.evidence_image if body.visited else ""
         row.recorded_at = datetime.now(ZoneInfo("Asia/Manila")).strftime("%b %d, %Y %I:%M %p PHT")
     db.commit(); db.refresh(row)
     return visit_log_to_out(row)

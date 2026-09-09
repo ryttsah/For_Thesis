@@ -236,7 +236,7 @@ def portal_notifications(
     user_id: str,
 ) -> list[dict]:
     items: list[dict] = []
-    now_label = datetime.now(UTC).strftime("%b %d, %Y")
+    now_label = datetime.now(UTC).strftime("%b %d, %Y · %I:%M %p UTC")
 
     if role == "admin":
         pending = db.scalar(
@@ -351,4 +351,6 @@ def portal_notifications(
             },
         )
 
+    for item in items:
+        item["date_line"] = now_label
     return items

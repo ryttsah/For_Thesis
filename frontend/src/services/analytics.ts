@@ -32,6 +32,7 @@ export interface PortalNotification {
   body: string;
   href: string;
   is_new: boolean;
+  date_line: string;
 }
 
 export async function fetchConditionTrend(brgy?: string): Promise<ConditionTrendData | null> {

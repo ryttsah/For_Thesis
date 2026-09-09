@@ -255,7 +255,7 @@ export default function AdminApprovals() {
           <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
             <div className="mb-4 flex items-start justify-between gap-4">
               <div><p className="text-xs font-bold uppercase tracking-wider text-pca-muted">Approved registration</p><h2 className="mt-1 text-xl font-bold">{selectedApproved.name}</h2></div>
-              <button type="button" onClick={() => setSelectedApproved(null)} className="rounded-lg border border-pca-border px-3 py-2 text-sm font-semibold text-pca-muted hover:bg-pca-bg">Close</button>
+              <button type="button" onClick={() => setSelectedApproved(null)} className="flex h-9 w-9 items-center justify-center rounded-lg border border-pca-border text-xl text-pca-muted hover:bg-pca-bg" aria-label="Close approved registration details">×</button>
             </div>
             <DetailRow label="Farmer ID" value={selectedApproved.farmerId} />
             <DetailRow label="First name" value={selectedApproved.firstName} />

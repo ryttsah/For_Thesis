@@ -88,6 +88,7 @@ class VisitLog(Base):
     farmer_report: Mapped[str] = mapped_column(Text, nullable=False, default="")
     admin_feedback: Mapped[str] = mapped_column(Text, nullable=False, default="")
     admin_rating: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    evidence_image: Mapped[str] = mapped_column(Text, nullable=False, default="")
 
 
 class BookedSlot(Base):

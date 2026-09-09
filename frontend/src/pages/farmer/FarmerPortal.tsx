@@ -235,22 +235,14 @@ export default function FarmerPortal() {
     if (!incoming.length) return;
     const remaining = MAX_FARMER_ANALYSIS_PHOTOS - previews.length;
     const allowed = incoming.slice(0, remaining);
-    const hasTooManyPhotos = incoming.length > remaining;
     setAnalyzeError(null);
-    if (incoming.length > remaining) {
-      setAnalyzeError(
-        lang === "hil"
-          ? `Tubtob ${MAX_FARMER_ANALYSIS_PHOTOS} lang ka litrato kada analysis. Gamita ang pinakaklaro nga litrato.`
-          : `You can analyze up to ${MAX_FARMER_ANALYSIS_PHOTOS} photos per analysis. Use the clearest photos.`,
-      );
-    }
     if (!allowed.length) {
       e.target.value = "";
       return;
     }
 
     setPreparingUploads(true);
-    if (!hasTooManyPhotos) setAnalyzeError(null);
+    setAnalyzeError(null);
 
     const nextPreviews = allowed.map((file) => URL.createObjectURL(file));
     previewUrlsRef.current.push(...nextPreviews);
@@ -525,12 +517,13 @@ export default function FarmerPortal() {
             </div>
             <div className="min-h-0 space-y-2 overflow-y-auto pr-1">
               {farmerNotifications.map((n) => (
-                <button key={n.id} type="button" onClick={() => { setSeenNotificationIds((current) => new Set([...current, n.id])); setSelectedNotificationId(n.id); }} className="flex w-full items-center gap-3 rounded-xl border border-pca-bg bg-pca-bg/50 p-3 text-left hover:bg-pca-green-light">
-                  <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: n.dot }} />
+                <button key={n.id} type="button" onClick={() => { setSeenNotificationIds((current) => new Set([...current, n.id])); setSelectedNotificationId(n.id); }} className={`flex w-full items-start gap-3 border-b border-pca-border px-3 py-3 text-left last:border-b-0 hover:bg-pca-bg ${n.isNew && !seenNotificationIds.has(n.id) ? "bg-blue-50" : "bg-white"}`}>
+                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ background: n.isNew && !seenNotificationIds.has(n.id) ? "#2563eb" : n.dot }} />
                   <div className="min-w-0 flex-1">
-                    <div className="truncate text-xs font-bold">{n.dateLine}</div>
-                    <div className="text-[11px] leading-relaxed text-pca-muted">
-                      {n.body}
+                    <div className="truncate text-xs font-bold text-pca-text">{n.body}</div>
+                    <div className="mt-1 text-[11px] font-medium text-pca-muted">{n.dateLine}</div>
+                    <div className="mt-1 text-[11px] leading-relaxed text-pca-muted">
+                      {n.isNew && !seenNotificationIds.has(n.id) ? "Unread notification" : "Read notification"}
                     </div>
                   </div>
                 </button>

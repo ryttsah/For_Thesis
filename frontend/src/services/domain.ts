@@ -121,6 +121,7 @@ type ApiVisitLog = {
   visited: boolean; officer_comment: string; not_visited_reason: string; recorded_at: string;
   farmer_confirmed: boolean | null; farmer_rating: number | null; farmer_comment: string;
   farmer_report: string; admin_feedback: string; admin_rating: number | null;
+  evidence_image?: string;
 };
 
 export interface FarmerProfile {
@@ -268,7 +269,7 @@ function mapVisitLog(v: ApiVisitLog): VisitLog {
     officerName: v.officer_name, visited: v.visited, officerComment: v.officer_comment,
     notVisitedReason: v.not_visited_reason, recordedAt: v.recorded_at, farmerConfirmed: v.farmer_confirmed,
     farmerRating: v.farmer_rating, farmerComment: v.farmer_comment, farmerReport: v.farmer_report,
-    adminFeedback: v.admin_feedback, adminRating: v.admin_rating };
+    adminFeedback: v.admin_feedback, adminRating: v.admin_rating, evidenceImage: v.evidence_image ?? "" };
 }
 
 export interface OfficerDomainData {
@@ -536,10 +537,10 @@ export async function createFarmerSubmissionApi(
   }
 }
 
-export async function recordVisitOutcomeApi(visitId: string, payload: { visited: boolean; officerComment: string; notVisitedReason: string }): Promise<{ ok: boolean; message?: string }> {
+export async function recordVisitOutcomeApi(visitId: string, payload: { visited: boolean; officerComment: string; notVisitedReason: string; evidenceImage?: string }): Promise<{ ok: boolean; message?: string }> {
   if (!isApiEnabled()) return { ok: false, message: "API not configured." };
   try {
-    const response = await fetch(`${getApiBase()}/visits/${visitId}/outcome`, { method: "POST", headers: { ...getAuthHeaders(), "Content-Type": "application/json" }, body: JSON.stringify({ visited: payload.visited, officer_comment: payload.officerComment, not_visited_reason: payload.notVisitedReason }) });
+    const response = await fetch(`${getApiBase()}/visits/${visitId}/outcome`, { method: "POST", headers: { ...getAuthHeaders(), "Content-Type": "application/json" }, body: JSON.stringify({ visited: payload.visited, officer_comment: payload.officerComment, not_visited_reason: payload.notVisitedReason, evidence_image: payload.evidenceImage ?? "" }) });
     return response.ok ? { ok: true } : { ok: false, message: await parseErrorMessage(response, "Could not save the visit log.") };
   } catch { return { ok: false, message: "Could not reach the server." }; }
 }

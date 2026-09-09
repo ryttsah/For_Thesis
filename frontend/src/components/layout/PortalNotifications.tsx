@@ -63,6 +63,13 @@ export default function PortalNotifications() {
     if (href) navigate(href);
   }
 
+  function markAllRead() {
+    if (!seenKey) return;
+    const next = new Set(items.filter((item) => item.is_new && !item.id.endsWith("-ok")).map((item) => item.id));
+    setSeenIds(next);
+    localStorage.setItem(seenKey, JSON.stringify([...next]));
+  }
+
   return (
     <div className="relative" ref={rootRef}>
       <button
@@ -89,9 +96,7 @@ export default function PortalNotifications() {
         >
           <div className="flex items-center justify-between border-b border-pca-border px-4 py-3">
             <span className="text-sm font-bold text-pca-text">Notifications</span>
-            <button type="button" onClick={() => setOpen(false)} className="text-pca-muted hover:text-pca-text" aria-label="Close">
-              <IconX size={16} />
-            </button>
+            <div className="flex items-center gap-3"><button type="button" onClick={markAllRead} className="text-[11px] font-bold text-blue-700 hover:underline">Mark all as read</button><button type="button" onClick={() => setOpen(false)} className="text-pca-muted hover:text-pca-text" aria-label="Close"><IconX size={16} /></button></div>
           </div>
           <ul className="max-h-80 overflow-y-auto">
             {items.length === 0 ? (
@@ -99,9 +104,9 @@ export default function PortalNotifications() {
             ) : (
               items.map((n) => (
                 <li key={n.id} className="border-b border-pca-border last:border-b-0">
-                  <button type="button" onClick={() => openItem(n.href)} className="w-full px-4 py-3.5 text-left transition-colors hover:bg-pca-bg">
-                    <div className="text-[13px] font-semibold text-pca-text">{n.title}</div>
-                    <p className="mt-0.5 text-xs leading-relaxed text-pca-muted">{n.body}</p>
+                  <button type="button" onClick={() => openItem(n.href)} className={`flex w-full items-start gap-3 px-4 py-3.5 text-left transition-colors hover:bg-pca-bg ${n.is_new && !seenIds.has(n.id) ? "bg-blue-50" : "bg-white"}`}>
+                    <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${n.is_new && !seenIds.has(n.id) ? "bg-blue-600" : "bg-slate-300"}`} />
+                    <span className="min-w-0 flex-1"><span className="block text-[13px] font-semibold text-pca-text">{n.title}</span><span className="mt-0.5 block text-xs leading-relaxed text-pca-muted">{n.body}</span><span className="mt-1 block text-[10px] font-medium text-pca-muted">{n.date_line}</span></span>
                   </button>
                 </li>
               ))
