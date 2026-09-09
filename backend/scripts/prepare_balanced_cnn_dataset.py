@@ -1,10 +1,10 @@
 """Create a reviewed, duplicate-free, class-balanced CNN dataset.
 
-The current Thesis AI Model and the prior model's train/valid/test folders are
-treated as *candidate* material. They are merged before a fresh split is made so
-old test photos can never leak into the new test partition. Exact duplicates and
-pre-generated source variants are removed per label, then every selected source
-file is written to a manifest for manual traceability.
+The active Thesis AI Model folder is the only default candidate source. Verified
+legacy source images have been consolidated into its class folders before a fresh
+split is made. Exact duplicates and pre-generated source variants are removed per
+label, then every selected source file is written to a manifest for manual
+traceability.
 
 Only the four confirmed coconut-condition folders are considered. ``Non-palms`` is
 deliberately excluded until its dataset is reviewed and large enough to support a
@@ -65,7 +65,7 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=Path("Thesis AI Model/balanced_dataset"))
     parser.add_argument("--per-class", type=int, default=0, help="0 means use the smallest verified class.")
     args = parser.parse_args()
-    sources = args.source or [Path("Thesis AI Model"), Path("Thesis AI Model.previous")]
+    sources = args.source or [Path("Thesis AI Model")]
     missing_sources = [source for source in sources if not source.is_dir()]
     if missing_sources:
         raise SystemExit(f"Candidate source folder(s) not found: {', '.join(map(str, missing_sources))}")

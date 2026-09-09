@@ -29,11 +29,11 @@ Alternate checkpoints: `best_fine_tuned_model.keras`, `best_coconut_leaf_model.k
 ## Balanced Dataset and Retraining
 
 `backend/scripts/prepare_balanced_cnn_dataset.py` creates a deterministic dataset in
-`balanced_dataset/`. By default it combines the current source folders with the
-legacy `Thesis AI Model.previous` train/valid/test folders, removes exact duplicate
-files and old `f_aug_` generated source variants, quality-screens images, limits every
-class to the same count, then creates fresh train, validation, and test splits. The
-manifest records the origin of every selected image.
+`balanced_dataset/`. The active `Thesis AI Model/` folder includes the verified unique
+legacy source images, so it is the only default training source. The preparation step
+removes exact duplicate files and old `f_aug_` generated source variants,
+quality-screens images, limits every class to the same count, then creates fresh train,
+validation, and test splits. The manifest records the origin of every selected image.
 
 The selected count is determined by the smallest clean class. Training augmentation
 is applied only to the train split; validation and test photos remain real source
