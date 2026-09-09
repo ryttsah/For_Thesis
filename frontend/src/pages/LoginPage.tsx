@@ -29,18 +29,15 @@ export default function LoginPage() {
     setActiveTab(tab);
   }
 
-  const subtitle = farmerRegisterMode ? "Farmer registration" : "Sign in to continue";
-
   return (
     <div className="relative min-h-full overflow-hidden bg-[#f7fbf8] px-5 py-8 lg:py-14">
       <div className="relative mx-auto w-full max-w-[1180px]">
-        <div className="mb-7 flex items-center gap-3 lg:ml-[12%]">
+        <div className="mb-8 flex items-center gap-3 lg:ml-[12%]">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-pca-border bg-white shadow-sm">
             <IconLeaf size={27} stroke={1.8} className="text-pca-green" />
           </div>
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-pca-text">CocoAnalytica</h1>
-            <p className="text-sm text-pca-muted">{subtitle}</p>
           </div>
         </div>
 
