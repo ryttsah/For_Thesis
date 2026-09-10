@@ -344,16 +344,6 @@ export default function AdminApprovals() {
                   </div>
                 </div>
               </div>
-
-              <div className="border-t border-pca-border bg-pca-bg/50 px-6 py-5">
-                <button
-                  type="button"
-                  onClick={() => setSelectedApproved(null)}
-                  className="w-full rounded-xl border-2 border-pca-border bg-white py-3 text-sm font-bold text-pca-text transition-colors hover:bg-pca-bg"
-                >
-                  Close Details
-                </button>
-              </div>
             </div>
           </div>
         </div>
