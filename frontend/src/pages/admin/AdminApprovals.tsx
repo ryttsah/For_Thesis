@@ -254,6 +254,10 @@ export default function AdminApprovals() {
 
       <Card className="mb-4">
         <CardHead title="Recently approved farmers" icon={<IconHistory size={16} />} />
+        <p className="border-b border-pca-border px-4 py-2.5 text-[12px] leading-snug text-pca-muted">
+          Default farmer password: <strong className="text-pca-text">Pca</strong> + last 6 digits of the
+          farmer's phone number + <strong className="text-pca-text">!</strong> (e.g. <span className="font-mono">09123456789</span> → <span className="font-mono">Pca456789!</span>).
+        </p>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-[13px]">
             <thead>
