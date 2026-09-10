@@ -278,29 +278,83 @@ export default function AdminApprovals() {
         </div>
       </Card>
 
+      {/* Sidebar for Approved Registration Details */}
       {selectedApproved && (
-        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/45 p-4" role="dialog" aria-modal="true" aria-label="Approved farmer registration details">
-          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
-            <div className="mb-4 flex items-start justify-between gap-4">
-              <div><p className="text-xs font-bold uppercase tracking-wider text-pca-muted">Approved registration</p><h2 className="mt-1 text-xl font-bold">{selectedApproved.name}</h2></div>
-              <button type="button" onClick={() => setSelectedApproved(null)} className="flex h-9 w-9 items-center justify-center rounded-lg border border-pca-border text-xl text-pca-muted hover:bg-pca-bg" aria-label="Close approved registration details">×</button>
+        <div className="fixed inset-0 z-[1000] flex justify-end overflow-hidden">
+          <div
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] transition-opacity"
+            onClick={() => setSelectedApproved(null)}
+          />
+          <div className="relative h-full w-full max-w-[520px] transform bg-white shadow-2xl transition-transform duration-300 ease-in-out">
+            <div className="flex h-full flex-col">
+              <div className="flex items-center justify-between border-b border-pca-border px-6 py-4.5">
+                <div className="flex items-center gap-2">
+                  <IconId size={20} className="text-pca-green" />
+                  <h2 className="text-[17px] font-bold text-pca-text">Approved Registration</h2>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedApproved(null)}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-pca-border text-pca-muted hover:bg-pca-bg"
+                >
+                  <IconX size={20} />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto px-6 py-5">
+                <div className="mb-8">
+                  <p className="text-xs font-bold uppercase tracking-wider text-pca-muted">Farmer Profile</p>
+                  <div className="mt-3 flex flex-col">
+                    <DetailRow label="Full Name" value={selectedApproved.name} />
+                    <DetailRow label="Farmer ID" value={selectedApproved.farmerId} />
+                    <DetailRow label="First name" value={selectedApproved.firstName} />
+                    <DetailRow label="Middle initial" value={selectedApproved.middleInitial || "—"} />
+                    <DetailRow label="Last name" value={selectedApproved.lastName} />
+                    <DetailRow label="Contact number" value={selectedApproved.phone} />
+                    <DetailRow label="Alternative contact" value={selectedApproved.altPhone || "—"} />
+                  </div>
+                </div>
+
+                <div className="mb-8">
+                  <p className="text-xs font-bold uppercase tracking-wider text-pca-muted">Farm Information</p>
+                  <div className="mt-3 flex flex-col">
+                    <DetailRow label="Date applied" value={selectedApproved.applied} />
+                    <DetailRow label="Farm address" value={selectedApproved.farmAddress} />
+                    <DetailRow label="Barangay" value={selectedApproved.brgy} />
+                    <DetailRow label="City / Municipality" value={selectedApproved.municipality} />
+                    <DetailRow label="Province" value={selectedApproved.province} />
+                    <DetailRow label="Farm area" value={formatAreaForAdmin(selectedApproved.areaHectares)} />
+                    <DetailRow label="Farm status" value={selectedApproved.farmStatus} />
+                    <DetailRow
+                      label="Purpose"
+                      value={
+                        selectedApproved.regPurposeType === "other"
+                          ? `Other: ${selectedApproved.regPurposeOtherText || "—"}`
+                          : "Registration only"
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-8">
+                  <p className="text-xs font-bold uppercase tracking-wider text-pca-muted">Approval Audit</p>
+                  <div className="mt-3 flex flex-col">
+                    <DetailRow label="Approved date" value={selectedApproved.approvedDate} />
+                    <DetailRow label="Approved by" value={selectedApproved.approvedBy} />
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-pca-border bg-pca-bg/50 px-6 py-5">
+                <button
+                  type="button"
+                  onClick={() => setSelectedApproved(null)}
+                  className="w-full rounded-xl border-2 border-pca-border bg-white py-3 text-sm font-bold text-pca-text transition-colors hover:bg-pca-bg"
+                >
+                  Close Details
+                </button>
+              </div>
             </div>
-            <DetailRow label="Farmer ID" value={selectedApproved.farmerId} />
-            <DetailRow label="First name" value={selectedApproved.firstName} />
-            <DetailRow label="Middle initial" value={selectedApproved.middleInitial || "—"} />
-            <DetailRow label="Last name" value={selectedApproved.lastName} />
-            <DetailRow label="Date applied" value={selectedApproved.applied} />
-            <DetailRow label="Farm address" value={selectedApproved.farmAddress} />
-            <DetailRow label="Barangay" value={selectedApproved.brgy} />
-            <DetailRow label="City / Municipality" value={selectedApproved.municipality} />
-            <DetailRow label="Province" value={selectedApproved.province} />
-            <DetailRow label="Farm area" value={formatAreaForAdmin(selectedApproved.areaHectares)} />
-            <DetailRow label="Farm status" value={selectedApproved.farmStatus} />
-            <DetailRow label="Contact number" value={selectedApproved.phone} />
-            <DetailRow label="Alternative contact" value={selectedApproved.altPhone || "—"} />
-            <DetailRow label="Purpose" value={selectedApproved.regPurposeType === "other" ? selectedApproved.regPurposeOtherText || "Other" : "Registration only"} />
-            <DetailRow label="Approved date" value={selectedApproved.approvedDate} />
-            <DetailRow label="Approved by" value={selectedApproved.approvedBy} />
           </div>
         </div>
       )}
