@@ -604,7 +604,7 @@ export async function createOfficerApi(payload: CreateOfficerPayload): Promise<C
     const data = (await response.json()) as { initial_password: string; login_note: string };
     return { ok: true, initialPassword: data.initial_password, loginNote: data.login_note };
   } catch {
-    return { ok: false, message: "employee id was already registered" };
+    return { ok: false, message: "Employee ID was already registered." };
   }
 }
 
