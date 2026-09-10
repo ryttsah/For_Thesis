@@ -419,11 +419,31 @@ export default function FarmerPortal() {
     : [];
   const farmerUnansweredVisits = farmerDueVisits.filter((visit) => !farmerVisitLogs.some((log) => log.visitId === visit.id));
   const farmerPendingFeedbackLogs = farmerVisitLogs.filter((log) => log.farmerConfirmed === null);
+  const farmerNotificationSeenKey = user ? `pca_seen_notifications_farmer_${user.id}` : "";
   const unreadNotificationCount = useMemo(() => farmerNotifications.filter((item) => item.isNew && !seenNotificationIds.has(item.id)).length, [farmerNotifications, seenNotificationIds]);
   const selectedNotification = farmerNotifications.find((item) => item.id === selectedNotificationId) ?? null;
 
+  useEffect(() => {
+    if (!farmerNotificationSeenKey) return;
+    try {
+      const stored = localStorage.getItem(farmerNotificationSeenKey);
+      setSeenNotificationIds(new Set(stored ? (JSON.parse(stored) as string[]) : []));
+    } catch {
+      setSeenNotificationIds(new Set());
+    }
+  }, [farmerNotificationSeenKey]);
+
+  function markFarmerNotificationsSeen(ids: string[]) {
+    if (!farmerNotificationSeenKey || ids.length === 0) return;
+    setSeenNotificationIds((current) => {
+      const next = new Set([...current, ...ids]);
+      localStorage.setItem(farmerNotificationSeenKey, JSON.stringify([...next]));
+      return next;
+    });
+  }
+
   function markAllFarmerNotificationsRead() {
-    setSeenNotificationIds(new Set(farmerNotifications.filter((item) => item.isNew).map((item) => item.id)));
+    markFarmerNotificationsSeen(farmerNotifications.filter((item) => item.isNew).map((item) => item.id));
   }
 
   async function saveVisitFeedback() {
@@ -522,7 +542,7 @@ export default function FarmerPortal() {
             </div>
             <div className="min-h-0 space-y-2 overflow-y-auto pr-1">
               {farmerNotifications.map((n) => (
-                <button key={n.id} type="button" onClick={() => { setSeenNotificationIds((current) => new Set([...current, n.id])); setSelectedNotificationId(n.id); }} className={`flex w-full items-start gap-3 border-b border-pca-border px-3 py-3 text-left last:border-b-0 hover:bg-pca-bg ${n.isNew && !seenNotificationIds.has(n.id) ? "bg-blue-50" : "bg-white"}`}>
+                <button key={n.id} type="button" onClick={() => { markFarmerNotificationsSeen([n.id]); setSelectedNotificationId(n.id); }} className={`flex w-full items-start gap-3 border-b border-pca-border px-3 py-3 text-left last:border-b-0 hover:bg-pca-bg ${n.isNew && !seenNotificationIds.has(n.id) ? "bg-blue-50" : "bg-white"}`}>
                   <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ background: n.isNew && !seenNotificationIds.has(n.id) ? "#2563eb" : n.dot }} />
                   <div className="min-w-0 flex-1">
                     <div className="truncate text-xs font-bold text-pca-text">{n.body}</div>
