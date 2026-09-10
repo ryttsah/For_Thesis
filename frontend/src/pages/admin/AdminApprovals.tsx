@@ -1,4 +1,4 @@
-import { IconCheck, IconFileX, IconHistory, IconId, IconInfoCircle, IconUserPlus, IconX } from "@tabler/icons-react";
+import { IconFileX, IconHistory, IconId, IconInfoCircle, IconUserPlus, IconX } from "@tabler/icons-react";
 import { useCallback, useEffect, useState } from "react";
 import RejectFarmerModal from "../../components/modals/RejectFarmerModal";
 import { Card, CardHead } from "../../components/ui/Card";
