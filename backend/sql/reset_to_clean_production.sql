@@ -11,6 +11,7 @@ truncate table
   priority_visits,
   booked_slots,
   scheduled_visits,
+  visit_logs,
   surveys,
   validation_queue,
   farms,

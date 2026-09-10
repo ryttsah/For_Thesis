@@ -560,7 +560,7 @@ def update_officer_details(
 def create_officer(db: Session, body: OfficerCreateRequest) -> OfficerCreateResponse:
     emp_id = body.emp_id.strip().upper()
     if db.get(Officer, emp_id) is not None:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Officer ID already exists.")
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Employee ID was already registered.")
 
     password = body.password or default_officer_password(emp_id)
     ensure_user(
