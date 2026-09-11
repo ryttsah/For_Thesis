@@ -82,22 +82,6 @@ Open [http://localhost:5173](http://localhost:5173). Set `VITE_API_URL=http://lo
 
 
 
-### Demo credentials
-
-
-
-| Role | ID | Password |
-
-|------|-----|----------|
-
-| Officer | `PCA-2024-0012` | `officer123` |
-
-| Farmer | `FARMER-001` | `magsasaka123` |
-
-| Admin | `PCA-ADMIN-001` | `admin2024` |
-
-
-
 ## Project phases
 
 
