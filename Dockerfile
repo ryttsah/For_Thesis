@@ -15,6 +15,7 @@ COPY backend/scripts /app/backend/scripts
 COPY backend/db /app/backend/db
 COPY ["Thesis AI Model/model_outputs/coconut_leaf_multilabel_cnn.keras", "/app/model_outputs/coconut_leaf_multilabel_cnn.keras"]
 COPY ["Thesis AI Model/model_outputs/label_config.json", "/app/model_outputs/label_config.json"]
+COPY ["Thesis AI Model/model_outputs/evaluation.json", "/app/model_outputs/evaluation.json"]
 
 WORKDIR /app/backend
 

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 from dataclasses import dataclass
 from functools import lru_cache
@@ -53,6 +54,17 @@ class PredictionResult:
 _model: Any = None
 _config: LabelConfig | None = None
 _load_error: str | None = None
+_loaded_identity: dict[str, Any] | None = None
+
+
+def _artifact_identity(model_path: Path, config_path: Path) -> dict[str, Any]:
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    return {
+        "model_sha256": hashlib.sha256(model_path.read_bytes()).hexdigest(),
+        "config_sha256": hashlib.sha256(config_path.read_bytes()).hexdigest(),
+        "run_id": config.get("run_id"),
+        "source_notebook": config.get("source_notebook"),
+    }
 
 
 def _resolve_path(path: str | None, default: Path) -> Path:
@@ -76,7 +88,7 @@ def load_label_config(config_path: Path) -> LabelConfig:
 
 
 def _ensure_loaded(model_path: Path, config_path: Path) -> None:
-    global _model, _config, _load_error
+    global _model, _config, _load_error, _loaded_identity
 
     if _model is not None and _config is not None:
         return
@@ -96,6 +108,7 @@ def _ensure_loaded(model_path: Path, config_path: Path) -> None:
 
         _config = load_label_config(config_path)
         _model = tf.keras.models.load_model(model_path, compile=False)
+        _loaded_identity = _artifact_identity(model_path, config_path)
     except Exception as exc:  # noqa: BLE001
         _load_error = str(exc)
         raise RuntimeError(_load_error) from exc
@@ -111,11 +124,14 @@ def is_model_available(model_path: Path, config_path: Path) -> bool:
 
 def get_model_status(model_path: Path, config_path: Path) -> dict[str, Any]:
     if _model is not None:
-        return {"status": "loaded", "model_path": str(model_path)}
+        return {"status": "loaded", "model_path": str(model_path), **(_loaded_identity or {})}
     if _load_error:
         return {"status": "error", "detail": _load_error, "model_path": str(model_path)}
     if model_path.is_file() and config_path.is_file():
-        return {"status": "ready", "model_path": str(model_path)}
+        try:
+            return {"status": "ready", "model_path": str(model_path), **_artifact_identity(model_path, config_path)}
+        except (OSError, ValueError) as exc:
+            return {"status": "error", "detail": str(exc), "model_path": str(model_path)}
     return {
         "status": "missing",
         "model_path": str(model_path),

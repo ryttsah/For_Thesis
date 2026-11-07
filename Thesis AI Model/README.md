@@ -13,7 +13,7 @@ Four-class **EfficientNetB0** classifier for the four confirmed coconut conditio
 |------|---------|
 | `model_outputs/coconut_leaf_multilabel_cnn.keras` | Final trained model (default for `/predict`) |
 | `model_outputs/label_config.json` | Class names, per-class thresholds, image size |
-| `model.ipynb` | Controlled experiment notebook for candidate models and metric comparison |
+| `model.ipynb` | Official training, evaluation, augmentation export and release workflow |
 
 The only model used by the API is `model_outputs/coconut_leaf_multilabel_cnn.keras`.
 
@@ -29,6 +29,41 @@ The only model used by the API is `model_outputs/coconut_leaf_multilabel_cnn.ker
    the top two classes are too close, or no label passes.
 
 ## Balanced Dataset and Retraining
+
+### Broad-view curation (2026-10-08)
+
+The four source folders were visually reviewed for field-camera framing. Close-up
+insect photos, isolated leaf crops, legacy synthetic variants, and two copies with
+conflicting class labels were removed from the active sources. Retained files are
+flattened into their class folder: Healthy 120, Yellowing 56, CSI 155, Rhino 362.
+Framing review does not certify the disease labels.
+
+`dataset_review.json` records every decision. `curated_split_manifest.json` freezes
+the new deterministic source groups across train/validation/test. Old generated
+splits are never imported in curated mode. Saved augmentation preserves the full
+field of view, without zoom crops or black rotation borders. Old notebook outputs
+were cleared; train a new model before reporting results for this revision.
+
+Removed sources, obsolete generated datasets, experiment outputs and unused
+non-palm/pest collections are recoverable in `../dataset_archive/broad_view_20261008/`.
+The current deployed weights and label configuration remain in `model_outputs`.
+
+Open `model.ipynb` and run its cells in order using the TensorFlow Python environment.
+Install `matplotlib` and `ipykernel` in that environment for charts and a notebook kernel.
+The notebook exports balanced training augmentation into `notebook_dataset/<version>/train/`.
+Curated source folders are used. Curated validation/test memberships are frozen;
+additional originals go into training. Pixel-identical duplicates share a split and count
+as one independent photo. Review related photos manually for near-duplicate leakage.
+
+Validation F1 and confusion matrices display after each epoch. Final metrics use
+`backend/app/ml/predictor.py`, exactly as the API does. Reports include model and config
+hashes, dataset provenance, per-class F1, and a confusion matrix. The explicit release
+cell backs up the previous model and exports to the API's existing model path. Restart
+or redeploy the backend, then compare `/predict/status` hashes with the notebook report.
+Individual upload confidence is not test accuracy or F1.
+
+The following describes the **legacy** preparation/training commands. Do not rerun
+them to regenerate holdouts while comparing official notebook experiments.
 
 `backend/scripts/prepare_balanced_cnn_dataset.py` creates a deterministic dataset in
 `balanced_dataset/`. The active `Thesis AI Model/` folder includes the verified unique
@@ -68,17 +103,18 @@ overall held-out accuracy and all four class F1 scores are at least **80%**.
 backend/.cnn-venv/Scripts/python.exe backend/scripts/train_balanced_cnn.py --promote
 ```
 
-### Notebook experiments
+### Official notebook
 
-`model.ipynb` uses the same four-class **softmax** architecture, `224x224` input,
-balanced dataset, and 80% release gate as the API. It is intended for controlled
-experiments such as a stronger classification head, deeper fine-tuning, or focal-loss
-comparison. Every run saves a separate candidate and adds its overall and per-class F1
-metrics to `model_outputs/candidates/experiment_results.csv`.
+`model.ipynb` uses four-class **softmax**, `224x224` input, and saved training
+augmentation. Every run saves a separate candidate, `evaluation.json`,
+`per_class_metrics.csv`, and `confusion_matrix.csv`. The 80% target is reported,
+not assumed. Release is controlled by `RELEASE_TO_WEBSITE` after review.
 
-Open the notebook with the `backend/.cnn-venv` Python interpreter. Run the cells in
-order, compare candidates using the untouched test set, and leave
-`PROMOTE_CANDIDATE = False` until a candidate genuinely passes the quality gate.
+Open it with the `CocoAnalytica (TensorFlow)` kernel. Compare experiments using
+validation; reserve test evaluation for the selected model. The existing holdouts
+have been used in previous experiments, so disclose that limitation in reports.
+The last section links every file connecting the notebook export to Railway and
+the frontend. `/predict/status` returns model/config hashes for verification.
 
 ## Backend integration
 

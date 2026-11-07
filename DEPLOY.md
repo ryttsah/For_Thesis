@@ -13,6 +13,14 @@ Phase 6 connects the React app to the live FastAPI API and publishes both servic
 
 CNN weights ship inside the Railway Docker image (`Thesis AI Model/model_outputs/`).
 
+The official training source is `Thesis AI Model/model.ipynb`. Run the notebook with
+the CocoAnalytica TensorFlow kernel; its release cell exports the model, label config,
+and evaluation report to that directory. The Dockerfile bundles those exact files.
+`backend/app/api/predict.py` receives uploads and calls `backend/app/ml/predictor.py`,
+which loads the exported model. After deployment compare `/predict/status`'s
+`model_sha256` and `config_sha256` with the notebook evaluation report.
+The notebook itself does not execute on Railway.
+
 ---
 
 ## 1. Supabase (database)
@@ -48,8 +56,8 @@ CNN weights ship inside the Railway Docker image (`Thesis AI Model/model_outputs
    | `JWT_SECRET` | Long random string (`openssl rand -hex 32`) |
    | `DEBUG` | `false` |
    | `CORS_ORIGINS` | `https://your-app.vercel.app,http://localhost:5173` |
-   | `ML_MODEL_PATH` | `Thesis AI Model/model_outputs/coconut_leaf_multilabel_cnn.keras` |
-   | `ML_LABEL_CONFIG_PATH` | `Thesis AI Model/model_outputs/label_config.json` |
+   | `ML_MODEL_PATH` | `/app/model_outputs/coconut_leaf_multilabel_cnn.keras` (Dockerfile default) |
+   | `ML_LABEL_CONFIG_PATH` | `/app/model_outputs/label_config.json` (Dockerfile default) |
 
 5. Deploy. First `/predict` call may take ~30s while TensorFlow loads the model.
 6. Copy the public URL (e.g. `https://pca-api-production.up.railway.app`).

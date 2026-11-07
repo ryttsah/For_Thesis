@@ -1,0 +1,2770 @@
+{
+  "5f74f8918276d15574c4e6ec9091c96b783e55449cbdc6669b9fee71561eab31": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "f5ccde2f3b21a27bf9793a1a84bffd927de0b48f703ef23edd4d2d3d12c6d1c9": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "cffe5cd65d8e46f8ee87072fe1aeeffeef867b7627d3b1efe3c908568300290c": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "3a0b3ef9130dd24420faafd5749d888539e46ab40a7b5cdd9e0fea17a4b54437": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "f2dd8757715e6e32d3bea0c05c23f8340033d686918c28b5a27d8cd6f911db23": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "d8e6993e377d4532b1cfb11d045f3e5152a5bf428e2d17d8b552198683ebc4ef": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "d45ad8fd5d2501ad8ef0e1c12fd2fe8ebb4bd07f6bce896e0a4bcbe6f5ea504f": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "7750992bc436d94dea3f7b2ae0a2dace055db3358646a96fa81064adc61df06f": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "4ce1db0ba9a6e30055c757d3a3745638f0c2e56158b5522f382dacbfc0dcfb66": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "8e104b90b7e908e8b6591cab21f855d77f1d02fd0e9aae173d6e7f8435d56f5a": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "b2d6b659279b2d2385aebccbd1dcb30643989425c70249225f11d15fd758574e": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "b0a977df00197dcf015713cb6e13f13d71450c6d5b7f72db13be0181c0929f52": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "6c9a7e2400c0202e7aa63da999b537fa5b0b138fca450888aa414cb43e26623f": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "1d946152ee026e0c17b428505462f20bdf00ef993a5165a549e8efa7b3e6a0b9": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "7c69b7996381a57197cb6b69402df8f9ebf7772c5e040ba7b3292e8c3fcaea23": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "ba43ba5876e829b689549989344e4c380ee34e5f9c83b3372768ae3c0d4a88df": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "be37a1cbd03cf4f10845b97936dc80c632150efc8cb7286ec5db376d7b361d94": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "b5c0572925f32968a9b56aa61534ccd2a2c4497297087a20cfd2960a6ab0e49e": {
+    "label": "Healthy",
+    "split": "test"
+  },
+  "9909d1f308ae2bc2e9a463286874d3d85858e075f290f83bd7317803e261cc6d": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "fa653f4bee9187d748332617b5a6efab9356becb5eee50ab1f3a626e4dcbb34c": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "9586a31e5a7e82213505cc556fcaf794eb9b745c8c93d3963c643ff4a517d28c": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "5cbb0fda452327cfb61bd0497fd77ef804b86472d830571cf2b5de420a70b09c": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "65bd74d4c2c8a7d854a9346df53f6401a5d9e6b57b8220deb66babd8690ab514": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "583564bee87d97c79f888fc98b203c29b15c4075512bbe7ca772d1b924f5fbe2": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "a69261d401c7c5fbc72495768f8e67f8dd5e572d340e0a00c84a18650ed51975": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "f90e2184ec711ce9f961a7f603c5eb4cb056b0a60fd8ba6bd3370fb11791339c": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "867e528b7de20914928b6c45ede634aeadc7860a83158e0d6d417dba7a8d03c4": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "467ebf6dd4ed863643b8b8546950a27728b223cf918432f9911c0b9659c39440": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "5b6ca4745248a95d05689dcd697466a7a29a5368188c04edd74ad42362b98fd4": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "ff22e8e0b3ba8e63a18b11e6c4454b27865f5ac6c02e5762adaed7bb6c7dab9e": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "798de77b37e8a77ac6ae89e726c69cde35fd61551515a1e4274b3957ddb698f7": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "c6d6e7ce52c60b0def6141374e6dd88343920136637fdb77310cfbc5f1e98424": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "bfb91b7f0c1acbe40965d728eaaf2bcf582856f838c95f2efb4d1d3b655c511c": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "08f0aad14eb445dc24abcce001dd8b30eaf8843f296808029e535db01da91988": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "cf2b1609e2c3eb4534298a1f677b1cbb10302a10e6e7e2923d6f470833ac9fce": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "d7e92fc3a019fe94f5c56c2310b82cd18045f67fb970152df3e80173dfff5148": {
+    "label": "Healthy",
+    "split": "validation"
+  },
+  "0a44170d92316e95a5caa366412dfe2a5abfc619a2a60842f23e098281587648": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "8f777d729f24628bb859cb49b7c6569842324a1f5828c6e8e5e05acded71bd27": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "9f92476ef885ef288c749c78d8ee75a920e60fd11cfb20c6e82298c575a5f371": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "774f8c0b6f651a954491de9adc979c39160c03ee4427c181c8564ccc996f5575": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "cc1bf699d8671a53df8707808c3b81b37a10c1a112b8fa5bd682fb8fecdb51a7": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "81edb6f297082016fa558346462ea5fd17ea0da5e41eeca2d8b6a8ffd6231151": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "93963217586655851d63936a8eb47c3a4d4670b8308994d4de0568ce33ecb8dc": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "569aa39dee8263791e35bb87443df2a0b03b0c3dc808f794ba7796f5273e28e9": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "52be9848cce77f7194186fde168b829ea320d16c580f9844b5d448ffff3c27e1": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "c9a1e21d6afe481bf4e425f4d392f05e6fbdaa116a5cc010af5daf715e04c440": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "b7938136d8eacc784a66f0d2040899a9a76b07f93731f76e8729657da5dd9b52": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "eed3917809d2c88c1d9fe944e648e60d96c60b7b3f9678daf3962d33ed8110a5": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "841e9fa501d404e8b97f2b40d2b2eace35b8afda09699659962d8958f4b568d5": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "e2446fc731d64d22bf8311dcf0ff2011eb6c043fba54f8be4352b5945ae5632e": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "e5d36af563b7f930ffacb6ec40646d4cc194e8a26ff57a6f7908c794e48c493b": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "898f0dba7c8ba96b698853795a8e5b559f216395bdef811c88458cfbb8e92ca0": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "330b1f4454c3e25e455195f92687f3e3dd25bbf63bc60b586df85b5a3ecdda72": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "9e140cc2060614be8ec2b9fe977273b5a1c7dff39edd19c57c59e317086783fe": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "9643e884a0216f63661328b68bbf752a36ec18dbf021510cedf05e86ddcfae20": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "b37162774bceeb4a8179a79fe00908adb5c8d412caa7440a75d7f1ab988c4ea1": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "5ba4480405b8b5b33b553734613dfea5329d8b9644003f29337c8a337039f9ee": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "ddeef4712862997a877236df3863d13a942f8fb5a524967cce056f9b2fe0e086": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "2be78e855983da96ead2502efea05a8f713e6f6e7e51df63abd4bb4fe68010d7": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "72e5c263b7884717dfe6a8393c78541c85e862af551b751e7f2313fdf620ddce": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "d13586af77c1becbd95f4ce94142c1955df9aca36cf6643fb715382ae81d6d72": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "af69f73dfa2ab38baf4bf5962bba82e0629a0e6b8f714edc9e8f20668caf461f": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "0e7dcb9c9c710ce816bafabedef1dd3d8bbae826f73e46c5b9d5d923ad58675c": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "baad85e05a5bf1d135ea085391578dac9086c74ed2b29c354c9e9acf96b8e711": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "eecc82fba4307858f31af160abc28226dd31102d33f20e855a6645d67e4e7081": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "ac980b1de827ac181fb8f0eb812b06cc6f719f5b7a8f2e0eb958350ea0053143": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "9dbba626b1ba19dedad667a2300a58099bbed33ab52139deba857be1f3120fbf": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "ea9e5aad24e611ae22b065ab8a037b4c3ac1cb848fabf1602236b577e49885a6": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "8278095cae4e5d73c0be9fbd2e19d7973374402ae56ce5b6f6b49c33027243f6": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "a836c2d2a1e0fba91fda4b26d9aa59ae685d8f6e9ba3fa19ee0595dacfde2537": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "6c351ae3d25a668e96adf718fef94c26b87398aacf276381abf1170913411403": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "8ea0b9f1766cd7527aebf86a3bc4bd741f5fb4149da930adcb30a9321ec5f44b": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "2336b96da76f0abba844ffdfbd17bdf2a15cdc3389bd8176c1942fef75d7ec1c": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "ff3aae23d865fa10dc45ef2c63abfe59631a407db981e19684849dc15a244878": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "d55c504cb1b611216c3fde7fb229b44ad152500fa20403589ce1a0f5ee7cb070": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "9a9caf9c75d5976d327d2cc7c27810d524a68ca0f9041b0ea952998a0d36c617": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "5987088d1274d6994cc6d644c2dfe2c8cd454702e4c71687a98e585bb8bd287e": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "7b3e11df2ab5121d60545cb525d85953d62bca3fb8cbf163a6c06afd84c469a8": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "a85584d772404c58e586de933a3ecab69ed0026ffcc0dc2ffab6821293f2e3b9": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "635011cb2631c7649c7ecbb72b6cfb3fd2633ba7313c01a12323d59d7335a4d1": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "10504ed8359afe030f7e90f7680172ef427de6cdb434190929a080e90ca54600": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "a54e35af72985e9812bd6a648b4592477602d62e4814ea4821c8736a6afcfc3b": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "76262c441be61ef25d8f8733a1b190beed88e14c13f677552d72e0dfcd6c175e": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "b3e97a28d9b04cae3c35099895d6ececaaf5d006e65f85b600a82858e4fb35a1": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "8d4926ee9051ebf2de59c0cf88eb97bde0bd9656512040f8c5f0b0366656676f": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "aeed5f7bba312299061e3386d3c7191f7651a9d97e037431e403ef3a9e284a5a": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "5fdb101d11174c1ec3761e39602d46ce25db5160465329b356411454a7c49897": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "e766d26d5937c8933443976f105c587dd64ca173f8da130bbc73aeaa757f651e": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "e90dd31d0fbf3c337dc6ac3f67231679892342062a9442c05d776d7e520a80e0": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "c93b6637b86e65dd908673dfe831c9037c87ef448586b8938ae18b0116596c4e": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "2bfa8aa3650041244a3312dd587e7382c509a0da2e175a9ba06c7d0c56e62f24": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "3a5082b6aff72a376cbbf7262f77a3ddc63f346fcf32ff91b30d9035eaee6fbb": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "e33fa75048f6cf1bcfbde2e8174ceec7d91553608225b96e7831ad9c2baa1718": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "1adb0b5ac5a73577f2cf3052d8680dd95137ce95f44d02587233b8bfc098dc8f": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "9a0d93bdf76ecd0306027b4d0f97d54334851be7e8c3c9de74eb009fe9415f08": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "5b7f2dae6039c8e8831b02038938cff9b9c24c94d5ab488657a6634d9022e16b": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "7514c2b4088b4656b6a1f6e171cef74f09005a4b91837130165c2a719e609b33": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "d906b91e1f2fbc34bcfc050e28da92866c844fffb8387d0a82f0f5bbb00534f5": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "363ff7d85f266ccaafd263c7b92c7e540be63e897d8d11b50d168f84d235715a": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "4b5b35f5e2d5fea0165bba09077fc499f71a142626bf2248ae44778171dfc47b": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "c44f47ab987b49bf4414bdb3e41d85217ad1387fef16818c7511aa6bddf09697": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "965a4cf26321b472369e3c5f3795a37973d4e5afa1ce87587c23b2e2cc1ff60a": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "cd9179bc855d0eb7f939f8c49baed10b20b107e9ebc1c6555c30d07b42d6bd85": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "23c90e60a2ff7d0832968465725654a1bac37f52b341458a4ad9b703607f5a90": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "7c186c1a8f664cefa82bc82c002ba4b05ce51c22066528d9c63aba408df8f94e": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "b228a95c88dc9d7d1f37c2ebb01bd41cac7189b14a0fda37e7b693eeeb71943d": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "6fc559794120ec2240e5c4f752dc478b509ab96941cef917f3aa16c33409f1b2": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "520a12afaa5e6651c07ffc168425044a1c2e5c70b8e6a8e119b39da962243598": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "6b7f50150842cda35a2590828a0d9aa320f71fa73467f79787617cb82ff53107": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "22f2d84e786396d6f997b3caeff224ad1902fac8b5e029d781eaa70810b57d60": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "2c8919ffcde90a2c7ef9158b530d75f420bfc7120e485ecc7c99fc4be6a09938": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "eba615721a64a7a150b58166e1e4beabee01ab13c64985a1845234c2b0ffac0e": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "4de4c321d7ea7a2415cae1a81b0fd0565e75ebdad0c9546a55bc637fbfc39c06": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "24ff645bf3dcb2a1e21455ac523c5f86b65c506be6a65cff33f134514f56bb1d": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "ae7aa283213f0ed1dd241f63b54db36ca4dc1f77280ab7175ccac6abc78459bb": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "98d69dc057a9590f07c1cb0ae32cb8ec640d7a39f6115685cd5ed04dc9f2eb3f": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "4c2063c638e4d9685b740d791c82515236dc92e2e0acb104ec93d6aa75034762": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "fb2aa7091fe8039e1df3d978740ffa2e07a3ff61a7602dad4470c1483513b482": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "f8ae3c763828dfd7e7eb52fc1f421924c64b7eb16f62f26b6b565ec91a800552": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "d5cc5407f05e598745ddef52d96fa32f49a3ebc3861fd300177341f097406412": {
+    "label": "Healthy",
+    "split": "train"
+  },
+  "1a15ef877e73db752a9f79783421fb13d387c0f94ae27ae2c76792803f75ac12": {
+    "label": "Yellowing",
+    "split": "test"
+  },
+  "c4061869feae9feb70d4433e11671a208f5ede474f12a9779a563b422ceeb9d3": {
+    "label": "Yellowing",
+    "split": "test"
+  },
+  "7587a36ee5e3b6d1323e4eef66ef19427b78bb2e6dc99657a45fe7257f7976e8": {
+    "label": "Yellowing",
+    "split": "test"
+  },
+  "0c9bd067ca8c28e8a8ed56d6e93e704e52825b9aa04216a24a05e8b34163add3": {
+    "label": "Yellowing",
+    "split": "test"
+  },
+  "14f9e10e2304e23433d4793d392400cabce4e745072e65637263998d5a0a1cb9": {
+    "label": "Yellowing",
+    "split": "test"
+  },
+  "ccf1fb4a3c11b873e392242932dac55315c694d2ec718450b53c68f5d8feef2c": {
+    "label": "Yellowing",
+    "split": "test"
+  },
+  "636caa40618011fe978224b58cddac8496d4ec73106ce2ab93b26857522d001a": {
+    "label": "Yellowing",
+    "split": "test"
+  },
+  "1f83706a1615c9fb27a3e924faa1251aa6d0d9f811eb3865ca04e1c5c1e01208": {
+    "label": "Yellowing",
+    "split": "test"
+  },
+  "be03fa5122157135074ed437563e10c0de3a7582e0a2024c6a41b81aad533ce4": {
+    "label": "Yellowing",
+    "split": "validation"
+  },
+  "b07b583f52f3d82baab2411df4b4d5ec4369759de15ac7ff55a77646770ef409": {
+    "label": "Yellowing",
+    "split": "validation"
+  },
+  "56eb8d4ce25aab45364ef1b2bbd4861f7f07dcc96f7627f79e84af4b0b4a2c7f": {
+    "label": "Yellowing",
+    "split": "validation"
+  },
+  "0604255c7c2c43bc82b9902e94dea424bee069b1ba15adccf1c4d7620608058c": {
+    "label": "Yellowing",
+    "split": "validation"
+  },
+  "a5529a4c9863034b1b85e8039da1361916e28b90d1c490a7652602b2b3e21ff5": {
+    "label": "Yellowing",
+    "split": "validation"
+  },
+  "66d9e5c84caf60b2f853394a2bbbdffde44cae7614c90797f4e32a41b7df9145": {
+    "label": "Yellowing",
+    "split": "validation"
+  },
+  "cb129222dd3ceb47e47fde8a37d51fb1fe5fb2291e45425d1ffd0991e0c5c1ee": {
+    "label": "Yellowing",
+    "split": "validation"
+  },
+  "0a304260a2402a11ed6c7d449b9ee3883c494b8061f341e3b855df95297dc26b": {
+    "label": "Yellowing",
+    "split": "validation"
+  },
+  "16d3efc45374da62c63ab44d60907563cf559a8cd42002c1b9a3cc6d4b9dc940": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "7453134adb974c5fd0bb8988e2a4b1ad7ba3444a08a46ee5bef1b01f32582d07": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "c668684866cd32bd2c36b0768b77e84174d2a25e6699758935c3d4519b3c0eab": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "fafb7a0187f25cf74936803b041094db4ee6923fc5173e85436646231f341566": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "9b84dc29cb351d75992c297ce83a8ca1e84cf6dd7a76dc4f63465d4be2e2ee29": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "5fd2ace946cb54d74dcdce292f112c823e8bea8b3fdc122796d32c095477d4aa": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "4a9c6e847897c18c98a9e66fd563dc9d2d746e2dfe998e8706130eab6d6ca7a4": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "75714ab99833c698023d7c1f0a0e290d8d10b346b6831f1610fedac6775fbdb3": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "2a98aa55e60e529e038c70cea15c955ea0b1cf6d37e4cf0cd631e4ee794809d1": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "00926133b46b0796af308d4d21097d1c99a8e479c7fd9a8c4d4d1caed4bf5d43": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "caea3b3936d1585249ccab0b24e18f80cd32fdc024bafbac0b7d6d6fa9596c59": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "b7c183a7121432ffdf89a9e9ffb7b624b31170957f9bf987d2ced3a060157f10": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "94dd67faf7f3c3b867fc399c7356805583f3217d367ff0e0848ec2cffe893423": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "02aa45c6a36ea2b8c9781d233ca14b53c13ca73021a4da6013a9c7ec156f61e3": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "39cb4ab10aea105a577380cd1c6806f1827d836c7b58a3df4fa9a6087641facf": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "c2d42fce90fa3d9a3cab4dc53f6b73b31477d0cbaf9901b6d1a0e7bfeceb02aa": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "ef4bc8e7163e7b386faaf096c18dcce00348c16017e79e6dbef02d86d6746582": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "f64b08e8951612f972b2790427367224831a547f84aadb0ebe9079599b0cc11f": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "20a6870d1c950c83bc86563c329175fc758ed867fcb26e1c68912babc0b98a94": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "6c8db0617d0b6211be7e63cfa6fdd71aec6f772e40056e7ec5dffc090262bb42": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "65b62719c2b316cfbbaede00915cb284cdf9f99ad7795332ee164f1868fb6c09": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "65465cccd0a3544af110119a55c1d860ee2da19016b34213d8cdb6ff46d5f013": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "31f5691b0a639c8670b1b81c792bbba31bf6fa92f470369bd50db41066ab58fb": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "7502f28de63cc703774623b194ba5410b1cba5279c2e55e64bd3555f4a86ab39": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "7472ac4ffad87bb38ac949777d82bb9e9fbb36349408ed489794913ae8e2b932": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "66763631079f1fba0dd586f1f820ee34933b79934e09699dab19033cb8f25cc2": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "bea17a28020dda07a28a752817717cbe1cbb427bcbe23ffb89b4d9a9a0ccfe7d": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "91618e5821a339046035d2bafbf4460fac7745149e44579080515f77cd4a5176": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "1bfadf7f23094d84b4b2ea48a9423fbdf3de8f32b93adc1f897605eda86f7bed": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "97c081bc9d335459878cf72defa6001484d3bf43f0129491a95b520800bec199": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "206e7ba257ca2ac8dc6d07c48034544d466c49459492b6feb1f723726df6d197": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "9490772dfcbd87cc814f19ce2e3494a5e2802843a7db2478b151f2f8bbc47f77": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "48eef10c2e62763bc01a1399ca68ce7552e2a19f0fe10ffe7f32f28f7428da2f": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "a85744b20b7b6f1602a9117779538d500014f578e4e47f1fde527754dadceb9d": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "e2e0c5bc5b740db9f9903637ec3c32f1992a9555a45396b4311c1a2d7447d7d4": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "326abdf466ce034a0c3c46d9e47b4a1abc549fa0271d5d04dc0bac68ad0cc2ba": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "2c66d904b6a254f20be27ed3c52870e0824fe63bbe35bc484eba48b9541bb437": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "0b7ce7fef34050d755265666a2e0191a509a0718d1a1cd546b3dc39ab1e981ed": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "a182b7ff9c72095f163bf2bcf31f5cb352cfcb9f1497435fe577d7135198aea6": {
+    "label": "Yellowing",
+    "split": "train"
+  },
+  "ce0638d11f8743bcfbe2002b791fc7afffc4a5bff004c3fc91b9cc10390563c7": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "3c6206e5b0708b925a9240f3a8a4b5e2cfcb1fc0b80723e2cd52f46d32ff9562": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "449c2f765dc5784c444281742dcaa178aea36f714c72d98a1fac6123bcb96caa": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "0a9084ef5be813805006ee5785fee13e28c259bdcc9c7dec465a2843cbc8cb44": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "f346ceb84e90dd8fd0424ce8224402a49a90dcad6ba05406dffcad8c0638f4f8": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "c21fc258149f16286f3e460a4aa49b698c2ad1b94e9af2808c1e38c50c30e2aa": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "a6d73502b45d578f54687d6a6853798ca7b24387b02c90c404e45c4d074b8a2a": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "cfeea7bba78928a36042f5e75f2cac58ab784d0284a9bc1e82ef33b2b7f47706": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "fc8d78b14f6e755f7f0b187bfbb92a8628003edeca795a7f62852008d8a35887": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "500ba2c9b6ed5f9a5751414990f16de3b8d6d72a562297c6d2f45c37efa42701": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "e4569fce43e102902b11524158a3b06cfcff709a81106a0743cd643bfd03a5c4": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "74ff7e0765829a0cda55b87dd2e0442d581a7a2b018f1718c71ad2c3e1d0b7d0": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "5aef8563944403a8d63cf2fef7148e4a6b6dee5cc8672afaca442dd7445cfc16": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "c4f3d5880f35bca916d2d6507450f8e465dff891233dfe285f9a05208b9a56f5": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "c51f6720144e5da4f82aacd4b96212c78a981409004db9511c480d55f82dab8b": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "af95a705554226d1201032480f63db41787bf5bd5d266a737b4051f1849666ef": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "650f4d4ba3373b707b614ba12e930796f3d9a23e27757f95e7e58cd6f28a9739": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "d772a39bfa699fc598058928503b4ebdfa9691a2b9aa52d66d355f633db494b7": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "0cd5b195ef76ba822ecb8b8c04bf28747dba7fcb152d3acf8a11b82bbbb04f30": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "27a6713a211e06525c8819dfb2ccb683f26d5687a4b7bf436f7ddd9fd76692ec": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "c8ccebff3638d00c4c71271885ad8f785e0b923af2192bdab79cee8dcd6703df": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "e17114c6247ae1c589e8fa4b39da394add6d667be3a02da96d04bba627252bf1": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "43f3b789f9e1fb36ced5f0ca8576f08a05b3fb1ca4e694fdd55de9b58ca84c6f": {
+    "label": "Coconut_Scale_Insect",
+    "split": "test"
+  },
+  "9cb7d6adc829c99a47be26337c1af9ed7e829fa55a54e31ed09352c8b6a479c6": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "592ad060ff452a07a1395d44fbb611de36381fb458d27280f5110ec735929a5e": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "c210c720b2f08f6e8ee514b76a70576e3489bbefffad273051e5f8460ef34f82": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "7245f5c46e92a0081ff78564b51081686d9d74e88e0cfc5264ec991e24bbd1cc": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "f9a7f07c21e9081e24f157fb3a5b48244dfb5a16c3f52c9e86d91f3f81a2a043": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "d2c8fd44d976f77b7fe203b23c0aa3b31c8a5cd2ecd7d7ef02b17954770872a1": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "b35ed17210ce04087f539f08a3ddd787e6cfe00dca6ed80abac380dd2c2e08d1": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "f6339e923b42db4214d1627fe8acc7a0c6bb63fe206412565c485501f4e345be": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "b121e827acc3d0821685ad329e39d392ca1344628e722371c46c6d1c893b0e03": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "44bd75c0c320083e87fa2f9549edfd7819bd8801ab9553fa637605ca2bfea7f6": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "d3a72a3fb73c2d572e974faf412b937d3ca819c179ac4ec659ee18f5e5060e60": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "37d5e5ea100f28c477984e568158f1f249a830c5b49ff38760a9b8fba62e3fd2": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "7306e3ef82fddadb33cbd0b885b8bfe970d7bc31b386e69e1ae7760c285a79c6": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "e6e26dbd09cf2a52780078afc78f44d0987ade243a21ab35703ee4b316cff783": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "7d120a89619b8813000832dde958fbfc16275f584a1b559d211ca39901620a8c": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "61f7808e3062cefa1be98557c1cf52544aedcce0c2268153617531b0db2670fd": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "1091031c72fab7faf38894e2628ea3af60d6b604217b38eca2d38c82f4aa7479": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "cc22d0ed6f5f94e526288b57b3c8f7e6cf19f7a8267188636ddd1437dcea367d": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "9488d992fac51c27f5c4e8ce0cca75150c008a289c85249b5ce17b01ec5fa2c7": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "d694bfee7b8575c73e9c4f76739acd367ec7350080b94b1e1db034767e485892": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "4a8dfc501b0f33b761ba7537b7b781fc0294b9263663516d54fb4000a1ac3619": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "cad834ec00e9777e173f126ad41feb3646b2cdb1814c48854511700c0517dd17": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "e9552b27aae311561ba76c42e7a2dd933493fb1fee70c61a5179f3398f7973e2": {
+    "label": "Coconut_Scale_Insect",
+    "split": "validation"
+  },
+  "9c91248fba187fa1441982164b2ee561bb52a8e23997ef3f729b8296a0109071": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "2c2ceae2130c08de75e8c832de27908175bbf526cec96d41be631875bd02b551": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "3bb18d3d62db2476faf33598df023ac468f60c3d088fa8ad7a530d7179320ef4": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "50f9ef4853ac99fc6d370dd9219eb5dbbd0d7e4c633f4369fab07a4175547bec": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "0d8a2b9e8fcb36be17f670f620855956ce3b25de8b9ec1f1452d8eb9b3fd31b6": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "bcb9ed565ebabb495b6d5ed97dad4da5903197c57b6ab95bcdaf5e5bab1ed1da": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "84ef6da909a0bfa867677a573a32e15c6ce6918f4600fee94ca37f8c14ba9228": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "645909fb46f759b239485754c63e0f51086c6e33f9f2cb775e62f47e8c334c17": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "d2d05be8c58e4bd2cb2e0afbe0849d451cfadc2407c6261b8a14df20c6e9a29c": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "37c87d6287a30f1a058737ba50b13edbabf4e2e6fba2c86c8d872e6cd55c18e5": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "fa8c28a4b87bddeba266e1de964bc1883479c31d087f9c1add76c3ed29c14c10": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "e3d9848eeec4f8609f50adda41d60781a78d59ff85ab69639777fe1ae312c271": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "ac3a2c748c9692dae4d19ecf0561fbb0bbba021171aed273708d3e69c102fc09": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "7be6f513031725d4b7ca0ebc405d4fe9e90d877f2cf4103b34662974a56b3efc": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "4d97b4d7284b3443282eccbeb2329718d17a621c86c0fd2f27a927e74e9126a7": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "5837ae6491bbb4fe2267600f254e23679fffbbbd91319fe724d69410c9245772": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "551a570e067b0cb8a85cc616b421302ea9983839a8315e68fdc41984781d394b": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "e72f5500177bb83c1596a0191db1e835c17e8535cc1d60f3459e164caf9342da": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "3c78744472854fec2ace2421a1bae52b9efc5dce3e895b85edcfd1e34490969d": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "195936ce039aae2f9391f32ce0bd67bbeab2107e90c6e9060a7190d834957ebc": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "2ccd6f375471278360f3515d0817fd4ee526ca228e6afecea80b2956df2ad4b9": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "d70f16706df7e74a4dcc17707d6de517b0d13e2bc68254a96924e80025086e83": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "1ba09d9043d7a6c311f65a9dc4bc8baaa68290f638d7738d1032fa293a2e612a": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "84b26ef2ccae33f712a496f56ca99469c5d71ae4bff6833f27a1b79657320555": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "040dcedc816b4c19295ea8d8bc10cc6e98a5acdc09f742377216f517f7af67e3": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "c23ef91b673cbf4e69ab890a65e412aa4241dd77fe392647d388ddf366b9e938": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "5aeda2e2f9d3fa7f5756550bde0e8cda908d6c725edd1a5884a47143070e3101": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "c26e8b1ae448bd54d62ae9646b606f703a518feb3cf7beb2addfcfc127998089": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "31f0c2606a795b698d0b69912399c5e93d188fa545c25a29753d50f58266ed11": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "118074280cdf42ea21897a32a5ddfe1e14d2df67b7f21a5762580670a01fd6b8": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "ff6040ef7bc8a8a95e01a4d2fe259ac5694a88ad1b65a076493b0efaa0b0297c": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "8787d8781377b9fd6b0f03ca72562b2c9e9dab7a531431ede0c98030db98fb49": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "62c420985c0a37cc727fe556e886c9485ed622703984214a66b654fdae4d8b01": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "4fcb09e3cda4374b92c5f5150280d3b168b74a38c7cad74654b783364fd053f0": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "4bb3e7b89ac974ded87033afb7e32d50a744bdd0a6fb30e99b27eefe5e5273a8": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "6a946b0f14e06c2d582c833592ae7f2354171eb00d8ad432053f5213e79ff128": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "11a2a8308a19b11eb7d789e0bd8b6766c9fe8caff2a74b6e93ebc99f7a3b319b": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "465654710bebfaff88fa01637a7218bcd4a7666efce70a7886fb73aca5e0113b": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "80553d5e50696008efa3be4ba88cb8773d7841c650e364a3b97c4bf6e30494e5": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "377f4792d1649e39a2d8bae2077a9ae73dfe119ba02d73f4f907dfaa0db9807c": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "9a7b813b61972e591ea958d20fc2d78a7081dc3612657e8ce508e516656a4051": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "3bba0b67e5615b1143cee132929b20d31e7b542b15f23c8a7dded3ee1b7d32ed": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "82fea75e7729b839b5359898305eebffcd40e952d16562ae96af5282b0d10d80": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "756a4c37e1df5d83c6b32c57285495918777668cfd19cff3ef19a85535e75ecd": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "2b73d82e8dc8cacf9bc200681e0718a2172577c3d77d0c5627e7438cc4a4a6b9": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "b7f74fb9abe9102f8e372a91c24b0a4814f1d143d59fd2ac6610650db23eac18": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "3fe04675f6207603f1b64533979980c9dcfcd36ce62f601245ed5176f278d3a1": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "e320812f95faa56ac4988ef7a2aac79bbb3caac620bf867cfd3f5d952ab74a6a": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "ca5caf8459243a5f196234f9a26a9c3e9e60f29b1752a9a137f5ddab85a33922": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "ef2b78590eeb55cb4a2165fa2b14fdbc415bfa4bd11a9343574a97bd140a7144": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "1ce84190393cd8946d52c13b9e5da0a720e82e4f86d71e6e8dfc75eb24e78577": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "514732755418c71e6da177eda40292d751e2fa95ba09f50e18df6a77e7cc04c7": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "13cf594e10d6994b27cbf9671d4649496172a2cc1a713854ccc9738f74854a5e": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "cbca65792e8a19bd7404a6477e740c86e0dabe82dbb3a847ea8b2bf00c47b4d6": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "d8f680bbd86f042cad845d356492d637e70c54699606d13e77bfe7d4bea09419": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "76e5315d36a34817192df99da308a8626aa1c28f87171fced0feb4e105848403": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "6ce562c5369d8c3e47640b8dc13d1cfb8afcac3e0d3208460127e7087e127e80": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "761a79702e881f5b869dd61f1a029ff34be1db855ccf9ddafeeb229e050f77b1": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "b0b1d5b133a7a71cf48783280ee0093716e338e184dac5decc02b45a4df93187": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "3497082fb835150b9233fcd9b5b3fa4f74f43e85ba91dc83fd69ae814874d6fd": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "49eb486b2d8f57d14b94a7b833b203e084142d83aa36823e854bee2bc16f3512": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "80804688becabd93bcde71daae7400c7e5cc4df09f1f2fb091c2d9171e665b00": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "09517607b3c96ae9464efaa07cd3d5519e8cbce9e18a8ba1afdb9e3466c23575": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "660bbfe320c188c1d54fb7b642b8f18b213b1ec3827818fb3a1adbfaf148d8d8": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "75ec9c17c5a6431e0c9d9438077f13262330e3f5b2243fa7993d6d3d6c601e4f": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "6d4769272c8909becd4ddfb9d2983bc835e83f91b9459254682ceb2b9f07298d": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "69d60c7e0bed67912a328c01f430e708a78613582a37c48f107c9e7cbb0acd7a": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "b3f458f7ce5234e1275d8950684d2e1746cb098003453a4e4531f5b7589f3069": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "274c7a807cc28e03debd28e70e361378f2a1bee9eaaff5e46bd55608df70d704": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "e86ba6d9042681e5c618a1e861d78f359378418e8324ad8b8cb5f64aa4a5dd7f": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "fc26a1357b33d33c34085ebf0b72d7cf6ae846f120e069e9f416205f1e240609": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "682b53f28e53b9dac83f0289eb3e0bac052f164c90dc9fb638fb1a97e9114cb2": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "ab5674e36f3f12522ac1c4007025d0816d5cd2af8830435cb0c8d1ed02862005": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "a7e3e51863e4b461a7c1c8f5e89c275622a57c7b0b2a10486e72671aa7728935": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "24922198ebc9bc16b66c9a7dc7fb05466ba9a8e9c20c2d8424f78bd38ea764ec": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "90ba7d3516fce33f85b6c50335712b2189b39a95d100cfbe8e1371a5ead4c1ad": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "be6cb1e3bacfb6bdec86981c783d02dbfa8c5ed5a046a774bf8438567eedaec5": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "84071c8fdce932f97ce2a91f6f6ac89104d093e8184046c778d64b125f16a17a": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "c0c339e51ba62c7f024d750fa0e6559730379c7b9cb50880bbd433f57d2fc1c5": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "fa257bd866f51188d0d0345799d8afa5d1fd325bf2facbdbea8d810425878e4b": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "ba2c38ae447167836406bcbe5a6d1efd675b27b66908a18d04f9a4ec5b0e631f": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "946f09df6cd501a07b9094c037a2365a0ab1497b07a51c5cb4aec3cb56ccf000": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "6d5396468b98ade24c8e638bb7825eed16f133e6942ae41766db8166890f4d5e": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "047f349d3e47900846da8dc0ee5afe5ac3cd6d5eb1ff6195a502426867e37606": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "c0ec9abd418d082ba00cf6312eeed5775c78e26aea707feddc1c8afaba5d63ce": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "99094b9a22b452b5d0ce8da54045d7f0e30644d3a6cc186596438790b6edf5cc": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "eff5758098369af24cb82e6b2e288a173e0ce8fa934cf870924e47ce807c7a4c": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "703602114e47e3964f8b6ae979e8275459d8078ac0b9bce8f58769f47b8f56c1": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "5f620e5279fe80cc70e668d0301206541a585d9f6c69239068aa2d2cbf2a616b": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "31d02fe63021ebc841678b9ff217cbad389cee6eccb683305dcd7ba0dde86e4e": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "04337933308667c9f0e866ec6c6582201f2fe50e8f0205776703d0494e26e543": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "facc4305ac69251547278991d490ab73342d71307da17e61a763a1c9745f1b74": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "57167c8c24757992244458d94ad6883a8096dc3ecd8faef67b19dcbce0a0ec53": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "1c17f5226e7579f756da3a488d53b5c63ce1a7546fce149b87722287655fa0c3": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "6b1904c22b5b7f6595061cd32ef04dc6ac1c9ad77d4b9e08db1504b2f9ca3116": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "1140c829f85ff053b61af2e8b0588550f86a083ab7d203db761ec651bdd9563e": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "ecd08f09600525f71d996cba2fa9f3decf807d032cbc630712a41d8c9a3f223a": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "0f82e2b0058b52a42015d01654f39d5ade846c1f7e1acbe291a772a188492607": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "25c59e8fb567f67a4d9ddeca4b25f9b30d6a1e7d1086c17597e98f5238cf3115": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "20cbadf60e5b420e195c5c8865c77aa99003b815be0cd500c0e1923fcaa5ab9b": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "b01db5a7ffcaf86c7af25297c6e7de995af9777f0c19ded1ba7c37243a778264": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "3668454f627ef25a8d7abc2f1a9b8f898f7ddaaa0fd4892c3b78ced5ca39a654": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "6de347bf4327e8b532c6a1e6ecff35eef0ec94060b14e02a248e6a7213f9d37e": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "cede3d1512ae8e419d34ce21330e68275beffdb25f1dee14b72989c428be51db": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "c22de91f83489fee0788a4e88156b33f835ce03aeeec258fca4604087d9b5c06": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "45e4595e2e62cb9121445a9a175f9d74206d7e4fbf53e25664fa3820adefc753": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "b1555dd091da73d03508b1f54f5f3348db44a6396961748b51c9c81304e34d46": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "c433fdec9bf964eef63df12114ac71606305cacdb46cd3f9cb1c8a21fe303be4": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "8ca2c74bd8fc32c97b383393faa970d2a96c47e3b666f90ffdc08db2327ea466": {
+    "label": "Coconut_Scale_Insect",
+    "split": "train"
+  },
+  "eaf0bca1cc300cb9b9db3b090fa0d93f93b0c8724758f0798685db4c50e52ff2": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "222726b53eaeddaa6f3db03e8a1c51f39694a4346f5d5d90235b61d1c652cb76": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "7f34245ccb646d17573d007c2ef0de7840b511d5d10bdb0bc8513912e598e44a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "7d4c3591a5764163e286a7193945be547be1869f224672710015b24d1312a0ad": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "964f31693091f90d42bac70c5c615271e437db49323bd8709a1928209320fd7c": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "c9730263527ce75853532c9279652f400393364710ef359b3de17dfec997624a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "54ea935f5490881363a67e8dc040e7590d2b8c7c4113660852d29ebbaeff878f": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "3fa4da96ad8b4420c0ffeb09f7def325f8f30c5b880509db71aa86fcd2a716ca": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "1be20df731a1069537d70d39b8bfda0db2f09a53f1e31936902a18413a971240": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "d303c79b5d822f80ce6874e5222d2f24b086791b55e6cb667641314559ab2c07": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "363e5116720ffff764b1f50b6d18039a61b031435f5d10c0c458eaf4045889bf": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "51a005b967e135e3a59917cb5e3b8576d954d71e937b58d1bcca640fcd73e4d9": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "0bfc522c4c6e8c85a14a9ea22e3ee41e47f28188b4065b5098e1a5941ec29a19": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "78227ff2cc6536994a3aecfe2e43ea52bf0daafec4aa2b2b1f1d4e8244a5b4fb": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "754be57d42fb45c900335bb34c964e9a57da696e22fc5b3ab83f0bc677871656": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "9291e3a9741c7f751ccaf0f7e030e7c98bafe311dabb6045b7e704f2f5c97897": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "0dced253a702bb4e05a441ffa96a7f54c5344349241ac925c80af7a3680fe377": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "35f55c78e750fe065160d749454db27eca6b7e6c2a49f5cea3b62b3cfeea2cf4": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "f5c712d2ffd9bb617841d4fc9184a109e09b0a8b25e9a9bf8c09eb4517a5f3e6": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "6e484de88fb8d97febce194918e6c39b8b04827328070abb0dab4f64dc0146ac": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "783f84736398de8a15daa30d7788abe1fd6c0aa9212e8d006817006999100750": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "3fee5e0d5e601e2bd8f7ca1db928374a94055e505e5e148c9ad02247ecace089": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "d146383547a1fbceed5d80fa56a2360639d79404428acf80c01ec92bb655d7c3": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "33d8357b729235723e3b11e77f75644394306d429884bd3badfdf8a2363ea97a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "bb397134d3ab8ae91f9453858f92574617b97e18cc186514d4a072464dd381cf": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "a307f36b987eb76b40ee762111be1411390fd1b36c0f45b9505572d8fb1e15c9": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "75ea710a3af7e70043bd1152d89ea0e66c7ab2fc03e7419d548f77dcd5e40ec6": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "428d3594bcf99a685592711735f190dfc0b6de4d57fd20d05d97d747e0d9807a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "c835fc15234454535bebed7211d28893a9f9448b4661e8e60bb2d900ab22775f": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "f22d0c76b7c00169fb45c87d91b5328d7b7d829ef8f07606c8e704793a11a7de": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "fdd971042e4390c1523dde76e0fafa759c4461b2e69e4b3d0e9e84504e94e42a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "04316b4a667652f8980f30065d06c4c52b381232c6a852c981eca0cff53df7ea": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "8f2e18c4b1d8947eed3d3adcdc6f37c9d5cb1884dbdc3015e742c273284f5acb": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "4a92d9e22ccd19793215faa2ec845085c652ad2800beeb500bd39963c1ca5160": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "b98774ed974a34b631d6a2719ffb5abb5beb2efb4525bc4759cb03764d60c921": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "d3b293ee51ec447a16d74aff9dceac2e6b9b8ff5ee254d95e9953a5944fb260b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "cd19c84a12002feac645679cc1d051526c7d3cacd0e3197aa3c8fd2a2c5de067": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "894281d5a9d15921dc3a7bbe51cceacb5a073a4dfd85a66b33cbde152a3c944c": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "1b51ec4299f4ab794fb4baa8471735dcb76b0018afd636a5918e43e6a36e1d94": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "5e6d8cab6d639187d3d29d3ad8f998ac5d05562840d9333cbf8d2ef399555747": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "e2185f5130781d69d180d1a4e22403dcfd0d09f272915759a71da6aff52b20cc": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "5bf1563e8d8b7c2dbe5b8a35cc62e01d269776d467e5ba30225aabbc53191ac2": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "648437c56b004a2179de78356f07c4b6bf6adfb396c47ed5df2b9b12a13d16da": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "fa5a7f8dbeabc8a50a09b048ac5390aab813926671ad473c717afe468be50849": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "ec944cf069f585145c63a746efce37045340e31d356e3e9a7ab87947e4d89b8c": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "07245ac9d5fdf9bcf9c23a165abdb876477dc4e20de39833aabdc6e7a3f4b277": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "2d4cb43baa8dc582a9f2642f29316b04170d24b607fcbfc277c43412e63d0992": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "e4e6c028bce5179f413413d34700fdde67becf7631f194dd6ad20609b7b19130": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "8f04ac23c41157e64d337e12dd1a2dda073cee59b64207285b91d3c77c19d05d": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "da358a07101a60efadb0ed67f810e75067bb909b90d795c999c56e08f8546fd2": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "cff0d3e77d2e434a07a191da5edf94889042fed9f121bd40a76e1bce6918a026": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "11c042ced081e1ceb96ac3af619689e04dfb7a536a9e9f1422db47b2c345f500": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "a18a4cc8d0269da9f080069661d6afb6fa820b3e351020161d18cd815ea90dd8": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "15d5f3063bc5e34d408921f9856dc55a2851ebfe756af7c3335c130464ff8011": {
+    "label": "Rhinoceros_Beetle",
+    "split": "test"
+  },
+  "a18449a516dcdd478cc7b62ac4d2bb6002d0fdaced7b9fae92f04fb06aca496d": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "0bb073570f50580b86bd6b56c6937ccd8eadc52eb4e54a7f5b80d4ee2cf719b3": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "1a153398beab0f2f643c8628fdd524323bf7dcc22f801fe9f69594344520c82f": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "98d04926cc8d65476026d0be7336e7c157c233fe4e05c5eeaeb0b74e976887bc": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "01b9250ceb4b444107f8e5bd7a36560149c73bbb2e24feec79b0cb438f852b57": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "ea9657a1f2c55b19a2debea27cd9ce5237239e99afad1033adfbf96c34ae165a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "afffdbef0df63a10f38a8cc4e9c3daed7f6540342cdae6e5412fdaf0a784eb26": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "35c7b4c1a528a461e6507e9118b6dcff7af23b5928a8b8fdb2a12646f7902c81": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "8aeaffcb58de86d76402d622dc62f5ddadb3e1c9f5f433e62f7ba20e8993be3a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "4abc8ca4141cb4cc49274efcb56d17a77034194263b4385b12b9f85c17160f92": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "e485f9a7aed073bfd4021851eefe41bc827ef8f8c269aee70ecc38c6b5f4324b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "6dbe20ad282a35b03d62113f66ad0cdb7c287afebbf7d30e90c5d67800036dcb": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "e40388853ebe2bc0283205e902b95f183a30a2ce9e2c779c8826270859d8173a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "b6bfaac803ada06a79ed244dd09413e09a3bbdce72ca055510e269f83665a0a6": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "b8cc27f5d4a19b8b5f7ac253381dbcb91e8c079c18e5c098ba3fbaac908dbc01": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "c9125f329905fe69a2f7837efbae1b5dc4d123ad5c0c06c634a983ce002bf43b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "3c18cb02d72450215b0a07ee3246422e7070411ef5e6b76f3a24e35fc773a13b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "ba750fbede25e2ee68c1eb83c7787869ca5cfff2a558140ba903953fa1bde754": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "0613535c533b0755092fd53e561a1430fb21936b24e5bca374a66a184a0521ad": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "ab7a70bda16a8710c369f9dbd03927616e70a381b2ffc1f2c713b201ff554f84": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "3631c9883cdf081b0c8c91c0695d9c27393df56518dadd2e8bf938b9bc9fefe0": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "3dc057f57829755931627b6efb2dfedb16032e73260e5a780c2151e8102a1388": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "ff11a25ed6280cfc55ed8dc1f4e542e842bf69fd1dc202866c8db38c1a9a8359": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "fc0acfa77e83d20ef3393b616627663e51e9baaae703f5160a9a73b893450808": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "4e19fc9b7bf50569d769b7316932a90529b53326753cf4be0ed834dd7de5dee0": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "c82f5848dac592a761f2c9c1d9ded710ac7531b8add2e6537f15d46d315f8cae": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "73fde755ef3b3408e3f5a36bfaaca07b815c514b3ddeb7bf92aeda89a369cce5": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "4c295d301fcb2cc3b03e2af5c804391bed955fc9dfb53c7ac66cfae4bb489cae": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "ee4dcdf4d33e7b65ff8db974e56119c94339424e821d8a7d878a213cdf17f87f": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "ee901c9acad431f5bebb94cd97e46965ca2c6b2ef9d0cf5bb3d0a78be911707a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "d3017e830855d327d384c829c3e78422863b2ea7234e9fb594751c61b5b058a8": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "f0be68c732cf291a68b21284a2f9f2f72fbd292ac928594ff1d0541e448c42e9": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "d6057c5d66b839e63e89b913ab40aac7224eae1c69f546b0fc0c5e2b0d48e0fb": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "16752d50409bf861aa64f95d7d2fcf1bf6b9a85f83317f27b4383b26d8008ce5": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "7ed425315dd6ed7ef4f8ac0e208a74dc89bdf1dd867f0e51817aadac0f392a92": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "f090cc7ef95080c6857cb5d7f9abb0f0f6f3ff81f620aae621112b30f4be7371": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "fa8af6c444a54d249d3b214225a1feca06641a41fd61282632a09be2ba7bdfdd": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "a0de1606f0b921c1e68ce5a7384143d87024c269ac07c56d2e769b3628ba44f9": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "32873b676d3ef8cfb6e9358b303500e478a4297d2fbf4286c783a8b8cab08590": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "59039c65d3e4c39f95276a8416953aeb85eb7a13fcc02f43a7e5e07576c40c8b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "d2f390bdab6d72a9852a6c2792744bd1fb9fb293f7ea3b1e8ef45ea011c9c9a7": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "9f090038f69d96a76bad8d8d9c9604a5330bae2e5e88e7713ad8e1f63609ac02": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "ce393349a79bbacd0e8b1f8e7d081adbba2c3701330543744b0a569b27993169": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "6e0294892da9192ca02fca05f8511a486c20f5700a0e1ca2a94f3b14c7116a22": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "8df742fcbbf3be9ca097d4769226bdbc4c06c3edcb2768dd086ea6ec53a0d0a1": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "480c9c9e979337340524ba399f519bc73c1a1756f8a2f9f28b55b99ef55ad1cf": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "535c33253f2accc72314b24e2a16e92e12fc3d3e87458bef976eec06e96de083": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "63ea4a417de58b22097a32c4db988ef2f2352937df48a14f594c4bf7d6932e35": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "5d925c7499c83f010bb832561fdd8e34755ab5d28b68f789707b31e0566d4e89": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "2900934ca4e3aa8b26cf2046e2a53adbcfabbfe8a5ae88f19d7d3e4db2517215": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "62ce604d17f8a7d5f1948e0795f83fbfe38e58c4f2aa64d3f50ba9a8a840de41": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "70c0c537df800f113f6f541a0d3d4653c8c4cab1f34e6eac772bdff69ace0951": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "25a0ae4ad32c4b721841caf5fe72f4a42ea56494e92adbbdb5a73b6eccf3c787": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "996e63f17ee57753265266a7d6587f6dc4c6cdec40d26577544acdf0b862dc29": {
+    "label": "Rhinoceros_Beetle",
+    "split": "validation"
+  },
+  "62f86891e6f17e5d68750d51d391a3257da7d11fa3839be5345deed99a2e452d": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "0fb28c5d424a0a4710ac0e3415fa1851a88596341534a16a76bbed949eb5d73d": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "e5b535a734563c90f5eaaf2fe83feea0b0f0335c6650ed39f6a3f1331d8dcfe2": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "c21df0c1ba792953dee60148a48d395fd1703e845aee21239493732278c34678": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "41349280bd98433c2ad3710d4718f8241379f98a36f051eec365096fde9669eb": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "4d476362edd4fec00445d7086097243d0517dbd8295ee80d2724ed67e7c07288": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "2434d96d9dac9e149212805cf7d516c6084905ae3ed7f5b0f96ddb2e6d80fe38": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "22399e2978acc541a29fa0380f5165de42a0f489a83a6bfbf1930ede7e691eee": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "736fe075412deaf21bca6dcc3787a2afc0c55c32fec25b60928860d6ec118d77": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "bbe9bd2e9512a37dd23d6460497d07aa40051a90a768265bfb7c7c8eacc5e14b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "bf96b9ecb8f9428a175d2a2245e950ad7088b0a985bdd100038c6eea63eeb342": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "1ef9e74c293e6cbe39b239b60b70b6468eeda6b2f6f4a7ebd4b333240a6a1412": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "90a496ee102c708858f6fa6eb67f752ba35a11bc1699bd2879db960d8f99c01b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "cec661ad152fd29b41b5e6667e07f83a9a28e8fd8eb1da93baf8c297bb390337": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "8f8f248c63f98a60ce60b39e5fcab064402f31b52763162c6b0894efc55f2bf7": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "36915be908a45c7a4309e6c1e23b038458624b6a82ff56ddc14c82887279c47a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "45bea3e69bfe489ff76d50773f238b94ffe311c41ce6463fb793bd6e10ddf02a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "515f6c7806b73377a73b53d8014d0d6d9b4bb404fcdd93c03ca70a633f11246a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "82d3d9aecb17a85147d263998cae2229008827d6c05fdfc549f3bec05e097966": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "502bf08c2c25c89ddf3b53e4567b5f4b402285839bb4766f14e995005101825d": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "1a2f7402c16cb54b932028f8e55612e09e2150281f1dfbb5278925a06e4698f8": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "cfb0e35df4d80fe9e17ac160317c59f7afbd9b116db94dea74ad1f081d045af7": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "e27ef9189dd9f6ce3b1bfd98d14bfec6e04959ed2b8ebe957150f7195e760865": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "9f35be9f8c3131000e95f19d9d1b1caa694172b31d3b07d2203f5fa930844568": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "4db09fd234e8a885f9e3c7869a552374c6c020ff39cc92a275927cb0eb7f5413": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "c4bca8f95910e61249c6e98c99fe6ba7c869d2111778c6c183c65ac3374f59af": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "bfd18b44ee89711d2fcaf9bce95ab720feea045a3c1234be61e738aac39619fa": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "3f973595c96389859769ad8cfa8dfd88d733aa7babaa0bbf6f0872e5038165ec": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "44261fc3793e04111567c7ff01fa51410570c4965a6de3ae412c3e98db90d384": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "5aee473c092e62a20574315528f29097fcf18b36d713c4d188deffd0cdbaeb19": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "b88ae1493551173aea24a055f07de85d44c8194eba59425244714e84b0e2c8b9": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "2f61112b6a405b546a674cb8df71fc1439d79c7c0e7672074c52f57654e6f85b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "132459934abd37b1bed9f507e42a9556d6dc519918c1d9cd468030cb259fc5a2": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "5d1b1cb75b09b5ed9ff3b735c52a820d1f9706e178b8fb48653e26d3c4ebbabb": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "3d450c2feda5ec5646b22e4ec8da9a1b455ef71d9ea6d21fd3c26f1f2db36b2b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "9a2d7912310867f4040780f0170c2c1c6289848c9913f1a5bb0bb791846a6fd1": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "37f264385ea88105b9d23e1e6a33617a1ecef1205c2bd44035eddeb5b5ebb6ae": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "c45ffbe7d600b2d6d7ddc8e052a7404175b244ac0241d44e97a821431013ebfc": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "579bce2c36dcc717904fc4899d6d37ef6bcfdc228b8e54be2afaabee91dc58ec": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "a4297e9acdc88c63e3f0290630d8b2467e4c99f5938bc74e6551f10efd7d29f4": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "fbe740ee2fd7e005a50194af28b93b8a0f690694584b34ef06481aeb1e64221a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "2a6aa1c0c4772d1e733609b91dd2a8eccd7fa1888b47b79bed9e9d6dfe462934": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "fa69e5a46e77742e55e5df939c4d910cd20b102084157420b0cf7218a56f7e67": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "a728f4e41f13e5bbf9feacf28944bb4c9842f81b5a8d27523868bf090d27e6fc": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "c1aabb5387889b75e6f8fae59218d29e4e99ecf0db4bdd5b6e203336a09de5b1": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "597e11c2bcd81b6668392136cc1a1e2fff710288a83f22d7218dd598514d44f8": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "013508af25d909f6413baca423e034acca70d0d4a44db27a952863ed7255a35f": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "13c2d046630e6ee751c7359e2738e065a04fad97f5972fa01ccb5d7c27cbeccc": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "497c6b47473174a2e1e0be46df935a9f7b184f8058c57cd3b49fb523e2492680": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "883ac32407de4e8a16113c64bb7fe755819209d4508d8e419d82c680adea8cd5": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "8771c83be817c2c514b841acc4bfae06279dcfe0e162f33d8f84e8fcc85fbd49": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "b1622cf61d848b55da36b5f5b18a7cd14425490881dac4e791c5baf244765b64": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "475aa864898cd015aed77f346022902ae937a725d4d828b3a859350b6c42dad9": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "24c34059c91640efe2c3364ca2d95beace4df7e731fe29830de093d5f1d5f2e7": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "c96cd8daa19ae6ac5a1ad556a0ca90ec1fae04cad437e9f6baf277f33753ab83": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "8e94af55b0009f2242c1edc214f8b2bacd3fcae5e4c3fe99c4fb3543a795a2af": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "2a4d2ca8a3e0ef6f79d7f7a00d66b364bfd358b57be3841da0cf5ed3418afc13": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "4200523387992b7b930c762e5f90c74058bfac7fed3b6620830d16f06f649d35": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "cc31a0b9a02ab810f4c897b2abe6be5fc7b07c063c122cbbd45858be14e3ac00": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "9ffb87f04e0a54f184b347b2df6e2e8128436dd0369a344c7d6d87b52fe179ac": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "5c2e3a4aeae404debc879dd9617e34cdf1415fe2aeb9070a92459aa2897c4e77": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "6b920a6c24399dd277350f7a1c2adb75c6b7dcde21e2c56d5cd11c2d57fa7041": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "7b556110bf6bac8cc1db077606bab322449dbd0a0a282c523bdb3bcf1eb21814": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "fbb4e2e0810100970c7bb3223ca4ef53e232456bf520dd12970f50f97570852e": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "7590f1ee2689e418ca14171cca27410e146b1789506482fec27884848073e144": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "4a691e453f43e3f0435ca30a47e8f93db662a8c85824ef21976b4aab2e86f842": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "e66f0ade716199dfeeb80b0f1fc065bd8755de094d1423f43047053f229eb22b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "d45366d42c9678ceaf98f01e75a48774785c1c3df38dea9b93ef207ebbcfb307": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "cf603d98b72a83b2c95e46bc71bc874898de5d956038521125d943a0e8c952b6": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "5897f5844fc87a0e98c54ee360e52c75d28447fe6ccc7022b2d567ea4653d17e": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "35d338b753e5f6291ec7dafd38c57c97a8ed80d06a25e8485ed49772945d81e0": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "7091dc88143b5edc6bd8ab2729c2cd0043e9a7f4625ce98fc0d5511b787a432b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "4162be5c394d814c9cb411278495172fc47e92cb6ac3a77609fc93d8722a6525": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "47903d88050bb8cd1ed7367e4801b3ac25596fb519a9240356af5caf7fd646de": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "ecc7938c83de303a41aa9a3ca36a7593375700e53f4f831666f426e2a9ee8483": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "c1ef7859c79b6370810e8344442287bae99844cf98044273d81747841ba48b5b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "cb17c25fcb978669cadb3312ed690784a79a04f519927f07d3582ae87c1308c1": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "4518df38f7e199e6b0784e4ab76cdd88656aef7717fcbea8fd2d1c73f47ae99f": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "256cdd091b2e9e821b9eedece0b6318ec97c81baa2e4458f991d2a7229e4f636": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "12ff352303f1592d1d86c01d23429dfd5d90e49aa26c8c053246defaf02fefa4": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "69e0caf5b2b8109540bc132b3f4986805e0888f920433e0201df30693af7a3c5": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "2bdce9c8978de20cf86d53b0f3859cca34d0c2b1201dcf0613f1a78dc861afa7": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "197b5dfb5e3bc544f6bf2801a13502421516f2000391b9671874d3f4079f266c": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "72f2b575f333a90533b0b244e1c7f9232c2ff529c332862fd18d7b4a926dd31f": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "c27ef7964fbd0dade91e4b183c3501d5c211d0652fd00e4930019386cc928dde": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "0480ac6883d839ebe8abc15091e19fafa5785f00ed3156a50dc6eadc5ce5640a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "cf79632c18caee74afc1e7f1a585169b52e8cc8fda35deb23ba8c75be9bc4fab": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "c49963498dc89e194a6b5eef8c8830f56473a2d037c217953b54ed29b3c06528": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "1bf60c35079f29dc5bd669981141a8eb0d8f230b45a4e4274b8460c178220bb6": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "7fbd32fb14877387a1c2df7fc6a77d150e7d1f8e456ae5c0d4d24b652c3c00ef": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "b6227b0de0b64fa90cbaa77a469c2c083f96f52963f47b63477c78f4a0af1f9d": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "22a8ffa90a84ef387e39d9c8ef42c9f8cc816e09975441ea85a3899cea00985f": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "35fdd626df7be7b9c71792e948f8a57115789578135fee646a42cea867f85914": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "2271c6de94f3f7449991432ae988e5a1882c208afdad56f9394b95f6e6a9fd02": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "ab1798fae09cce7479a14d1fa4d3cb8d900e845161af7a5fff8ea27ddcbc6e74": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "e5d2e1f03d72ff36d33279c7fd99702f9aa140c3292a3c45b9222f7053e62643": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "ba0ac5e8b4577c56c19aebcc32f681e57f131d62a5e655026bfab9f44d4180f8": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "ac636963ac1b326e9e9fe5a84b01730a7c9a0c10dccb7d10a8ca3be1a998543d": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "6ea1880fce18ce8a2326f324c9efbd4d0506a8de9f9ef1356503b3c5d0efea08": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "a0ae466ad89139da96f32319ee2d423196ebeb4d6eb5e48a7bfd7e7f1b5e00cf": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "489d83072fe06ca7aa58e412c869fa0ea772f9c0a4d2e692213585eb89bdb8b7": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "e226ba7b32c7bb051719b77b77e8763961d6ec06c95f8aa6851fd22d2dae49ae": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "0cc2eb15aac722aed6603836eee295a267573193642a66309ea74936c5f79104": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "c6f6ccc2824733837e69cc8c16e62f6627a5621d8e06834dd33cb7fdd1e1ff11": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "55efc9eb092ed1980cc476fbeb3f94d2306d0460bdcde23642cc7e91e54ed0c4": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "75fbee7b4226d3ffea41bb3e1a0c67a879cbd7cc482c4191f6c20b5fac06af7c": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "cc2e256dba637c8dfc783e7e5ff2d0c262b2ae91a6ef0e757f338dc481f99265": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "73248df645d3c852e824365aa895a47e64134fd0ca4b45d6b9ca55d7601d0392": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "d1ffbe003077b9187948c6722157d6f31308f589b52c2cb4e88e280b94f375ee": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "413c7c0e8519a45ec712b565c9b6aabee6b3e5709c27af027295f80f04ca9c00": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "e50ffb6ad7cb7a6c7327027b76a413c094e89a858d29520ad22270ecc2296378": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "4370e5b76fe357229b8f91ed0ab9bc21b101051506565c8fc5377acab382d221": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "48687723b4fa298b035d687914afe06acba5684205ead75e7c03db7764a49c3b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "0618afb223bc5f7312ff9a8d65e5ae868301fa2dd9a2910896b115f087fb8c28": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "1c64fe1fd756183d41b68a643970fec376fc62b0acbbc0c6c75dc084194e938c": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "3755d20e802f309ff02a42fd6a39db9676adabe3448c750566ad5c90c64ac37f": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "1c2435e8a712e44bc35acaa9dd4870c8a91f70a34da1055126e967fd99f8000f": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "192f35500e651a3aa4d9063c165226422d2d48b186a93a621291e6c116698de5": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "8ed0d77bb105914f131311c6dce5cd4c9f0a192deecb79c59faa56872b9eb522": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "5a1c9035385cbe1ed5fd5e6ed684bd29f99552ab7dd7a5d6da3865e7a3677b82": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "1f98df5359b0433a0c80f8de6ab2407f2bb3c35b64c782a52b49a63b8ec9cced": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "4ea64a6b17c4c9fab73e024417f86334c5bfc2f7301ecf543cc859208d6c3736": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "135a3db18e16a1a524cf12aaa667e472ac5bd80faf2604047ce958be106b4ad7": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "9c13b74ab58b5826bfdca4ad5bbddd97edcd6b4397829346da825f539e72cf13": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "4c91ec32064e3b762ee327384e3c3e31f0fb6f02004c1853f077438ac261ac8c": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "0f79a0d48b98ce9c2c21cc1eca8e91bb5d0f74807dd18b802c675aed019fc05a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "98fcd0fb15f79d992ee20f925701faa64ba10af16aba26b81aea023717ab770e": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "b562e25eab7bfc1e85b3dfae9d09835b50cedf55831616f853f5f7c1cbedb189": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "d6b645b17deef8aac7b368428595d1e9e194afb7b3b7ff9bec4c59e1992d21bc": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "a31fb3307d0c8603d00b4f0d25979f1ce06c4cccba1fdaeee1e734426418a688": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "fffeef5de833def7ea8fd284682851df8aa2aac15ddea33472ff947406c0b670": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "5840f3fe1134d5430abf57bf8fc4aa4bdc70ec89609e03d94c8bbd770ddcf736": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "c1f00ed2d515cd10300e4749c86443a1b57afd336e17087c4147ab3c71477bb1": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "ad3bf85b82538ba8a2f0df8a80c61e995962e1b884f285738fc01ffaf72e5c5a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "4fdb0b5d45d5360f2746acbef3029712b29553573a041fc538d769a46f6a26df": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "72bf22a4765c9da6737bd32d4156e415699754e5e78afde96683a9fd3c47141b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "ecf0d67499aa804ec6583bff8216e83e4fa18e524abe1a86600cda5e26aadadc": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "d2b81dd6255e24ae6490c0a61b2d8ea60c343eaf4a014ecd4e68118783f6e072": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "0f91a070e4f433c0e8ca7a257016b02a9390ae3e419745e77d890e5b435ee8b6": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "418c9b4cbc9c3bca5453a960870de0bab8437d919aa375815b2c9ae8d0ecc241": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "bd522e51817e2d389b49761cf27b8316ede5409af69e31cceb252e4226decc90": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "eb24eeca4ccd4b7160f9b23e0af363a7089a4f9b321055d441ae52e7fff6c48c": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "e908b9402f62a41eb228a9bf232b9dc66df0a4b5643247df3e1314b10cb6ad5c": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "9fcd85891b1b16b14b28f941cd856ea60f199f77e0888def54929d59f1551ffa": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "696b7fb0dd25f3b38d530c92f7436417d701a85f4003b575a6bb0112626c5840": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "8b768513a73f7f0565d5b949abf4813db0211aa28a8394408105e36c3d174ffc": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "69cbbd148263a435b7afd027bdff80a4f44928d5e8b53e94ae86a3e75ac220e4": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "d5b65173d7e067eac40e8f361b2efc7e1f36d46f02a584456b8815b00baf8962": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "b1cb19b11e7939f7b648bb144541685cddba1e9401d0092a2b921601b0ed288c": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "af3829c00c720a163c0a4eda04a53247cc53fdf987bc7c2c6e6d276e91266dba": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "5333dfc863a6d3596da199b1eb7eb5d39932e50e8b5d3596a56778d5dd13db87": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "105a8109bfa5b9f21fd22feab96a7566f02b7989a100414c7ed819ca53a05962": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "d9e9c23d411d164973eeaa63bf8f37e0d79cacfb140b3200b5360a2019fb2651": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "2089a5716062e27203aa22c1db480cbd77176953a36a67136f7e139e0aa63a71": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "18c600fd5ac5a75571bf8b34aba897822d8eef8cb8b2e073e9e86a42559043fc": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "c52d6cd78350f8fc861316fea42d1536572ccf661fbeb2df0f523109d28affa6": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "df93e1c8db1287bcf796bcbbbac24d8547d0818bcceaed2c79bfe53868c50e71": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "a23273cb950f5fcf5ddba8ee6f2578503b930e6bf6911de20aef5258c6602cc0": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "c9a126c980caac8d9b0508d59c41adac77d6c534f8041f68c4dacd24f16fc4c2": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "805d6ae9162b771ccc95f8077c3388cde424dd5f48b970294990a8c5fe7d8b44": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "02fb2fc1d249f8bc3210c19a31773c2ee55d0c70b41977b9b02d183be6844e73": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "27f22759bac93ccd09a19b67c71f795e1a8652868b33b7fb13b2e9f1793fdd1e": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "c623a18a5d8af1f4b1b70a8ad51314ee63f42be152b929aa99ee4971d209cbbb": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "3f6fef18cf1f05063635bc5a16393faac302fdbab3bcac7db0f8f6dc69f6cbeb": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "ea1501999b2f99a09c458a83dcbf33fb84623a6f96acf26395cba875e591a55b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "b1ad38bda176f15c6a57a4128347dfff2cf4da7bef9dbd3633b981f7a75829a7": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "b5256938e157cf3b30de300c87d77250175b3234083820511f15e394ffdd8b41": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "a6fdc65066944e28aff2108dbe9b585394675d06759e223d9232fc688e2a784d": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "4f3ef287ab2338fa8e206889e2b2fc40e52fc9dec0cd495b7c3379c7493a2d74": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "fa93beba9b0f9e03f2572b4f1e40c9f191345e0d72d5b20e949be7a24ca1e814": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "29868ea2b1887f666bb2f629cd85c297a434ffab3d00b59bc29fd508789f00f7": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "6ab77d5670b1d598ee135852583bfc3e7518bc81c4ee0ec3971a10bbac5a423c": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "4d0b97aba32e48d53d9a5b5bd145e4ee390db94baee137e97c9fc83b72e69c1c": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "4d52e5488e4aff2776e2a5a13fe42336bbc534c6ffe6137a4014f9b48420c69d": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "69522b162aba091fdb6da3bf8dbb7d93c974bbf37cf8b83dd5ab45ce226f8688": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "54a5902e8b5044ea1c34f2665b532ec0f69a02d98e5872c57a54e4973b6ca24b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "e7cb6de3936d0d543ddb2a3ea5a4dd69007331156adfbabb5f42e9f1105e448f": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "18b1869fe41b4990f046a9e6f364ef0179751a5e965a222e9f1a33a862d659e6": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "a39546a9614f46777fbd71f83bb4309ebd39134cd7c7b7d8205b674858b6d10a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "ac71188e6162c9dfce11a0a1aeabeea1782773135bcbf2107ad48e97406c8dca": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "f70fbb409d78e9fb114bcc4280df1398d6ed0893a03f68ab0b5f74153d1f1925": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "295c928070561c562955f27ed711936961427725303d15543000373a667086f7": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "169ace5a5aa8e93bbc1c3f76fe5a965d6a088d11c2e7950c95cf0deecaf0a156": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "a58fe73d01f2ec1715a644c5850e391860497837b66c0b378ce657918541f933": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "9a0f7784c5a766ebecaac3b8cd7cdd93557bc060755c026727714faaf05c9f44": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "8533d3d9a694c7bfaceae661bdb17bedfebf84aee59fa308135adbdafc2dae8e": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "159dc5138f4089aed22df5aa2c7c4141124fdefa55c14057f35a9f179951e9a0": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "41709c54d26bbcf1d270e1895fa67986697a29e359a8b0954d389fafe82c4046": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "22c406319ce43d9510069966de43c4a8bd19325518fbe8f5e69f84a0e53a3634": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "58d67c07a3a7d8c825476a521adb0060983bab390ab1ae2d8cfc3085b168e219": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "472c63b8bf0cfbd7a38458a409f6dd526059be4b724880c71a37951be581400d": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "a2d303bd57c18db5de3cf8b5991dcfa3756f268b1e116f9f10f0eb0648d9f381": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "178b651f94084a415869ed92b9a60299520e00b0517aab7900a31071e90877f8": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "ac3b1d4fde53ca4595e35e760cad61f809ab91decb797b834c0874165cc3482a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "9b97b6dc4fa17191d7353cdf8d155ad7e2c3922a18b626d4121a2bdfb90f7290": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "633cfbae6ac7336dcf6c08f852de07062685562955e50d281c2aa660d55031d0": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "0080759d5b8facb1b8493be16545f2927f6270b8c981ca623466ec3189e5b856": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "463dc78b322b92d9da87bd64b91eeb9e910e9a56b5189ff0e5a710d3949ccfd9": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "167582d13919169d787f4378c19da383db1868cc88d6f048529b725549f4798d": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "658d7986b3ba41679628eff49bcd676a5bb37adba931494ab77ad28e579fb572": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "3d24ced786d5a60484c2931c7fbf39b15eb6248e263a67f5653ee42e352defaf": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "41fddf327ff266292344da54e53fddd453e18a24c0d8fea75e1dbfe1600c38c4": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "9f5dd205a710feb3b8623e94413019a6246fe63e5cadbc73b31e6871dd5b6ead": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "6f8b5d1fabbc893bcd90c6c81391ad1f4d0744de41264c8f4b208c019fcf1306": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "99f80905e67309222cff9930baf1480d51032f5bdd18677edfcf34666ac024c9": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "658b81b9e31946e25dcab3b6926c57b3043d179396228f6d59bdb7568b11df5b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "2bb4c6c3162d5a23ca1d7b9d5ef2bd1bcb83f212764b49a00b8fe3292f551c5a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "edc1df94cd5f1c2adeb11d9091c9a040fbc7b136c945e32c04bf75e36cfdf23c": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "edbb86e478d11046007a10ee8215fae9eaab62074baa7480733d1347182b2687": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "4a9bacfaf6530ae5a87565a932dc21a46c7a0a58c837b8884154655e38edb079": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "6f1b0204262ad850e278753d5625cb73dd1e430e4cd5c5de30d40f0631c95091": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "c4802037dd1d7b94bc196e81fa8de8529c69bc70c99359e08294a25aff149ba4": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "d73255d3f6d11d779f6f2a4c3782b06130a7c54fbde5666513e92df09fd04613": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "ffcb2f2bd4be3bf20500afc926a96ed7a0ecc3f39da18df4d3b56807c31c0c8b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "a86afd837077c6b226aa0a0168612fbc8f3fa96937d937de9d1b14b87e0a5b42": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "97efdb3c19146c6be9471dcbf2f1ec226591b724c61ffea1627fbe67e11ca13d": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "2445976ea6e115e25b3b3b9b8497ee2f5b046384e23ee1ee73f4304017c38557": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "1b1d23300155317de63934ddec2654e8afa13a65d04f1154e3d18a4e1195ef70": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "eacde8bbdbbd2469619cd98a36a98c9a2bd21cf0a771238e289e924099549f1d": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "676f2cfe8fea0a8776714b1209b474ebf448dd2e831d5b433ceeb6ef0acdd0b0": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "e6d4063190dc65c76fe989d652f97db65150e7b06ae3d908433d236c619b1cc4": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "da52523ace051dd3a5ea343e7b5edb6737f76db9e069894738697699fbb26440": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "601a1e13c4f3ab5da780de2e4aa1685cb14ec2e42115b58dc1b1ff3bccc62f77": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "30e03cb7b2c3ca4e3131165b5bdbd731545126f92fd332facb43bbe934060040": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "336352e9a2cb44820835f2fd2a296f59e295cfec135a44ca49c7326b581a78d1": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "a6c121fa4a0f81e5767218113bdce2adc0c64531c2c07a56f2c962114ba580ea": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "b7694a2a884b9af7b59ffeaad2cd77ba8227b0f2f1019c16ade054e27fe11e07": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "6226477a17f9124cd1dac68b2519468b5983e7e8099964cc1b95ad85b00968aa": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "b078540ac6bff73984ac05b45f620fcd104b0bf29bdcc5158e08c797c1401b3b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "a957f6a0d04c5d036fe776dd851c4af0a7d6594163b93ffc40354621d8621211": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "cd8929cababb22e2fcef2fededee884d7118ccc36b8a27a8a43a7db15db872ca": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "73c5c05f66d838f5dfc6b1246ed7268e132b70e59a509ff5967e15028b04ce4c": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "56df9b6e51078caa64a9a3cc365f671bdeb22f8254182473659e6cb013ede036": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "a7617bf0d8b66f1056d29b1fc36930a5e20943c0a02d4c4043fe179cba4c2436": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "f505e80356239ac9af7f170a636f8494c572e373c4b1e0df058870fd347a8bf3": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "64541a5cf8d19d1a2e908874a3d1214dec7b0c442a0bf5e7d2870eb48e89f099": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "671e9ca5f36a44fb42b182eab6cc17d886a9986a84f9560e8c31938907851886": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "7be70005656338e9947ef7f3e85d3f86e6f1f17771345ed34e1b02cc51ab0eeb": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "fd869a6c3ec16bd79fcf2908817457a727b3d153bdecf9063f81af165730da44": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "99475db8775070f23ef526bcae0edc3afe133bfc6283f6d0aa990c4a65354a04": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "efc77efc141f122680d9295ea36dbeb9b30a71c13266d7f837fb5b419373deaa": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "75b7c7897cdb420f53d4b6362c374c42c07e9f9e1f7532f6e9d32f7803eb8627": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "cc9ea3c7dccb8b794b5645aac41fdcb15ceef7963c7652cbecce7410a3ed547b": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "2c298464cd54fbce41581ddbe67c002b75a9029ab0db15f5661d16a471b7ee5a": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "92e96827a046fa246b131cb357f3705c8ffa537010d3103be1109d0c7ba9b897": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "cf11488b737e695f7a51399cc6cef895d47bede312363fac90b9caae7acb0416": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "6a004b0758d0ac1c164d3af7b248e1cec55d4dae7883c41430146c2f3e529eac": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "0311044f8e9349734d7ad18d68aeb4bcea67a414a9ad0b9a4714f0a6033351da": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "550b4d71e98e3f8d27e5014b454044d22cd7752f5d9fa97bf168497609fc6c76": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "7adb65d6f4320cdd4d274a4394ebfb8ff76c27b90f85cf40508928c18020df2d": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "83e05a0b50305b8a0c28d99d10bbeda4fa06e0abc9409398d719addb6c08c3ef": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "89ca9afeea2b43391356e0a1ce8dc79789f2f6abda7850eac678eb682819e6da": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "412f0b2deb644a09a7304a1d9dc5c450579c21b0da5ad74ec837f29e2ab7c244": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  },
+  "6d01db5ced84a82d5c5edc1851a075e13c80041240fe208f38c83207a344fd17": {
+    "label": "Rhinoceros_Beetle",
+    "split": "train"
+  }
+}

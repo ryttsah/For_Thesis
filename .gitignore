@@ -27,11 +27,15 @@ backend/pca_local.db
 frontend.backup-before-*/
 *.backup/
 tmp/
+dataset_archive/
 
 # Training datasets and notebooks are local-only for deployment.
 # Keep only the trained model outputs required by the backend Docker image.
 Thesis AI Model/*
 !Thesis AI Model/README.md
+!Thesis AI Model/model.ipynb
+!Thesis AI Model/dataset_review.json
+!Thesis AI Model/curated_split_manifest.json
 !Thesis AI Model/model_outputs/
 !Thesis AI Model/model_outputs/**
 Thesis AI Model/model_outputs/candidates/

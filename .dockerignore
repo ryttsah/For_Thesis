@@ -3,6 +3,8 @@
 **/__pycache__
 **/*.pyc
 .git
+dataset_archive
+Thesis AI Model/notebook_dataset
 .cursor
 frontend/dist
 backend/pca_local.db

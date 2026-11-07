@@ -1,4 +1,4 @@
-"""Train guarded CocoAnalytica CNN candidates with controlled experiments."""
+"""Legacy experiments. Official training/evaluation: Thesis AI Model/model.ipynb."""
 from __future__ import annotations
 
 import csv
