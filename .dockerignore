@@ -10,6 +10,10 @@ frontend/dist
 backend/pca_local.db
 backend/.env
 Thesis AI Model/Healthy_Leaves
+Thesis AI Model/Yellowing
+Thesis AI Model/Coconut_Scale_Insect
+Thesis AI Model/Rhinoceros_Beetle
+Thesis AI Model/Non-palms
 Thesis AI Model/**/train
 Thesis AI Model/**/valid
 Thesis AI Model/**/test

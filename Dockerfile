@@ -21,6 +21,10 @@ WORKDIR /app/backend
 
 ENV PYTHONUNBUFFERED=1 \
     TF_CPP_MIN_LOG_LEVEL=2 \
+    TF_ENABLE_ONEDNN_OPTS=0 \
+    TF_NUM_INTRAOP_THREADS=1 \
+    TF_NUM_INTEROP_THREADS=1 \
+    OMP_NUM_THREADS=1 \
     ML_MODEL_PATH="/app/model_outputs/coconut_leaf_multilabel_cnn.keras" \
     ML_LABEL_CONFIG_PATH="/app/model_outputs/label_config.json"
 

@@ -1,0 +1,28 @@
+# Files excluded from the Cloud Run source upload.
+# Keep the three production model outputs because Dockerfile copies them into /app/model_outputs.
+.gcloudignore
+.git
+.github/
+.vscode/
+.cursor/
+node_modules/
+frontend/node_modules/
+frontend/dist/
+backend/.cnn-venv/
+backend/.env
+backend/pca_local.db
+**/__pycache__/
+**/*.pyc
+tmp/
+dataset_archive/
+
+# Training-only sources and generated experiments are not needed by the API image.
+Thesis AI Model/Healthy_Leaves/
+Thesis AI Model/Yellowing/
+Thesis AI Model/Coconut_Scale_Insect/
+Thesis AI Model/Rhinoceros_Beetle/
+Thesis AI Model/Non-palms/
+Thesis AI Model/notebook_dataset/
+Thesis AI Model/model_outputs/candidates/
+Thesis AI Model/model_outputs/image_review/
+Thesis AI Model/model.ipynb
