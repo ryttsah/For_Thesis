@@ -1,0 +1,3 @@
+-r requirements-base.txt
+# Linux-only TensorFlow Lite inference runtime. It avoids the full TensorFlow server dependency.
+tflite-runtime==2.14.0

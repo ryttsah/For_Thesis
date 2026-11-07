@@ -148,7 +148,9 @@ Run `db/002_farmer_registrations.sql` and `db/003_domain.sql` on Supabase after 
 | GET | `/predict/status` | Public |
 | POST | `/predict` | Farmer / Officer / Admin (multipart `file`) |
 
-Default model: `Thesis AI Model/model_outputs/coconut_leaf_multilabel_cnn.keras`
+Default local model: `Thesis AI Model/model_outputs/coconut_leaf_multilabel_cnn.keras`.
+The deployed Docker image uses the verified full-precision TensorFlow Lite export
+`coconut_leaf_multilabel_cnn.tflite` with `ML_RUNTIME=tflite` to reduce memory use.
 
 Requires `tensorflow-cpu` (see `requirements.txt`). First request loads the model (~30s).
 
@@ -174,5 +176,5 @@ Set `VITE_API_URL=http://127.0.0.1:8000` in `frontend/.env`.
 
 ## Production (Phase 6)
 
-Deploy with the repo-root `Dockerfile` on Railway and `frontend/` on Vercel. Full steps: **[../DEPLOY.md](../DEPLOY.md)**.
+Deploy with the repo-root `Dockerfile` on Render and `frontend/` on Vercel. Full steps: **[../DEPLOY.md](../DEPLOY.md)**.
 

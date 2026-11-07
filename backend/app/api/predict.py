@@ -21,9 +21,13 @@ ALLOWED_CONTENT_TYPES = {
 MAX_BATCH_FILES = 3
 
 
-def _paths() -> tuple[Path, Path]:
+def _paths() -> tuple[Path, Path, str]:
     settings = get_settings()
-    return settings.resolved_ml_model_path(), settings.resolved_ml_label_config_path()
+    return (
+        settings.resolved_ml_model_path(),
+        settings.resolved_ml_label_config_path(),
+        settings.ml_runtime,
+    )
 
 
 def _response_from_result(result) -> PredictResponse:
@@ -42,8 +46,8 @@ def _response_from_result(result) -> PredictResponse:
 
 @router.get("/status")
 def predict_status() -> dict:
-    model_path, config_path = _paths()
-    return get_model_status(model_path, config_path)
+    model_path, config_path, runtime = _paths()
+    return get_model_status(model_path, config_path, runtime)
 
 
 @router.post("", response_model=PredictResponse)
@@ -52,7 +56,7 @@ async def predict_leaf_image(
     _role: Annotated[str, Depends(require_role("farmer", "officer", "admin"))],
 ) -> PredictResponse:
     settings = get_settings()
-    model_path, config_path = _paths()
+    model_path, config_path, runtime = _paths()
 
     if not model_path.is_file():
         raise HTTPException(
@@ -78,6 +82,7 @@ async def predict_leaf_image(
                 raw,
                 model_path=model_path,
                 config_path=config_path,
+                runtime=runtime,
                 max_bytes=settings.ml_max_upload_bytes,
             ),
             timeout=settings.ml_predict_timeout_seconds,
@@ -104,7 +109,7 @@ async def predict_leaf_images(
     _role: Annotated[str, Depends(require_role("farmer", "officer", "admin"))],
 ) -> PredictBatchResponse:
     settings = get_settings()
-    model_path, config_path = _paths()
+    model_path, config_path, runtime = _paths()
 
     if not files:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Upload at least one image.")
@@ -139,6 +144,7 @@ async def predict_leaf_images(
                     raw,
                     model_path=model_path,
                     config_path=config_path,
+                    runtime=runtime,
                     max_bytes=settings.ml_max_upload_bytes,
                 ),
                 timeout=settings.ml_predict_timeout_seconds,

@@ -69,7 +69,7 @@ Dev tunnels use **two different URLs** for 5173 and 8000. Browsers block cross-o
 |--------|-----|
 | Same Wi‑Fi | `npm run dev` shows `Network: http://192.168.x.x:5173` — phone uses that IP; keep `VITE_API_URL=proxy` |
 | ngrok / Cloudflare Tunnel | Tunnel port **5173** only; backend local on 8000 |
-| Full deploy | Vercel + Railway — for final demo, not required for daily testing |
+| Full deploy | Vercel + Render — for final demo, not required for daily testing |
 
 ### Classmate sees “Access denied” / HTTP 403 on the tunnel URL
 

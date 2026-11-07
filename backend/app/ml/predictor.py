@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import hashlib
 import os
+import threading
 from dataclasses import dataclass
 from functools import lru_cache
 from io import BytesIO
@@ -12,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+from app.ml.image_preprocessing import resize_bilinear_half_pixel
 
 # Quieter TensorFlow startup on Windows
 os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
@@ -55,6 +57,8 @@ _model: Any = None
 _config: LabelConfig | None = None
 _load_error: str | None = None
 _loaded_identity: dict[str, Any] | None = None
+_loaded_runtime: str | None = None
+_model_lock = threading.Lock()
 
 
 def _artifact_identity(model_path: Path, config_path: Path) -> dict[str, Any]:
@@ -87,49 +91,80 @@ def load_label_config(config_path: Path) -> LabelConfig:
     )
 
 
-def _ensure_loaded(model_path: Path, config_path: Path) -> None:
-    global _model, _config, _load_error, _loaded_identity
+def _normalize_runtime(runtime: str) -> str:
+    normalized = runtime.strip().lower()
+    if normalized not in {"keras", "tflite"}:
+        raise ValueError("ML_RUNTIME must be either 'keras' or 'tflite'.")
+    return normalized
+
+
+def _ensure_loaded(model_path: Path, config_path: Path, runtime: str = "keras") -> None:
+    global _model, _config, _load_error, _loaded_identity, _loaded_runtime
+
+    runtime = _normalize_runtime(runtime)
 
     if _model is not None and _config is not None:
+        if _loaded_runtime != runtime:
+            raise RuntimeError(
+                f"Model is already loaded with {_loaded_runtime!r}; cannot change to {runtime!r} at runtime."
+            )
         return
 
     if _load_error:
         raise RuntimeError(_load_error)
 
     try:
-        import tensorflow as tf
-
-        tf.get_logger().setLevel("ERROR")
-
         if not model_path.is_file():
             raise FileNotFoundError(f"Model file not found: {model_path}")
         if not config_path.is_file():
             raise FileNotFoundError(f"Label config not found: {config_path}")
 
         _config = load_label_config(config_path)
-        _model = tf.keras.models.load_model(model_path, compile=False)
-        _loaded_identity = _artifact_identity(model_path, config_path)
+        if runtime == "keras":
+            import tensorflow as tf
+
+            tf.get_logger().setLevel("ERROR")
+            _model = tf.keras.models.load_model(model_path, compile=False)
+        else:
+            try:
+                from tflite_runtime.interpreter import Interpreter
+            except ModuleNotFoundError:
+                # Local Windows development uses full TensorFlow; the hosted Linux
+                # image supplies the smaller tflite-runtime package instead.
+                import tensorflow as tf
+
+                Interpreter = tf.lite.Interpreter
+
+            _model = Interpreter(model_path=str(model_path), num_threads=1)
+            _model.allocate_tensors()
+        _loaded_runtime = runtime
+        _loaded_identity = {**_artifact_identity(model_path, config_path), "runtime": runtime}
     except Exception as exc:  # noqa: BLE001
         _load_error = str(exc)
         raise RuntimeError(_load_error) from exc
 
 
-def is_model_available(model_path: Path, config_path: Path) -> bool:
+def is_model_available(model_path: Path, config_path: Path, runtime: str = "keras") -> bool:
     try:
-        _ensure_loaded(model_path, config_path)
+        _ensure_loaded(model_path, config_path, runtime)
         return True
     except RuntimeError:
         return False
 
 
-def get_model_status(model_path: Path, config_path: Path) -> dict[str, Any]:
+def get_model_status(model_path: Path, config_path: Path, runtime: str = "keras") -> dict[str, Any]:
     if _model is not None:
         return {"status": "loaded", "model_path": str(model_path), **(_loaded_identity or {})}
     if _load_error:
         return {"status": "error", "detail": _load_error, "model_path": str(model_path)}
     if model_path.is_file() and config_path.is_file():
         try:
-            return {"status": "ready", "model_path": str(model_path), **_artifact_identity(model_path, config_path)}
+            return {
+                "status": "ready",
+                "model_path": str(model_path),
+                "runtime": _normalize_runtime(runtime),
+                **_artifact_identity(model_path, config_path),
+            }
         except (OSError, ValueError) as exc:
             return {"status": "error", "detail": str(exc), "model_path": str(model_path)}
     return {
@@ -139,14 +174,20 @@ def get_model_status(model_path: Path, config_path: Path) -> dict[str, Any]:
     }
 
 
-def _preprocess_image(image_bytes: bytes, image_size: tuple[int, int]) -> Any:
-    import tensorflow as tf
+def _preprocess_image(image_bytes: bytes, image_size: tuple[int, int], runtime: str) -> Any:
+    if runtime == "keras":
+        import tensorflow as tf
 
-    image = tf.io.decode_image(image_bytes, channels=3, expand_animations=False)
-    image.set_shape([None, None, 3])
-    image = tf.image.resize(image, image_size)
-    batch = tf.expand_dims(tf.cast(image, tf.float32), axis=0)
-    return batch
+        image = tf.io.decode_image(image_bytes, channels=3, expand_animations=False)
+        image.set_shape([None, None, 3])
+        image = tf.image.resize(image, image_size)
+        return tf.expand_dims(tf.cast(image, tf.float32), axis=0)
+
+    from PIL import Image
+
+    with Image.open(BytesIO(image_bytes)) as image:
+        rgb = np.asarray(image.convert("RGB"), dtype=np.float32)
+    return np.expand_dims(resize_bilinear_half_pixel(rgb, image_size), axis=0)
 
 
 def _image_quality_message(image_bytes: bytes) -> str | None:
@@ -175,12 +216,24 @@ def _softmax(values: np.ndarray) -> np.ndarray:
     return exponentials / np.sum(exponentials)
 
 
-def _predict_with_test_time_augmentation(batch: Any) -> np.ndarray:
-    import tensorflow as tf
-
+def _predict_with_test_time_augmentation(batch: Any, runtime: str) -> np.ndarray:
     assert _model is not None
-    original = np.asarray(_model.predict(batch, verbose=0)[0], dtype=np.float32)
-    flipped = np.asarray(_model.predict(tf.image.flip_left_right(batch), verbose=0)[0], dtype=np.float32)
+    if runtime == "keras":
+        import tensorflow as tf
+
+        original = np.asarray(_model.predict(batch, verbose=0)[0], dtype=np.float32)
+        flipped = np.asarray(_model.predict(tf.image.flip_left_right(batch), verbose=0)[0], dtype=np.float32)
+        return (original + flipped) / 2.0
+
+    with _model_lock:
+        input_detail = _model.get_input_details()[0]
+        output_detail = _model.get_output_details()[0]
+        _model.set_tensor(input_detail["index"], batch.astype(input_detail["dtype"]))
+        _model.invoke()
+        original = np.asarray(_model.get_tensor(output_detail["index"])[0], dtype=np.float32)
+        _model.set_tensor(input_detail["index"], np.flip(batch, axis=2).copy().astype(input_detail["dtype"]))
+        _model.invoke()
+        flipped = np.asarray(_model.get_tensor(output_detail["index"])[0], dtype=np.float32)
     return (original + flipped) / 2.0
 
 
@@ -195,13 +248,15 @@ def predict_image_bytes(
     *,
     model_path: Path,
     config_path: Path,
+    runtime: str = "keras",
 ) -> PredictionResult:
-    _ensure_loaded(model_path, config_path)
+    runtime = _normalize_runtime(runtime)
+    _ensure_loaded(model_path, config_path, runtime)
     assert _model is not None and _config is not None
 
     quality_message = _image_quality_message(image_bytes)
-    batch = _preprocess_image(image_bytes, _config.image_size)
-    raw_scores = _predict_with_test_time_augmentation(batch)
+    batch = _preprocess_image(image_bytes, _config.image_size, runtime)
+    raw_scores = _predict_with_test_time_augmentation(batch, runtime)
     raw_scores = np.clip(raw_scores, 1e-7, 1.0)
     logits = np.log(raw_scores)
     scores = _softmax(logits / _config.temperature)
@@ -266,6 +321,7 @@ def predict_upload_file(
     *,
     model_path: Path,
     config_path: Path,
+    runtime: str = "keras",
     max_bytes: int = 10 * 1024 * 1024,
 ) -> PredictionResult:
     if len(file_bytes) > max_bytes:
@@ -282,4 +338,9 @@ def predict_upload_file(
     except Exception as exc:  # noqa: BLE001
         raise ValueError("Could not read image. Upload a JPG or PNG photo.") from exc
 
-    return predict_image_bytes(file_bytes, model_path=model_path, config_path=config_path)
+    return predict_image_bytes(
+        file_bytes,
+        model_path=model_path,
+        config_path=config_path,
+        runtime=runtime,
+    )

@@ -90,6 +90,7 @@ def health() -> dict[str, str]:
     ml_status = get_model_status(
         settings.resolved_ml_model_path(),
         settings.resolved_ml_label_config_path(),
+        settings.ml_runtime,
     )
     payload["ml_model"] = str(ml_status.get("status", "unknown"))
 

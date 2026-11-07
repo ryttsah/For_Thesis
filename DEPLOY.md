@@ -6,20 +6,26 @@ Phase 6 connects the React app to the live FastAPI API and publishes both servic
 
 ```
 [Vercel]  React + Vite          HTTPS  JWT
-    └── VITE_API_URL ──────────────► [Cloud Run] FastAPI + TensorFlow
+    └── VITE_API_URL ──────────────► [Render Free] FastAPI + TensorFlow Lite
                                            │
                                            └── [Supabase] PostgreSQL
 ```
 
-CNN weights ship inside the Cloud Run Docker image (`Thesis AI Model/model_outputs/`).
+CNN artifacts ship inside the Docker image from `Thesis AI Model/model_outputs/`.
 
 The official training source is `Thesis AI Model/model.ipynb`. Run the notebook with
 the CocoAnalytica TensorFlow kernel; its release cell exports the model, label config,
 and evaluation report to that directory. The Dockerfile bundles those exact files.
 `backend/app/api/predict.py` receives uploads and calls `backend/app/ml/predictor.py`,
 which loads the exported model. After deployment compare `/predict/status`'s
-`model_sha256` and `config_sha256` with the notebook evaluation report.
+`run_id` and `config_sha256` with the notebook evaluation report. Its
+`model_sha256` is the deployed TensorFlow Lite export, while the evaluation
+report records the source Keras model hash.
 The notebook itself does not execute in the deployed container.
+
+The Docker image additionally contains a full-precision TensorFlow Lite export derived
+from the official Keras model. The original Keras file remains the official training
+and local-reference artifact.
 
 ---
 
@@ -42,11 +48,39 @@ The notebook itself does not execute in the deployed container.
 
 ---
 
-## 2. Google Cloud Run (recommended backend + CNN)
+## 2. Render Free (recommended no-card backend)
 
-Cloud Run is the recommended host for this TensorFlow model. The current model uses
-about 404 MB during a local post-inference measurement, so Railway Free and Render
-Free (each capped at 512 MB) do not leave enough reliable memory headroom for the API.
+This repository includes render.yaml for a no-card Render Free deployment. The
+container uses the compact TensorFlow Lite runtime instead of full TensorFlow.
+A local container test completed a real authenticated prediction at 181.4 MiB;
+Render Free provides 512 MB RAM. Free services sleep after 15 idle minutes, so
+the first request after sleep can take about a minute.
+
+1. Create a free Render account and sign in with GitHub.
+2. Select New, then Blueprint, and connect this repository. Render discovers
+   render.yaml automatically.
+3. Supply the requested environment values:
+
+   | Variable | Value |
+   |---|---|
+   | DATABASE_URL | Existing Supabase Session pooler URL |
+   | CORS_ORIGINS | Exact Vercel origin, such as https://your-app.vercel.app |
+
+   Render generates JWT_SECRET itself. Keep database credentials out of Git.
+
+4. After the service is Live, open its health endpoint and prediction-status
+   endpoint. Prediction status must report runtime: tflite and the same run ID
+   as the evaluation report.
+5. In Vercel, set VITE_API_URL to the Render public URL with no trailing slash,
+   then redeploy the frontend.
+
+---
+
+## 3. Google Cloud Run (optional future host)
+
+Cloud Run remains configured in this repository and uses the same TensorFlow Lite
+container. It requires an active Google Cloud billing account, so use it only after
+you can complete Google billing setup.
 
 ### One-time Google Cloud setup
 
@@ -85,7 +119,7 @@ GET https://<cloud-run-url>/health
 GET https://<cloud-run-url>/predict/status
 ```
 
-`/predict/status` must return the same `model_sha256` and `config_sha256` as
+`/predict/status` must return the same `run_id` and `config_sha256` as
 `Thesis AI Model/model_outputs/evaluation.json`.
 
 ### Connect Vercel
@@ -100,11 +134,10 @@ Redeploy the Vercel frontend after saving the variable.
 
 ---
 
-## 3. Railway (legacy alternative; not recommended on Free)
+## 4. Railway (legacy alternative)
 
-Railway's Free tier has 512 MB RAM and $1 of monthly credit. This is too close to
-the current TensorFlow runtime requirement for dependable use. Use Cloud Run above
-or a paid Railway service with at least 1 GiB RAM instead.
+Railway can use the same lightweight Docker image, but its Free plan includes only
+$1 monthly usage credit. Render Free is the better no-card option for this deployment.
 
 1. Push this repo to GitHub.
 2. [railway.app](https://railway.app) → **New Project** → **Deploy from GitHub** → select the repo.
@@ -118,21 +151,21 @@ or a paid Railway service with at least 1 GiB RAM instead.
    | `JWT_SECRET` | Long random string (`openssl rand -hex 32`) |
    | `DEBUG` | `false` |
    | `CORS_ORIGINS` | `https://your-app.vercel.app,http://localhost:5173` |
-   | `ML_MODEL_PATH` | `/app/model_outputs/coconut_leaf_multilabel_cnn.keras` (Dockerfile default) |
+   | `ML_RUNTIME` | `tflite` |
+   | `ML_MODEL_PATH` | `/app/model_outputs/coconut_leaf_multilabel_cnn.tflite` (Dockerfile default) |
    | `ML_LABEL_CONFIG_PATH` | `/app/model_outputs/label_config.json` (Dockerfile default) |
 
-5. Deploy. First `/predict` call may take ~30s while TensorFlow loads the model.
+5. Deploy. The first `/predict` call loads the TensorFlow Lite model.
 6. Copy the public URL (e.g. `https://pca-api-production.up.railway.app`).
 7. Check: `GET https://<railway-url>/health` → `database: connected`, `ml_model: ready` or `loaded`.
 
 **Notes**
 
-- Use at least **2 GB RAM** on Railway for TensorFlow.
 - Do not use SQLite on Railway (ephemeral filesystem).
 
 ---
 
-## 4. Vercel (frontend)
+## 5. Vercel (frontend)
 
 1. [vercel.com](https://vercel.com) → **Add New Project** → import the same GitHub repo.
 2. **Root Directory**: `frontend`
@@ -140,17 +173,17 @@ or a paid Railway service with at least 1 GiB RAM instead.
 4. **Environment variable** (Production):
 
    ```
-   VITE_API_URL=https://<your-cloud-run-url>
+   VITE_API_URL=https://<your-render-url>
    ```
 
    No trailing slash.
 
 5. Deploy. `frontend/vercel.json` enables SPA routing for `/officer`, `/farmer`, `/admin`.
-6. Add the Vercel URL to Cloud Run `CORS_ORIGINS` and redeploy the backend if needed.
+6. Add the Vercel URL to Render `CORS_ORIGINS` and redeploy the backend if needed.
 
 ---
 
-## 5. Local full-stack (before deploy)
+## 6. Local full-stack (before deploy)
 
 **Terminal 1 — API**
 
@@ -172,7 +205,7 @@ Sign in as Farmer with live backend credentials (not offline demo when `VITE_API
 
 ---
 
-## 6. Verification checklist
+## 7. Verification checklist
 
 | Check | Expected |
 |-------|----------|
@@ -204,6 +237,6 @@ Not required for thesis defense, but useful later:
 |---------|-----|
 | Random pest on farmer upload | `VITE_API_URL` unset or login without JWT |
 | CORS error in browser | Add exact Vercel origin to `CORS_ORIGINS` |
-| `503` on `/predict` | Model path wrong or TensorFlow OOM — check Cloud Run revision logs |
+| `503` on `/predict` | Model path or Lite runtime is wrong — check Render logs |
 | Login works locally, not prod | Run `seed_db.py` on Supabase; match `JWT_SECRET` |
 | 401 on API calls | Sign in again; token expires per `JWT_EXPIRE_MINUTES` |

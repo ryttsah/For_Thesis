@@ -49,7 +49,7 @@ try {
         --min-instances 0 `
         --max-instances 1 `
         --timeout 120 `
-        --set-env-vars "DEBUG=false,AUTO_CREATE_DB=false,CORS_ORIGINS=$CorsOrigins,ML_MODEL_PATH=/app/model_outputs/coconut_leaf_multilabel_cnn.keras,ML_LABEL_CONFIG_PATH=/app/model_outputs/label_config.json" `
+        --set-env-vars "DEBUG=false,AUTO_CREATE_DB=false,CORS_ORIGINS=$CorsOrigins,ML_RUNTIME=tflite,ML_MODEL_PATH=/app/model_outputs/coconut_leaf_multilabel_cnn.tflite,ML_LABEL_CONFIG_PATH=/app/model_outputs/label_config.json" `
         --set-secrets "DATABASE_URL=$DatabaseSecret:latest,JWT_SECRET=$JwtSecret:latest" | Out-Host
 
     $serviceUrl = gcloud run services describe $ServiceName `

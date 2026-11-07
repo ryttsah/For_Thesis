@@ -22,7 +22,7 @@ Coconut pest and disease monitoring for PCA Negros Occidental. Flow: **Login →
 
 | Database | PostgreSQL (Supabase) |
 
-| Deploy | Vercel (frontend) + Railway (backend) |
+| Deploy | Vercel (frontend) + Render Free (backend) |
 
 
 
@@ -94,7 +94,7 @@ Open [http://localhost:5173](http://localhost:5173). Set `VITE_API_URL=http://lo
 
 | **2** | FastAPI, auth, DB, domain APIs, CNN `/predict` | Done |
 
-| **6** | Wire frontend to API + Vercel/Railway deploy | **Ready** — see [DEPLOY.md](./DEPLOY.md) |
+| **6** | Wire frontend to API + Vercel/Render deploy | **Ready** — see [DEPLOY.md](./DEPLOY.md) |
 
 
 
@@ -120,7 +120,7 @@ Phase 6 is the **last planned implementation phase**. Optional improvements (sto
 
 | 5. `/predict` (CNN) | Done |
 
-| 6. Deploy + production wiring | Config in repo — you deploy to Vercel + Railway |
+| 6. Deploy + production wiring | Config in repo — you deploy to Vercel + Render |
 
 
 
@@ -136,7 +136,7 @@ backend/app/           # FastAPI
 
 Thesis AI Model/       # Notebook + model_outputs (CNN)
 
-Dockerfile             # Railway image (API + weights)
+Dockerfile             # Render/Railway/Cloud Run API image (Lite CNN artifact)
 
 DEPLOY.md              # Step-by-step production guide
 
@@ -164,6 +164,6 @@ DEPLOY.md              # Step-by-step production guide
 
 
 
-Follow **[DEPLOY.md](./DEPLOY.md)** for Supabase → Railway → Vercel.
+Follow **[DEPLOY.md](./DEPLOY.md)** for Supabase → Render → Vercel.
 
 

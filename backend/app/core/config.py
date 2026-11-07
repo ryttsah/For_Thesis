@@ -30,6 +30,7 @@ class Settings(BaseSettings):
     seed_demo_data: bool = False
 
     # Thesis AI Model (EfficientNetB0 four-class CNN)
+    ml_runtime: str = "keras"
     ml_model_path: str | None = None
     ml_label_config_path: str | None = None
     ml_max_upload_bytes: int = 10 * 1024 * 1024
@@ -39,7 +40,8 @@ class Settings(BaseSettings):
         if self.ml_model_path:
             path = Path(self.ml_model_path)
             return path if path.is_absolute() else (PROJECT_ROOT / path).resolve()
-        return (DEFAULT_ML_DIR / "coconut_leaf_multilabel_cnn.keras").resolve()
+        suffix = ".tflite" if self.ml_runtime.strip().lower() == "tflite" else ".keras"
+        return (DEFAULT_ML_DIR / f"coconut_leaf_multilabel_cnn{suffix}").resolve()
 
     def resolved_ml_label_config_path(self) -> Path:
         if self.ml_label_config_path:

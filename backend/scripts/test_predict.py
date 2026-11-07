@@ -35,6 +35,7 @@ def main() -> None:
         image_path.read_bytes(),
         model_path=model_path,
         config_path=config_path,
+        runtime=settings.ml_runtime,
     )
     print(f"Image: {image_path}")
     print(f"Pest: {result.pest}")

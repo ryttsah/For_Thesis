@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: cocoanalytics-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: DEBUG
+        value: "false"
+      - key: AUTO_CREATE_DB
+        value: "false"
+      - key: ML_RUNTIME
+        value: tflite
+      - key: ML_MODEL_PATH
+        value: /app/model_outputs/coconut_leaf_multilabel_cnn.tflite
+      - key: ML_LABEL_CONFIG_PATH
+        value: /app/model_outputs/label_config.json
+      - key: DATABASE_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
