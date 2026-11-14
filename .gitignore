@@ -39,6 +39,11 @@ Thesis AI Model/*
 !Thesis AI Model/model_outputs/
 !Thesis AI Model/model_outputs/**
 Thesis AI Model/model_outputs/candidates/
+# Externally collected benchmark images stay local. The instructions are tracked.
+!Thesis AI Model/external_test_set/
+Thesis AI Model/external_test_set/*
+!Thesis AI Model/external_test_set/README.md
+!Thesis AI Model/external_test_set/provenance.json
 Thesis AI Model.previous/
 backend/Thesis AI Model/
 

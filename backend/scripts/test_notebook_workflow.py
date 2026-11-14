@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from notebook_workflow import CLASSES, FOLDERS, metrics_for, prepare_dataset
+from notebook_workflow import CLASSES, FOLDERS, external_test_status, metrics_for, prepare_dataset
 
 
 class WorkflowTests(unittest.TestCase):
@@ -70,6 +70,34 @@ class WorkflowTests(unittest.TestCase):
             self.assertFalse(any('removed_closeup' in row['path'] for row in manifest['records']))
             self.assertEqual(manifest['counts']['test']['Healthy']['originals'], 2)
             self.assertEqual(prepare_dataset(root, target=8)[0], output)
+
+    def test_external_benchmark_requires_provenance_and_blocks_reference_duplicates(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            benchmark = root / 'external_test_set'
+            reference = root / 'reference/test'
+            records = []
+            for class_index, label in enumerate(CLASSES):
+                (benchmark / label).mkdir(parents=True)
+                (reference / label).mkdir(parents=True)
+                image = Image.new('RGB', (64, 64), (class_index * 30, 20, 40))
+                target = benchmark / label / 'candidate.png'
+                image.save(target)
+                records.append({
+                    'file': f'{label}/candidate.png',
+                    'source_url': 'https://example.test/photo',
+                    'source_title': 'Example original',
+                    'license': 'Example license',
+                    'claimed_condition': label,
+                    'reviewed': True,
+                })
+            (benchmark / 'provenance.json').write_text(__import__('json').dumps(records))
+            status = external_test_status(benchmark, expected_per_class=1, reference_dataset=reference)
+            self.assertTrue(status['ready'])
+            Image.open(benchmark / 'Healthy/candidate.png').save(reference / 'Healthy/leak.png')
+            status = external_test_status(benchmark, expected_per_class=1, reference_dataset=reference)
+            self.assertFalse(status['ready'])
+            self.assertEqual(status['duplicates_with_reference'], ['Healthy/candidate.png'])
 
 
 if __name__ == '__main__':

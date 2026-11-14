@@ -31,6 +31,89 @@ def pixel_hash(path):
         return digest
 
 
+def external_test_status(root, expected_per_class=50, reference_dataset=None):
+    """Audit a separately curated, original-image benchmark before evaluation.
+
+    The external test folder is deliberately never read by ``prepare_dataset``.
+    Each class needs at least ``expected_per_class`` readable images and every
+    image must have a matching provenance record. Exact pixel duplicates of the
+    training/validation/test dataset are rejected to prevent a reporting leak.
+    """
+    root = Path(root)
+    provenance_path = root / "provenance.json"
+    result = {
+        "root": str(root),
+        "expected_per_class": expected_per_class,
+        "ready": False,
+        "counts": {},
+        "missing_provenance": [],
+        "invalid_provenance": [],
+        "duplicates_with_reference": [],
+        "invalid_images": [],
+    }
+    if not provenance_path.is_file():
+        result["reason"] = f"Missing provenance file: {provenance_path.name}"
+        return result
+
+    records = json.loads(provenance_path.read_text(encoding="utf-8"))
+    by_file = {str(row.get("file", "")).replace("\\", "/"): row for row in records}
+    reference_hashes = set()
+    if reference_dataset:
+        reference_dataset = Path(reference_dataset)
+        # prepare_dataset writes the original-image pixel hashes to its manifest.
+        # Reusing those values avoids decoding thousands of exported augmented
+        # files merely to reject an external image copied from the source set.
+        manifest_path = reference_dataset / "manifest.json"
+        if manifest_path.is_file():
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            reference_hashes = {
+                row["pixel_hash"]
+                for row in manifest.get("records", [])
+                if row.get("pixel_hash")
+            }
+        else:
+            for path in reference_dataset.rglob("*"):
+                if path.suffix.lower() in EXTENSIONS:
+                    reference_hashes.add(pixel_hash(path))
+
+    for label in CLASSES:
+        paths = sorted(path for path in (root / label).glob("*") if path.suffix.lower() in EXTENSIONS)
+        result["counts"][label] = len(paths)
+        for path in paths:
+            relative = str(path.relative_to(root)).replace("\\", "/")
+            record = by_file.get(relative)
+            if record is None:
+                result["missing_provenance"].append(relative)
+                continue
+            required = ("source_url", "source_title", "license", "claimed_condition", "reviewed")
+            if (
+                any(not record.get(field) for field in required)
+                or record["claimed_condition"] != label
+                or record["reviewed"] is not True
+            ):
+                result["invalid_provenance"].append(relative)
+                continue
+            try:
+                digest = pixel_hash(path)
+            except (OSError, ValueError):
+                result["invalid_images"].append(relative)
+                continue
+            if digest in reference_hashes:
+                result["duplicates_with_reference"].append(relative)
+
+    sufficient = all(count >= expected_per_class for count in result["counts"].values())
+    no_leaks = (
+        not result["missing_provenance"]
+        and not result["invalid_provenance"]
+        and not result["duplicates_with_reference"]
+        and not result["invalid_images"]
+    )
+    result["ready"] = sufficient and no_leaks
+    if not result["ready"]:
+        result["reason"] = "Need %s original, documented, non-duplicate images per class." % expected_per_class
+    return result
+
+
 def prepare_dataset(root, target=400, seed=20261008):
     """Build curated splits when a review exists; otherwise preserve legacy holdouts."""
     root = Path(root)
@@ -190,16 +273,33 @@ def metrics_for(actual, predicted):
             "per_class": per_class, "confusion_matrix": confusion.tolist()}
 
 
-def evaluate_api(model_path, config_path, dataset, split="test"):
-    """Use precisely the same image decoder, TTA, calibration and flags as API."""
+def evaluate_api(model_path, config_path, dataset, split="test", runtime="keras"):
+    """Evaluate original image bytes through the selected deployed API runtime.
+
+    Pass ``split=None`` when ``dataset`` itself is a class-folder benchmark such
+    as ``external_test_set``. The folder is still evaluated through the exact
+    same predictor used by the API.
+    """
     from app.ml import predictor
-    predictor._model = predictor._config = predictor._load_error = None
+    # The predictor deliberately keeps one runtime loaded per process. Reset every
+    # cache field so a notebook can compare the Keras reference with TensorFlow Lite.
+    predictor._model = None
+    predictor._config = None
+    predictor._load_error = None
+    predictor._loaded_identity = None
+    predictor._loaded_runtime = None
     rows, actual, predicted = [], [], []
+    source_root = Path(dataset) if split is None else Path(dataset) / split
     for index, label in enumerate(CLASSES):
-        for path in sorted((Path(dataset) / split / label).glob("*")):
+        for path in sorted((source_root / label).glob("*")):
             content = path.read_bytes()
-            result = predictor.predict_upload_file(content, model_path=Path(model_path), config_path=Path(config_path),
-                                                   max_bytes=max(len(content), 10 * 1024 * 1024))
+            result = predictor.predict_upload_file(
+                content,
+                model_path=Path(model_path),
+                config_path=Path(config_path),
+                runtime=runtime,
+                max_bytes=max(len(content), 10 * 1024 * 1024),
+            )
             guess = CLASSES.index(result.label.replace(" ", "_"))
             actual.append(index)
             predicted.append(guess)
@@ -207,7 +307,8 @@ def evaluate_api(model_path, config_path, dataset, split="test"):
                          "confidence": result.confidence, "uncertain": result.uncertain,
                          "scores": result.predictions})
     report = metrics_for(actual, predicted)
-    report.update({"split": split, "prediction_method": "app.ml.predictor.predict_upload_file",
+    report.update({"split": split or "external", "runtime": runtime,
+                   "prediction_method": "app.ml.predictor.predict_upload_file",
                    "input_note": "Original dataset bytes; transport size cap bypassed for evaluation. Browser compression of large user uploads can change predictions.",
                    "predictor_sha256": file_hash(predictor.__file__),
                    "model_sha256": file_hash(model_path), "config_sha256": file_hash(config_path),
