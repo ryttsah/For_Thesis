@@ -45,6 +45,7 @@ def external_test_status(root, expected_per_class=50, reference_dataset=None):
         "root": str(root),
         "expected_per_class": expected_per_class,
         "ready": False,
+        "audited": False,
         "counts": {},
         "missing_provenance": [],
         "invalid_provenance": [],
@@ -101,6 +102,7 @@ def external_test_status(root, expected_per_class=50, reference_dataset=None):
             if digest in reference_hashes:
                 result["duplicates_with_reference"].append(relative)
 
+    populated = all(count > 0 for count in result["counts"].values())
     sufficient = all(count >= expected_per_class for count in result["counts"].values())
     no_leaks = (
         not result["missing_provenance"]
@@ -108,8 +110,11 @@ def external_test_status(root, expected_per_class=50, reference_dataset=None):
         and not result["duplicates_with_reference"]
         and not result["invalid_images"]
     )
+    result["audited"] = populated and no_leaks
     result["ready"] = sufficient and no_leaks
-    if not result["ready"]:
+    if not result["audited"]:
+        result["reason"] = "Fix the provenance, image validity, or duplicate checks before evaluation."
+    elif not result["ready"]:
         result["reason"] = "Need %s original, documented, non-duplicate images per class." % expected_per_class
     return result
 

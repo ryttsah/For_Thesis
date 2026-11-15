@@ -1,0 +1,168 @@
+{
+  "accuracy": 0.0,
+  "macro_f1": 0.0,
+  "weighted_f1": 0.0,
+  "per_class": {
+    "Healthy": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 1
+    },
+    "Yellowing": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 2
+    },
+    "Coconut_Scale_Insect": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 2
+    },
+    "Rhinoceros_Beetle": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 2
+    }
+  },
+  "confusion_matrix": [
+    [
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      2
+    ],
+    [
+      0,
+      0,
+      0,
+      2
+    ],
+    [
+      2,
+      0,
+      0,
+      0
+    ]
+  ],
+  "split": "external",
+  "runtime": "tflite",
+  "prediction_method": "app.ml.predictor.predict_upload_file",
+  "input_note": "Original dataset bytes; transport size cap bypassed for evaluation. Browser compression of large user uploads can change predictions.",
+  "predictor_sha256": "57a314927a8860cc1a6effecf67939681b17e91fdb262feae3c2dd4027e43bad",
+  "model_sha256": "86fcc437252cf589d862060d0e4417e63353e917c2192ce648a5d79c49edafe6",
+  "config_sha256": "5d5dc88f64d76ad896308ebb361fc2310340ffbe84c2179a771a07c7e235b8ea",
+  "uncertain_count": 1,
+  "predictions": [
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Healthy\\healthy_approved_local_01.jpg",
+      "actual": "Healthy",
+      "predicted": "Yellowing",
+      "confidence": 42.7,
+      "uncertain": true,
+      "scores": {
+        "Healthy": 5.72,
+        "Yellowing": 42.7,
+        "Coconut_Scale_Insect": 14.25,
+        "Rhinoceros_Beetle": 37.34
+      }
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\yellowing_approved_dom767_01.webp",
+      "actual": "Yellowing",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 53.7,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 41.15,
+        "Yellowing": 4.69,
+        "Coconut_Scale_Insect": 0.43,
+        "Rhinoceros_Beetle": 53.73
+      }
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\yellowing_approved_lucid_02.jpg",
+      "actual": "Yellowing",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 61.3,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 8.98,
+        "Yellowing": 26.72,
+        "Coconut_Scale_Insect": 2.97,
+        "Rhinoceros_Beetle": 61.33
+      }
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Coconut_Scale_Insect\\csi_approved_embrapa_01.jpeg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 94.2,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.97,
+        "Yellowing": 1.72,
+        "Coconut_Scale_Insect": 3.15,
+        "Rhinoceros_Beetle": 94.16
+      }
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Coconut_Scale_Insect\\csi_approved_lucid_02.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 80.2,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.08,
+        "Yellowing": 0.53,
+        "Coconut_Scale_Insect": 19.17,
+        "Rhinoceros_Beetle": 80.22
+      }
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Rhinoceros_Beetle\\rhino_approved_abc_pacific_02.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Healthy",
+      "confidence": 58.0,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 57.99,
+        "Yellowing": 1.79,
+        "Coconut_Scale_Insect": 0.53,
+        "Rhinoceros_Beetle": 39.69
+      }
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Rhinoceros_Beetle\\rhino_approved_uf_ifas_01.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Healthy",
+      "confidence": 74.7,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 74.71,
+        "Yellowing": 12.76,
+        "Coconut_Scale_Insect": 1.98,
+        "Rhinoceros_Beetle": 10.55
+      }
+    }
+  ],
+  "benchmark": "provisional independently sourced external originals",
+  "benchmark_status": "provisional: fewer than 50 reviewed images per class",
+  "images_per_class": {
+    "Healthy": 1,
+    "Yellowing": 2,
+    "Coconut_Scale_Insect": 2,
+    "Rhinoceros_Beetle": 2
+  },
+  "expected_images_per_class": 50,
+  "provenance_file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\provenance.json"
+}

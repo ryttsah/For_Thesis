@@ -1,1 +1,65 @@
-[]
+[
+  {
+    "file": "Healthy/healthy_approved_local_01.jpg",
+    "source_url": "file:///C:/Users/ahwri/Downloads/795912262_2125048265048375_2401855062855564249_n.jpg",
+    "source_title": "Project-owner supplied healthy coconut-palm photograph",
+    "license": "Project-owner supplied image; permitted for this project",
+    "claimed_condition": "Healthy",
+    "reviewed": true,
+    "approval_note": "Approved by the project owner as a broad healthy coconut-palm view."
+  },
+  {
+    "file": "Yellowing/yellowing_approved_dom767_01.webp",
+    "source_url": "https://www.dom767.com/dompedia/lethal-yellowing-ly-in-dominica/",
+    "source_title": "DOM767 lethal-yellowing coconut-palm photograph",
+    "license": "Source terms pending; provisional research evaluation only",
+    "claimed_condition": "Yellowing",
+    "reviewed": true,
+    "approval_note": "Approved by the project owner as a broad yellowing coconut-palm view."
+  },
+  {
+    "file": "Yellowing/yellowing_approved_lucid_02.jpg",
+    "source_url": "https://apps.lucidcentral.org/ppp_v9/text/web_full/entities/coconut_foliar_decay_231.htm",
+    "source_title": "Lucid Central coconut-foliar-decay photograph",
+    "license": "Copyright 2020 Lucid Central; provisional research evaluation only",
+    "claimed_condition": "Yellowing",
+    "reviewed": true,
+    "approval_note": "Approved by the project owner as a broad yellowing/drooping coconut-palm view."
+  },
+  {
+    "file": "Coconut_Scale_Insect/csi_approved_embrapa_01.jpeg",
+    "source_url": "https://www.embrapa.br/agencia-de-informacao-tecnologica/cultivos/coco/producao/pragas/pragas-potenciais/cochonilha-transparente-do-coqueiro",
+    "source_title": "Embrapa coconut-scale affected-palm photograph",
+    "license": "Source terms pending; provisional research evaluation only",
+    "claimed_condition": "Coconut_Scale_Insect",
+    "reviewed": true,
+    "approval_note": "Approved by the project owner as a broad CSI-affected coconut-palm view."
+  },
+  {
+    "file": "Coconut_Scale_Insect/csi_approved_lucid_02.jpg",
+    "source_url": "https://apps.lucidcentral.org/ppp_v9/text/web_full/entities/coconut_scale_104.htm",
+    "source_title": "Lucid Central coconut-scale affected-frond photograph",
+    "license": "Copyright 2020 Lucid Central; provisional research evaluation only",
+    "claimed_condition": "Coconut_Scale_Insect",
+    "reviewed": true,
+    "approval_note": "Approved by the project owner as a CSI-affected coconut-frond view."
+  },
+  {
+    "file": "Rhinoceros_Beetle/rhino_approved_uf_ifas_01.jpg",
+    "source_url": "https://blogs.ifas.ufl.edu/pestalert/2015/09/02/new-on-featured-creatures-the-coconut-rhinoceros-beetle/",
+    "source_title": "University of Florida IFAS rhinoceros-beetle damaged coconut palm",
+    "license": "Source terms pending; provisional research evaluation only",
+    "claimed_condition": "Rhinoceros_Beetle",
+    "reviewed": true,
+    "approval_note": "Clean replacement for the rejected CRB Hawaii image with circles and text."
+  },
+  {
+    "file": "Rhinoceros_Beetle/rhino_approved_abc_pacific_02.jpg",
+    "source_url": "https://www.abc.net.au/pacific/programs/pacificbeat/solomons-beetle/10498930",
+    "source_title": "ABC Pacific rhinoceros-beetle affected coconut palms",
+    "license": "Copyright ABC; provisional research evaluation only",
+    "claimed_condition": "Rhinoceros_Beetle",
+    "reviewed": true,
+    "approval_note": "Approved by the project owner as a broad rhinoceros-beetle damage view."
+  }
+]

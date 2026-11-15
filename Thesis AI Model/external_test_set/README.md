@@ -3,8 +3,9 @@
 This folder is an **independent benchmark only**. It is never read by the
 training dataset builder and must never contain generated or augmented images.
 
-Create the four class folders below and add exactly 50 accepted originals to
-each one:
+Use the four class folders below. A provisional result can be generated after
+every class contains at least one accepted original; the final external
+benchmark requires at least 50 accepted originals in every class:
 
 ```text
 external_test_set/
@@ -32,7 +33,12 @@ to this folder and uses forward slashes.
 ]
 ```
 
-The notebook evaluates this folder only when each class has at least 50
-documented images and none is an exact pixel duplicate of the prepared model
-dataset. The report is named **external benchmark** and is not a replacement for
-the existing deployment holdout report.
+The notebook checks every image for provenance, readability, and exact pixel
+duplicates against the prepared model dataset. A small, reviewed collection is
+written to `model_outputs/external_test_provisional_evaluation.json` and is
+clearly labelled **provisional**. Only a collection with 50 documented,
+non-duplicate images per class is written as the final **external benchmark**.
+Neither result replaces the existing deployment holdout report.
+
+The raw benchmark photographs and rejected candidates are intentionally ignored
+by Git. Their source records remain in `provenance.json`.

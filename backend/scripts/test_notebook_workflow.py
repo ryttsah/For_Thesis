@@ -94,9 +94,11 @@ class WorkflowTests(unittest.TestCase):
             (benchmark / 'provenance.json').write_text(__import__('json').dumps(records))
             status = external_test_status(benchmark, expected_per_class=1, reference_dataset=reference)
             self.assertTrue(status['ready'])
+            self.assertTrue(status['audited'])
             Image.open(benchmark / 'Healthy/candidate.png').save(reference / 'Healthy/leak.png')
             status = external_test_status(benchmark, expected_per_class=1, reference_dataset=reference)
             self.assertFalse(status['ready'])
+            self.assertFalse(status['audited'])
             self.assertEqual(status['duplicates_with_reference'], ['Healthy/candidate.png'])
 
 
