@@ -1,0 +1,1230 @@
+{
+  "accuracy": 0.55,
+  "macro_f1": 0.5224627810834707,
+  "weighted_f1": 0.5224627810834708,
+  "per_class": {
+    "Healthy": {
+      "precision": 0.5263157894736842,
+      "recall": 0.5,
+      "f1": 0.5128205128205129,
+      "support": 20
+    },
+    "Yellowing": {
+      "precision": 0.6666666666666666,
+      "recall": 0.2,
+      "f1": 0.30769230769230765,
+      "support": 20
+    },
+    "Coconut_Scale_Insect": {
+      "precision": 0.7058823529411765,
+      "recall": 0.6,
+      "f1": 0.6486486486486486,
+      "support": 20
+    },
+    "Rhinoceros_Beetle": {
+      "precision": 0.47368421052631576,
+      "recall": 0.9,
+      "f1": 0.6206896551724138,
+      "support": 20
+    }
+  },
+  "confusion_matrix": [
+    [
+      10,
+      2,
+      1,
+      7
+    ],
+    [
+      5,
+      4,
+      4,
+      7
+    ],
+    [
+      2,
+      0,
+      12,
+      6
+    ],
+    [
+      2,
+      0,
+      0,
+      18
+    ]
+  ],
+  "benchmark": "balanced combined evaluation with 20 images per condition",
+  "benchmark_status": "provisional combined evaluation; not an independent external-only benchmark",
+  "target_images_per_class": 20,
+  "composition_by_class": {
+    "Healthy": {
+      "approved_external": 12,
+      "internal_holdout": 8,
+      "total": 20
+    },
+    "Yellowing": {
+      "approved_external": 12,
+      "internal_holdout": 8,
+      "total": 20
+    },
+    "Coconut_Scale_Insect": {
+      "approved_external": 5,
+      "internal_holdout": 15,
+      "total": 20
+    },
+    "Rhinoceros_Beetle": {
+      "approved_external": 2,
+      "internal_holdout": 18,
+      "total": 20
+    }
+  },
+  "internal_test_images": 49,
+  "selected_external_images": 31,
+  "predictions": [
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Healthy\\approved_review_H01.jpg",
+      "actual": "Healthy",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 99.3,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.66,
+        "Yellowing": 0.04,
+        "Coconut_Scale_Insect": 0.01,
+        "Rhinoceros_Beetle": 99.29
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Healthy\\approved_review_H02.jpg",
+      "actual": "Healthy",
+      "predicted": "Yellowing",
+      "confidence": 56.2,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 1.65,
+        "Yellowing": 56.19,
+        "Coconut_Scale_Insect": 3.52,
+        "Rhinoceros_Beetle": 38.65
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Healthy\\approved_review_H03.jpg",
+      "actual": "Healthy",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 65.1,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 4.83,
+        "Yellowing": 24.77,
+        "Coconut_Scale_Insect": 5.33,
+        "Rhinoceros_Beetle": 65.06
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Healthy\\approved_review_H05.jpg",
+      "actual": "Healthy",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 50.4,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 25.79,
+        "Yellowing": 11.94,
+        "Coconut_Scale_Insect": 11.9,
+        "Rhinoceros_Beetle": 50.37
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Healthy\\approved_review_H06.jpg",
+      "actual": "Healthy",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 58.2,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 28.63,
+        "Yellowing": 9.66,
+        "Coconut_Scale_Insect": 3.53,
+        "Rhinoceros_Beetle": 58.18
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Healthy\\approved_review_H08.jpg",
+      "actual": "Healthy",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 61.5,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 25.99,
+        "Yellowing": 10.2,
+        "Coconut_Scale_Insect": 2.27,
+        "Rhinoceros_Beetle": 61.54
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Healthy\\approved_review_H10.jpg",
+      "actual": "Healthy",
+      "predicted": "Healthy",
+      "confidence": 76.5,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 76.52,
+        "Yellowing": 6.28,
+        "Coconut_Scale_Insect": 1.88,
+        "Rhinoceros_Beetle": 15.33
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Healthy\\approved_review_H11.jpg",
+      "actual": "Healthy",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 53.1,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 37.61,
+        "Yellowing": 4.14,
+        "Coconut_Scale_Insect": 5.15,
+        "Rhinoceros_Beetle": 53.1
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Healthy\\approved_review_H12.jpg",
+      "actual": "Healthy",
+      "predicted": "Healthy",
+      "confidence": 57.4,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 57.45,
+        "Yellowing": 4.36,
+        "Coconut_Scale_Insect": 2.42,
+        "Rhinoceros_Beetle": 35.78
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Healthy\\approved_review_H14.jpg",
+      "actual": "Healthy",
+      "predicted": "Healthy",
+      "confidence": 42.4,
+      "uncertain": true,
+      "scores": {
+        "Healthy": 42.38,
+        "Yellowing": 3.86,
+        "Coconut_Scale_Insect": 16.0,
+        "Rhinoceros_Beetle": 37.76
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Healthy\\approved_review_H16.jpg",
+      "actual": "Healthy",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 90.6,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 3.5,
+        "Yellowing": 0.81,
+        "Coconut_Scale_Insect": 5.1,
+        "Rhinoceros_Beetle": 90.59
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Healthy\\healthy_approved_local_01.jpg",
+      "actual": "Healthy",
+      "predicted": "Yellowing",
+      "confidence": 42.7,
+      "uncertain": true,
+      "scores": {
+        "Healthy": 5.72,
+        "Yellowing": 42.7,
+        "Coconut_Scale_Insect": 14.25,
+        "Rhinoceros_Beetle": 37.34
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Healthy\\1d946152ee026e0c17b428505462f20bdf00ef993a5165a549e8efa7b3e6a0b9.jpg",
+      "actual": "Healthy",
+      "predicted": "Healthy",
+      "confidence": 87.6,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 87.57,
+        "Yellowing": 0.61,
+        "Coconut_Scale_Insect": 0.59,
+        "Rhinoceros_Beetle": 11.23
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Healthy\\3a0b3ef9130dd24420faafd5749d888539e46ab40a7b5cdd9e0fea17a4b54437.jpg",
+      "actual": "Healthy",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 30.9,
+      "uncertain": true,
+      "scores": {
+        "Healthy": 18.22,
+        "Yellowing": 25.59,
+        "Coconut_Scale_Insect": 30.88,
+        "Rhinoceros_Beetle": 25.31
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Healthy\\4ce1db0ba9a6e30055c757d3a3745638f0c2e56158b5522f382dacbfc0dcfb66.jpg",
+      "actual": "Healthy",
+      "predicted": "Healthy",
+      "confidence": 86.1,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 86.13,
+        "Yellowing": 1.17,
+        "Coconut_Scale_Insect": 0.56,
+        "Rhinoceros_Beetle": 12.14
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Healthy\\5f74f8918276d15574c4e6ec9091c96b783e55449cbdc6669b9fee71561eab31.jpg",
+      "actual": "Healthy",
+      "predicted": "Healthy",
+      "confidence": 49.9,
+      "uncertain": true,
+      "scores": {
+        "Healthy": 49.85,
+        "Yellowing": 32.3,
+        "Coconut_Scale_Insect": 3.03,
+        "Rhinoceros_Beetle": 14.82
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Healthy\\6c9a7e2400c0202e7aa63da999b537fa5b0b138fca450888aa414cb43e26623f.jpg",
+      "actual": "Healthy",
+      "predicted": "Healthy",
+      "confidence": 91.3,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 91.32,
+        "Yellowing": 3.21,
+        "Coconut_Scale_Insect": 0.64,
+        "Rhinoceros_Beetle": 4.83
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Healthy\\7750992bc436d94dea3f7b2ae0a2dace055db3358646a96fa81064adc61df06f.jpg",
+      "actual": "Healthy",
+      "predicted": "Healthy",
+      "confidence": 62.0,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 62.03,
+        "Yellowing": 4.11,
+        "Coconut_Scale_Insect": 8.19,
+        "Rhinoceros_Beetle": 25.68
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Healthy\\7c69b7996381a57197cb6b69402df8f9ebf7772c5e040ba7b3292e8c3fcaea23.jpg",
+      "actual": "Healthy",
+      "predicted": "Healthy",
+      "confidence": 74.7,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 74.74,
+        "Yellowing": 10.58,
+        "Coconut_Scale_Insect": 13.41,
+        "Rhinoceros_Beetle": 1.27
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Healthy\\8e104b90b7e908e8b6591cab21f855d77f1d02fd0e9aae173d6e7f8435d56f5a.jpg",
+      "actual": "Healthy",
+      "predicted": "Healthy",
+      "confidence": 43.6,
+      "uncertain": true,
+      "scores": {
+        "Healthy": 43.58,
+        "Yellowing": 8.82,
+        "Coconut_Scale_Insect": 29.36,
+        "Rhinoceros_Beetle": 18.24
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y01.jpg",
+      "actual": "Yellowing",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 98.9,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.61,
+        "Yellowing": 0.27,
+        "Coconut_Scale_Insect": 0.22,
+        "Rhinoceros_Beetle": 98.89
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y02.jpg",
+      "actual": "Yellowing",
+      "predicted": "Healthy",
+      "confidence": 80.8,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 80.85,
+        "Yellowing": 16.08,
+        "Coconut_Scale_Insect": 0.04,
+        "Rhinoceros_Beetle": 3.03
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y03.jpg",
+      "actual": "Yellowing",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 90.6,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 1.83,
+        "Yellowing": 7.06,
+        "Coconut_Scale_Insect": 0.54,
+        "Rhinoceros_Beetle": 90.56
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y05.jpg",
+      "actual": "Yellowing",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 68.4,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 2.32,
+        "Yellowing": 29.09,
+        "Coconut_Scale_Insect": 0.16,
+        "Rhinoceros_Beetle": 68.43
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y06.webp",
+      "actual": "Yellowing",
+      "predicted": "Healthy",
+      "confidence": 92.9,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 92.88,
+        "Yellowing": 0.6,
+        "Coconut_Scale_Insect": 0.25,
+        "Rhinoceros_Beetle": 6.26
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y07.webp",
+      "actual": "Yellowing",
+      "predicted": "Yellowing",
+      "confidence": 52.9,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 27.77,
+        "Yellowing": 52.89,
+        "Coconut_Scale_Insect": 9.91,
+        "Rhinoceros_Beetle": 9.43
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y08.webp",
+      "actual": "Yellowing",
+      "predicted": "Healthy",
+      "confidence": 79.0,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 78.96,
+        "Yellowing": 0.31,
+        "Coconut_Scale_Insect": 1.32,
+        "Rhinoceros_Beetle": 19.4
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y11.webp",
+      "actual": "Yellowing",
+      "predicted": "Healthy",
+      "confidence": 99.6,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 99.57,
+        "Yellowing": 0.03,
+        "Coconut_Scale_Insect": 0.05,
+        "Rhinoceros_Beetle": 0.35
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y12.webp",
+      "actual": "Yellowing",
+      "predicted": "Healthy",
+      "confidence": 98.5,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 98.48,
+        "Yellowing": 0.08,
+        "Coconut_Scale_Insect": 0.02,
+        "Rhinoceros_Beetle": 1.42
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y13.jpg",
+      "actual": "Yellowing",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 80.4,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 1.38,
+        "Yellowing": 2.37,
+        "Coconut_Scale_Insect": 15.81,
+        "Rhinoceros_Beetle": 80.44
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\yellowing_approved_dom767_01.webp",
+      "actual": "Yellowing",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 53.7,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 41.15,
+        "Yellowing": 4.69,
+        "Coconut_Scale_Insect": 0.43,
+        "Rhinoceros_Beetle": 53.73
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\yellowing_approved_lucid_02.jpg",
+      "actual": "Yellowing",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 61.3,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 8.98,
+        "Yellowing": 26.72,
+        "Coconut_Scale_Insect": 2.97,
+        "Rhinoceros_Beetle": 61.33
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Yellowing\\0c9bd067ca8c28e8a8ed56d6e93e704e52825b9aa04216a24a05e8b34163add3.jpg",
+      "actual": "Yellowing",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 67.7,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 3.49,
+        "Yellowing": 24.55,
+        "Coconut_Scale_Insect": 67.66,
+        "Rhinoceros_Beetle": 4.3
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Yellowing\\14f9e10e2304e23433d4793d392400cabce4e745072e65637263998d5a0a1cb9.jpg",
+      "actual": "Yellowing",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 44.6,
+      "uncertain": true,
+      "scores": {
+        "Healthy": 11.24,
+        "Yellowing": 39.67,
+        "Coconut_Scale_Insect": 44.59,
+        "Rhinoceros_Beetle": 4.5
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Yellowing\\1a15ef877e73db752a9f79783421fb13d387c0f94ae27ae2c76792803f75ac12.jpg",
+      "actual": "Yellowing",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 99.2,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.02,
+        "Yellowing": 0.75,
+        "Coconut_Scale_Insect": 99.19,
+        "Rhinoceros_Beetle": 0.03
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Yellowing\\1f83706a1615c9fb27a3e924faa1251aa6d0d9f811eb3865ca04e1c5c1e01208.jpg",
+      "actual": "Yellowing",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 56.2,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 15.63,
+        "Yellowing": 14.86,
+        "Coconut_Scale_Insect": 56.22,
+        "Rhinoceros_Beetle": 13.29
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Yellowing\\636caa40618011fe978224b58cddac8496d4ec73106ce2ab93b26857522d001a.jpg",
+      "actual": "Yellowing",
+      "predicted": "Yellowing",
+      "confidence": 52.1,
+      "uncertain": true,
+      "scores": {
+        "Healthy": 0.84,
+        "Yellowing": 52.14,
+        "Coconut_Scale_Insect": 44.58,
+        "Rhinoceros_Beetle": 2.43
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Yellowing\\7587a36ee5e3b6d1323e4eef66ef19427b78bb2e6dc99657a45fe7257f7976e8.jpg",
+      "actual": "Yellowing",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 51.0,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 27.09,
+        "Yellowing": 6.06,
+        "Coconut_Scale_Insect": 15.83,
+        "Rhinoceros_Beetle": 51.03
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Yellowing\\c4061869feae9feb70d4433e11671a208f5ede474f12a9779a563b422ceeb9d3.jpg",
+      "actual": "Yellowing",
+      "predicted": "Yellowing",
+      "confidence": 34.2,
+      "uncertain": true,
+      "scores": {
+        "Healthy": 2.16,
+        "Yellowing": 34.2,
+        "Coconut_Scale_Insect": 33.87,
+        "Rhinoceros_Beetle": 29.77
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Yellowing\\ccf1fb4a3c11b873e392242932dac55315c694d2ec718450b53c68f5d8feef2c.jpg",
+      "actual": "Yellowing",
+      "predicted": "Yellowing",
+      "confidence": 83.8,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 1.59,
+        "Yellowing": 83.85,
+        "Coconut_Scale_Insect": 10.02,
+        "Rhinoceros_Beetle": 4.54
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Coconut_Scale_Insect\\approved_review_C01.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 95.3,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 2.24,
+        "Yellowing": 0.62,
+        "Coconut_Scale_Insect": 1.85,
+        "Rhinoceros_Beetle": 95.29
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Coconut_Scale_Insect\\approved_review_C02.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 53.7,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 1.34,
+        "Yellowing": 41.39,
+        "Coconut_Scale_Insect": 53.67,
+        "Rhinoceros_Beetle": 3.59
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Coconut_Scale_Insect\\approved_review_C03.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 80.4,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 5.17,
+        "Yellowing": 14.14,
+        "Coconut_Scale_Insect": 0.31,
+        "Rhinoceros_Beetle": 80.38
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Coconut_Scale_Insect\\csi_approved_embrapa_01.jpeg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 94.2,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.97,
+        "Yellowing": 1.72,
+        "Coconut_Scale_Insect": 3.15,
+        "Rhinoceros_Beetle": 94.16
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Coconut_Scale_Insect\\csi_approved_lucid_02.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 80.2,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.08,
+        "Yellowing": 0.53,
+        "Coconut_Scale_Insect": 19.17,
+        "Rhinoceros_Beetle": 80.22
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Coconut_Scale_Insect\\0a9084ef5be813805006ee5785fee13e28c259bdcc9c7dec465a2843cbc8cb44.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Healthy",
+      "confidence": 66.0,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 65.99,
+        "Yellowing": 15.65,
+        "Coconut_Scale_Insect": 14.35,
+        "Rhinoceros_Beetle": 4.01
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Coconut_Scale_Insect\\0cd5b195ef76ba822ecb8b8c04bf28747dba7fcb152d3acf8a11b82bbbb04f30.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 46.0,
+      "uncertain": true,
+      "scores": {
+        "Healthy": 7.62,
+        "Yellowing": 17.4,
+        "Coconut_Scale_Insect": 45.96,
+        "Rhinoceros_Beetle": 29.01
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Coconut_Scale_Insect\\27a6713a211e06525c8819dfb2ccb683f26d5687a4b7bf436f7ddd9fd76692ec.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 69.4,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.68,
+        "Yellowing": 23.98,
+        "Coconut_Scale_Insect": 69.43,
+        "Rhinoceros_Beetle": 5.91
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Coconut_Scale_Insect\\3c6206e5b0708b925a9240f3a8a4b5e2cfcb1fc0b80723e2cd52f46d32ff9562.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 93.5,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 1.41,
+        "Yellowing": 0.76,
+        "Coconut_Scale_Insect": 93.45,
+        "Rhinoceros_Beetle": 4.37
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Coconut_Scale_Insect\\43f3b789f9e1fb36ced5f0ca8576f08a05b3fb1ca4e694fdd55de9b58ca84c6f.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 78.2,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 7.3,
+        "Yellowing": 0.17,
+        "Coconut_Scale_Insect": 78.16,
+        "Rhinoceros_Beetle": 14.37
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Coconut_Scale_Insect\\449c2f765dc5784c444281742dcaa178aea36f714c72d98a1fac6123bcb96caa.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 43.7,
+      "uncertain": true,
+      "scores": {
+        "Healthy": 17.25,
+        "Yellowing": 28.88,
+        "Coconut_Scale_Insect": 43.72,
+        "Rhinoceros_Beetle": 10.15
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Coconut_Scale_Insect\\500ba2c9b6ed5f9a5751414990f16de3b8d6d72a562297c6d2f45c37efa42701.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 95.3,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.19,
+        "Yellowing": 1.07,
+        "Coconut_Scale_Insect": 95.3,
+        "Rhinoceros_Beetle": 3.43
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Coconut_Scale_Insect\\5aef8563944403a8d63cf2fef7148e4a6b6dee5cc8672afaca442dd7445cfc16.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 67.1,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 22.09,
+        "Yellowing": 6.07,
+        "Coconut_Scale_Insect": 67.09,
+        "Rhinoceros_Beetle": 4.75
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Coconut_Scale_Insect\\650f4d4ba3373b707b614ba12e930796f3d9a23e27757f95e7e58cd6f28a9739.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 40.5,
+      "uncertain": true,
+      "scores": {
+        "Healthy": 9.84,
+        "Yellowing": 22.72,
+        "Coconut_Scale_Insect": 26.98,
+        "Rhinoceros_Beetle": 40.46
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Coconut_Scale_Insect\\74ff7e0765829a0cda55b87dd2e0442d581a7a2b018f1718c71ad2c3e1d0b7d0.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 56.1,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 35.39,
+        "Yellowing": 4.73,
+        "Coconut_Scale_Insect": 3.75,
+        "Rhinoceros_Beetle": 56.12
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Coconut_Scale_Insect\\a6d73502b45d578f54687d6a6853798ca7b24387b02c90c404e45c4d074b8a2a.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 91.4,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 4.23,
+        "Yellowing": 3.44,
+        "Coconut_Scale_Insect": 91.38,
+        "Rhinoceros_Beetle": 0.95
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Coconut_Scale_Insect\\af95a705554226d1201032480f63db41787bf5bd5d266a737b4051f1849666ef.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Healthy",
+      "confidence": 62.9,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 62.9,
+        "Yellowing": 0.96,
+        "Coconut_Scale_Insect": 30.33,
+        "Rhinoceros_Beetle": 5.8
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Coconut_Scale_Insect\\c21fc258149f16286f3e460a4aa49b698c2ad1b94e9af2808c1e38c50c30e2aa.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 96.3,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 1.02,
+        "Yellowing": 0.36,
+        "Coconut_Scale_Insect": 96.28,
+        "Rhinoceros_Beetle": 2.33
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Coconut_Scale_Insect\\c4f3d5880f35bca916d2d6507450f8e465dff891233dfe285f9a05208b9a56f5.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 97.1,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 1.93,
+        "Yellowing": 0.12,
+        "Coconut_Scale_Insect": 97.11,
+        "Rhinoceros_Beetle": 0.84
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Coconut_Scale_Insect\\c51f6720144e5da4f82aacd4b96212c78a981409004db9511c480d55f82dab8b.jpg",
+      "actual": "Coconut_Scale_Insect",
+      "predicted": "Coconut_Scale_Insect",
+      "confidence": 43.6,
+      "uncertain": true,
+      "scores": {
+        "Healthy": 6.6,
+        "Yellowing": 28.02,
+        "Coconut_Scale_Insect": 43.59,
+        "Rhinoceros_Beetle": 21.78
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Rhinoceros_Beetle\\rhino_approved_abc_pacific_02.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Healthy",
+      "confidence": 58.0,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 57.99,
+        "Yellowing": 1.79,
+        "Coconut_Scale_Insect": 0.53,
+        "Rhinoceros_Beetle": 39.69
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Rhinoceros_Beetle\\rhino_approved_uf_ifas_01.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Healthy",
+      "confidence": 74.7,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 74.71,
+        "Yellowing": 12.76,
+        "Coconut_Scale_Insect": 1.98,
+        "Rhinoceros_Beetle": 10.55
+      },
+      "evaluation_source": "approved_external"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\04316b4a667652f8980f30065d06c4c52b381232c6a852c981eca0cff53df7ea.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 97.9,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 1.53,
+        "Yellowing": 0.46,
+        "Coconut_Scale_Insect": 0.12,
+        "Rhinoceros_Beetle": 97.89
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\07245ac9d5fdf9bcf9c23a165abdb876477dc4e20de39833aabdc6e7a3f4b277.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 99.7,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.24,
+        "Yellowing": 0.0,
+        "Coconut_Scale_Insect": 0.03,
+        "Rhinoceros_Beetle": 99.73
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\0bfc522c4c6e8c85a14a9ea22e3ee41e47f28188b4065b5098e1a5941ec29a19.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 99.7,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.2,
+        "Yellowing": 0.03,
+        "Coconut_Scale_Insect": 0.06,
+        "Rhinoceros_Beetle": 99.71
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\0dced253a702bb4e05a441ffa96a7f54c5344349241ac925c80af7a3680fe377.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 64.6,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 33.23,
+        "Yellowing": 1.63,
+        "Coconut_Scale_Insect": 0.53,
+        "Rhinoceros_Beetle": 64.6
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\11c042ced081e1ceb96ac3af619689e04dfb7a536a9e9f1422db47b2c345f500.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 94.5,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 1.91,
+        "Yellowing": 1.53,
+        "Coconut_Scale_Insect": 2.07,
+        "Rhinoceros_Beetle": 94.48
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\15d5f3063bc5e34d408921f9856dc55a2851ebfe756af7c3335c130464ff8011.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 60.8,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.76,
+        "Yellowing": 0.3,
+        "Coconut_Scale_Insect": 38.16,
+        "Rhinoceros_Beetle": 60.79
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\1b51ec4299f4ab794fb4baa8471735dcb76b0018afd636a5918e43e6a36e1d94.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 99.8,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.13,
+        "Yellowing": 0.01,
+        "Coconut_Scale_Insect": 0.06,
+        "Rhinoceros_Beetle": 99.8
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\1be20df731a1069537d70d39b8bfda0db2f09a53f1e31936902a18413a971240.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 92.4,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 5.75,
+        "Yellowing": 0.42,
+        "Coconut_Scale_Insect": 1.39,
+        "Rhinoceros_Beetle": 92.44
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\222726b53eaeddaa6f3db03e8a1c51f39694a4346f5d5d90235b61d1c652cb76.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 100.0,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.03,
+        "Yellowing": 0.0,
+        "Coconut_Scale_Insect": 0.0,
+        "Rhinoceros_Beetle": 99.97
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\2d4cb43baa8dc582a9f2642f29316b04170d24b607fcbfc277c43412e63d0992.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 91.0,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 4.58,
+        "Yellowing": 3.13,
+        "Coconut_Scale_Insect": 1.32,
+        "Rhinoceros_Beetle": 90.98
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\33d8357b729235723e3b11e77f75644394306d429884bd3badfdf8a2363ea97a.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 96.2,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 2.21,
+        "Yellowing": 1.5,
+        "Coconut_Scale_Insect": 0.06,
+        "Rhinoceros_Beetle": 96.23
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\35f55c78e750fe065160d749454db27eca6b7e6c2a49f5cea3b62b3cfeea2cf4.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 99.7,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.26,
+        "Yellowing": 0.02,
+        "Coconut_Scale_Insect": 0.04,
+        "Rhinoceros_Beetle": 99.69
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\363e5116720ffff764b1f50b6d18039a61b031435f5d10c0c458eaf4045889bf.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 98.3,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 1.23,
+        "Yellowing": 0.37,
+        "Coconut_Scale_Insect": 0.08,
+        "Rhinoceros_Beetle": 98.31
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\3fa4da96ad8b4420c0ffeb09f7def325f8f30c5b880509db71aa86fcd2a716ca.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 99.9,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.05,
+        "Yellowing": 0.05,
+        "Coconut_Scale_Insect": 0.02,
+        "Rhinoceros_Beetle": 99.89
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\3fee5e0d5e601e2bd8f7ca1db928374a94055e505e5e148c9ad02247ecace089.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 58.2,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 40.44,
+        "Yellowing": 0.42,
+        "Coconut_Scale_Insect": 0.98,
+        "Rhinoceros_Beetle": 58.17
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\428d3594bcf99a685592711735f190dfc0b6de4d57fd20d05d97d747e0d9807a.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 98.0,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.19,
+        "Yellowing": 1.8,
+        "Coconut_Scale_Insect": 0.01,
+        "Rhinoceros_Beetle": 97.99
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\4a92d9e22ccd19793215faa2ec845085c652ad2800beeb500bd39963c1ca5160.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 99.6,
+      "uncertain": false,
+      "scores": {
+        "Healthy": 0.41,
+        "Yellowing": 0.0,
+        "Coconut_Scale_Insect": 0.0,
+        "Rhinoceros_Beetle": 99.59
+      },
+      "evaluation_source": "internal_holdout"
+    },
+    {
+      "file": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\notebook_dataset\\4e327ceeeb11\\test\\Rhinoceros_Beetle\\51a005b967e135e3a59917cb5e3b8576d954d71e937b58d1bcca640fcd73e4d9.jpg",
+      "actual": "Rhinoceros_Beetle",
+      "predicted": "Rhinoceros_Beetle",
+      "confidence": 54.0,
+      "uncertain": true,
+      "scores": {
+        "Healthy": 45.32,
+        "Yellowing": 0.41,
+        "Coconut_Scale_Insect": 0.32,
+        "Rhinoceros_Beetle": 53.96
+      },
+      "evaluation_source": "internal_holdout"
+    }
+  ],
+  "model_sha256": "86fcc437252cf589d862060d0e4417e63353e917c2192ce648a5d79c49edafe6",
+  "config_sha256": "5d5dc88f64d76ad896308ebb361fc2310340ffbe84c2179a771a07c7e235b8ea",
+  "runtime": "tflite",
+  "external_status": {
+    "root": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set",
+    "expected_per_class": 50,
+    "ready": false,
+    "audited": true,
+    "counts": {
+      "Healthy": 12,
+      "Yellowing": 12,
+      "Coconut_Scale_Insect": 5,
+      "Rhinoceros_Beetle": 2
+    },
+    "missing_provenance": [],
+    "invalid_provenance": [],
+    "duplicates_with_reference": [],
+    "invalid_images": [],
+    "reason": "Need 50 original, documented, non-duplicate images per class."
+  },
+  "excluded_duplicate_approval": {
+    "id": "Y04",
+    "reason": "Exact pixel duplicate of Yellowing/yellowing_approved_lucid_02.jpg; retained in the review archive but not counted twice."
+  }
+}

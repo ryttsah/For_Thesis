@@ -1,19 +1,19 @@
 {
-  "accuracy": 0.6842105263157895,
-  "macro_f1": 0.5962912087912088,
-  "weighted_f1": 0.6603569362967859,
+  "accuracy": 0.6791044776119403,
+  "macro_f1": 0.5911652473358463,
+  "weighted_f1": 0.6537059224330671,
   "per_class": {
     "Healthy": {
-      "precision": 0.6538461538461539,
+      "precision": 0.6296296296296297,
       "recall": 0.5666666666666667,
-      "f1": 0.6071428571428571,
+      "f1": 0.5964912280701755,
       "support": 30
     },
     "Yellowing": {
       "precision": 0.4444444444444444,
-      "recall": 0.21052631578947367,
-      "f1": 0.2857142857142857,
-      "support": 19
+      "recall": 0.2,
+      "f1": 0.2758620689655173,
+      "support": 20
     },
     "Coconut_Scale_Insect": {
       "precision": 0.75,
@@ -36,7 +36,7 @@
       9
     ],
     [
-      4,
+      5,
       4,
       4,
       7
@@ -57,19 +57,19 @@
   "benchmark": "internal held-out test plus project-owner-selected external images",
   "benchmark_status": "combined evaluation requested by the project owner",
   "internal_test_images": 103,
-  "selected_external_images": 30,
+  "selected_external_images": 31,
   "images_per_class": {
     "Healthy": {
-      "precision": 0.6538461538461539,
+      "precision": 0.6296296296296297,
       "recall": 0.5666666666666667,
-      "f1": 0.6071428571428571,
+      "f1": 0.5964912280701755,
       "support": 30
     },
     "Yellowing": {
       "precision": 0.4444444444444444,
-      "recall": 0.21052631578947367,
-      "f1": 0.2857142857142857,
-      "support": 19
+      "recall": 0.2,
+      "f1": 0.2758620689655173,
+      "support": 20
     },
     "Coconut_Scale_Insect": {
       "precision": 0.75,
@@ -103,6 +103,7 @@
     "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y05.jpg",
     "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y06.webp",
     "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y07.webp",
+    "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y08.webp",
     "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y11.webp",
     "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y12.webp",
     "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set\\Yellowing\\approved_review_Y13.jpg",
@@ -126,7 +127,7 @@
     "audited": true,
     "counts": {
       "Healthy": 12,
-      "Yellowing": 11,
+      "Yellowing": 12,
       "Coconut_Scale_Insect": 5,
       "Rhinoceros_Beetle": 2
     },

@@ -268,5 +268,14 @@
     "claimed_condition": "Coconut_Scale_Insect",
     "reviewed": true,
     "approval_note": "Approved by the project owner on 2026-11-18 as C03 from the numbered review shortlist."
+  },
+  {
+    "file": "Yellowing/approved_review_Y08.webp",
+    "source_url": "https://ask.ifas.ufl.edu/publication/PP146",
+    "source_title": "UF/IFAS: Lethal Yellowing (LY) of Palm",
+    "license": "UF/IFAS publication image; provisional research evaluation only",
+    "claimed_condition": "Yellowing",
+    "reviewed": true,
+    "approval_note": "Approved by the project owner on 2026-11-18 as Y08 from the numbered review shortlist."
   }
 ]
