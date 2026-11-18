@@ -34,6 +34,7 @@ dataset_archive/
 Thesis AI Model/*
 !Thesis AI Model/README.md
 !Thesis AI Model/model.ipynb
+!Thesis AI Model/model-f1-matrices.ipynb
 !Thesis AI Model/dataset_review.json
 !Thesis AI Model/curated_split_manifest.json
 !Thesis AI Model/model_outputs/
