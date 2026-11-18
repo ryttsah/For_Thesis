@@ -1,5 +1,5 @@
 actual / predicted,Healthy,Yellowing,Coconut_Scale_Insect,Rhinoceros_Beetle
-Healthy,14,1,2,2
-Yellowing,0,3,4,3
-Coconut_Scale_Insect,2,2,17,4
+Healthy,17,2,2,9
+Yellowing,4,4,4,7
+Coconut_Scale_Insect,2,2,18,6
 Rhinoceros_Beetle,3,1,0,52
