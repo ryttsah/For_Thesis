@@ -1208,7 +1208,7 @@
   "runtime": "tflite",
   "external_status": {
     "root": "C:\\Users\\ahwri\\Downloads\\For_Thesis\\Thesis AI Model\\external_test_set",
-    "expected_per_class": 50,
+    "expected_per_class": 20,
     "ready": false,
     "audited": true,
     "counts": {
@@ -1221,10 +1221,10 @@
     "invalid_provenance": [],
     "duplicates_with_reference": [],
     "invalid_images": [],
-    "reason": "Need 50 original, documented, non-duplicate images per class."
+    "reason": "Need 20 original, documented, non-duplicate images per class."
   },
   "excluded_duplicate_approval": {
     "id": "Y04",
-    "reason": "Exact pixel duplicate of Yellowing/yellowing_approved_lucid_02.jpg; retained in the review archive but not counted twice."
+    "reason": "Exact pixel duplicate of Yellowing/yellowing_approved_lucid_02.jpg; it is not counted twice."
   }
 }
